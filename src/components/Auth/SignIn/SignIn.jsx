@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// react-router-dom
+import { Redirect } from 'react-router-dom'
 // firebase
 import firebase from '../../../firebase/firebase';
 // material-ui
@@ -12,6 +14,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 // image
 import logo from '../../../assets/icons/logo.svg';
+// operator
+import If from '../../Operator/If';
 
 const styles = {
     image: {
@@ -38,6 +42,7 @@ class SignIn extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isAuthenticated: false,
             email: '',
             password: '',
             errors: {
@@ -51,6 +56,10 @@ class SignIn extends Component {
                 },
             },
         };
+    }
+
+    componentDidMount = () => {
+        firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
     }
 
     handleChange = name => event => {
@@ -78,11 +87,10 @@ class SignIn extends Component {
         });
 
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then((res) => {
-                console.log(res);
+            .then(() => {
+                this.setState({ isAuthenticated: true });
             })
             .catch((err) => {
-                console.log(err);
                 if (err.code === 'auth/invalid-email') {
                     this.setState({
                         errors: {
@@ -129,7 +137,7 @@ class SignIn extends Component {
     }
 
     render() {
-        const { email, password, errors } = this.state;
+        const { isAuthenticated, email, password, errors } = this.state;
         const { classes } = this.props;
 
         return (
@@ -168,6 +176,9 @@ class SignIn extends Component {
                         </form>
                     </Paper>
                 </div>
+                <If test={isAuthenticated}>
+                    <Redirect to="/dashboard" />
+                </If>
             </div>
         );
     }

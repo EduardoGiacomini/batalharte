@@ -1,4 +1,5 @@
 import React from 'react';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,9 +8,19 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 import Menu from '@material-ui/core/Menu';
-
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+// firebase
+import firebase from 'firebase';
+// redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// actions
+import { signOut } from '../../../redux/actions/authActions';
+// components
 import Drawer from '../Drawer/Drawer';
 
 const styles = {
@@ -23,10 +34,26 @@ const styles = {
 };
 
 class MenuAppBar extends React.Component {
-    state = {
-        anchorEl: null,
-        openDrawer: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            anchorEl: null,
+            openDrawer: false,
+            auth: false,
+        };
+    }
+
+    componentDidMount = () => {
+        firebase.auth().onAuthStateChanged(user => this.setState({ auth: !!user }));
+    }
+
+    signOut = () => {
+        firebase.auth().signOut()
+            .then(() => {
+                this.props.signOut(null);
+                this.handleClose();
+            })
+    }
 
     handleMenu = event => {
         this.setState({ anchorEl: event.currentTarget });
@@ -43,8 +70,8 @@ class MenuAppBar extends React.Component {
     };
 
     render() {
-        const { auth, classes } = this.props;
-        const { anchorEl } = this.state;
+        const { classes } = this.props;
+        const { anchorEl, auth } = this.state;
         const open = Boolean(anchorEl);
 
         return (
@@ -81,8 +108,18 @@ class MenuAppBar extends React.Component {
                                     open={open}
                                     onClose={this.handleClose}
                                 >
-                                    <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                                    <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                                    <MenuItem onClick={this.handleClose}>
+                                        <ListItemIcon>
+                                            <AccountCircle />
+                                        </ListItemIcon>
+                                        <ListItemText inset primary="Perfil" />
+                                    </MenuItem>
+                                    <MenuItem onClick={this.signOut}>
+                                        <ListItemIcon>
+                                            <ExitToApp />
+                                        </ListItemIcon>
+                                        <ListItemText inset primary="Sair" />
+                                    </MenuItem>
                                 </Menu>
                             </div>
                         )}
@@ -98,4 +135,7 @@ MenuAppBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(MenuAppBar);
+const mapDispatchToProps = dispatch => bindActionCreators({ signOut }, dispatch);
+
+export default compose(withStyles(styles),
+    connect(null, mapDispatchToProps))(MenuAppBar);

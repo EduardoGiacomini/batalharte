@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
+// firebase
+import firebase from './firebase/firebase';
 // redux
-import { Provider } from 'react-redux';
-import store from './redux/store/store';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// actions
+import { signIn } from './redux/actions/authActions';
 // component-router
 import Routes from './components/Routes/Routes';
 // material-ui
@@ -22,16 +26,30 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+
+  componentDidMount = () => {
+    firebase.auth().onAuthStateChanged(user => {
+
+      if (user) {
+        firebase.database().ref('users').child(user.uid).once('value', snapshot => {
+          this.props.signIn(snapshot.val());
+        });
+      }
+
+    })
+  }
+
   render() {
     return (
-      <Provider store={store}>
-        <MuiThemeProvider theme={theme}>
-          <CssBaseline />
-          <Routes />
-        </MuiThemeProvider>
-      </Provider>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes />
+      </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => bindActionCreators({ signIn }, dispatch);
+
+export default connect(null, mapDispatchToProps)(App);
+
