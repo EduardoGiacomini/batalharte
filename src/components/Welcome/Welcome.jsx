@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default props => {
-    return(
+    return (
         <div>
             <h2>
                 Interface de boas vindas! Dev branch
