@@ -41,14 +41,6 @@ class SignIn extends Component {
             password: '',
             confirmPassword: '',
             errors: {
-                name: {
-                    error: false,
-                    message: '',
-                },
-                school: {
-                    error: false,
-                    message: '',
-                },
                 email: {
                     error: false,
                     message: '',
@@ -71,21 +63,34 @@ class SignIn extends Component {
         });
     };
 
-    /* handleRegistration = (event) => {
+    handleValidate = (event) => {
         event.preventDefault();
-        const { email, password } = this.state;
+        const { password, confirmPassword } = this.state;
+        if (password !== confirmPassword) {
+            this.setState({
+                errors: {
+                    email: {
+                        error: false,
+                        message: '',
+                    },
+                    password: {
+                        error: true,
+                        message: 'Há divergência entre as senhas!',
+                    },
+                },
+            });
+        } else {
+            this.handleRegistration();
+        }
+
+    }
+
+    handleRegistration = (event) => {
+        const { name, school, email, password } = this.state;
 
         // reset errors
         this.setState({
             errors: {
-                name: {
-                    error: false,
-                    message: '',
-                },
-                school: {
-                    error: false,
-                    message: '',
-                },
                 email: {
                     error: false,
                     message: '',
@@ -98,10 +103,21 @@ class SignIn extends Component {
         });
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                this.setState({ isAuthenticated: true });
+            .then((res) => {
+                firebase.database().ref('users').child(res.user.uid).set({
+                    uid: res.user.uid,
+                    name: name,
+                    school: school,
+                    email: email,
+                    highScore: 0,
+                    phase: 1,
+                })
+                    .then(() => {
+                        this.setState({ isAuthenticated: true });
+                    })
             })
             .catch((err) => {
+                console.log(err)
                 if (err.code === 'auth/invalid-email') {
                     this.setState({
                         errors: {
@@ -116,12 +132,12 @@ class SignIn extends Component {
                         },
                     });
                 }
-                if (err.code === 'auth/user-not-found') {
+                if (err.code === 'auth/email-already-in-use') {
                     this.setState({
                         errors: {
                             email: {
                                 error: true,
-                                message: 'Endereço de e-mail não encontrado!',
+                                message: 'Endereço de e-mail já cadastrado!',
                             },
                             password: {
                                 error: false,
@@ -130,7 +146,7 @@ class SignIn extends Component {
                         },
                     });
                 }
-                if (err.code === 'auth/wrong-password') {
+                if (err.code === 'auth/weak-password') {
                     this.setState({
                         errors: {
                             email: {
@@ -146,7 +162,6 @@ class SignIn extends Component {
                 }
             })
     }
-    */
 
     render() {
         const { isAuthenticated, name, school, email, password, confirmPassword, errors } = this.state;
@@ -159,16 +174,16 @@ class SignIn extends Component {
                         <div>
                             <h3 className={classes.title}>BATALHARTE</h3>
                         </div>
-                        <form>
-                            <FormControl error={errors.name.error} fullWidth required aria-describedby="name">
+                        <form onSubmit={this.handleValidate}>
+                            <FormControl fullWidth required aria-describedby="name">
                                 <InputLabel htmlFor="name">Nome</InputLabel>
                                 <Input id="name" type="e-mail" value={name} onChange={this.handleChange('name')} />
-                                <FormHelperText id="name">{errors.name.message}</FormHelperText>
+                                <FormHelperText id="name"></FormHelperText>
                             </FormControl>
-                            <FormControl error={errors.school.error} fullWidth required aria-describedby="school">
-                                <InputLabel htmlFor="school">Insttuição</InputLabel>
+                            <FormControl fullWidth required aria-describedby="school">
+                                <InputLabel htmlFor="school">Instituição</InputLabel>
                                 <Input id="school" type="e-mail" value={school} onChange={this.handleChange('school')} />
-                                <FormHelperText id="school">{errors.school.message}</FormHelperText>
+                                <FormHelperText id="school"></FormHelperText>
                             </FormControl>
                             <FormControl error={errors.email.error} fullWidth required aria-describedby="email">
                                 <InputLabel htmlFor="email">E-mail</InputLabel>
