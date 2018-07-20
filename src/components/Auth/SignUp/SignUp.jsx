@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // react-router-dom
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 // firebase
 import firebase from '../../../firebase/firebase';
 // material-ui
@@ -17,10 +17,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import If from '../../Operator/If';
 
 const styles = {
-    image: {
-        width: 200,
-        height: 200,
-    },
     container: {
         padding: 15,
     },
@@ -29,9 +25,16 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
     },
+    containerLink: {
+        marginTop: 10,
+    },
     title: {
         textAlign: 'center',
         margin: 0,
+        color: '#3E2723',
+    },
+    link: {
+        textDecoration: 'none',
         color: '#3E2723',
     },
 };
@@ -231,6 +234,9 @@ class SignIn extends Component {
                                 </div>
                             </If>
                         </form>
+                        <div className={classes.containerLink}>
+                            <Link className={classes.link} to="/signin">Já possui uma conta?</Link>
+                        </div>
                     </Paper>
                 </div>
                 <If test={isAuthenticated}>

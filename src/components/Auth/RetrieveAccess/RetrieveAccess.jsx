@@ -12,25 +12,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// image
-import logo from '../../../assets/icons/logo.svg';
 // operator
 import If from '../../Operator/If';
 
 const styles = {
-    image: {
-        width: 200,
-        height: 200,
-    },
     container: {
         padding: 15,
-    },
-    containerImage: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: 25,
     },
     containerLoading: {
         width: '100%',
@@ -51,20 +40,16 @@ const styles = {
     },
 };
 
-class SignIn extends Component {
+class RetrieveAccess extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isAuthenticated: false,
             isLoading: false,
+            openSnackbar: false,
             email: '',
-            password: '',
             errors: {
                 email: {
-                    error: false,
-                    message: '',
-                },
-                password: {
                     error: false,
                     message: '',
                 },
@@ -74,11 +59,11 @@ class SignIn extends Component {
 
     componentDidMount = () => {
         this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
-    }
+    };
 
     componentWillUnmount = () => {
         this.authRef();
-    }
+    };
 
     handleChange = name => event => {
         this.setState({
@@ -86,9 +71,13 @@ class SignIn extends Component {
         });
     };
 
-    handleAuthentication = (event) => {
+    handleClose = () => {
+        this.setState({ openSnackbar: false });
+    };
+
+    handleRetrieveAccess = (event) => {
         event.preventDefault();
-        const { email, password } = this.state;
+        const { email } = this.state;
 
         // reset errors
         this.setState({
@@ -98,95 +87,54 @@ class SignIn extends Component {
                     error: false,
                     message: '',
                 },
-                password: {
-                    error: false,
-                    message: '',
-                },
             },
         });
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
+        firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
-                this.setState({ isAuthenticated: true });
+                this.setState({ isLoading: false, openSnackbar: true, email: '' });
             })
-            .catch((err) => {
-                console.log(err);
-                if (err.code === 'auth/invalid-email') {
+            .catch((error) => {
+                this.setState({ isLoading: false });
+                if (error.code === 'auth/invalid-email') {
                     this.setState({
-                        isLoading: false,
                         errors: {
                             email: {
                                 error: true,
                                 message: 'Endereço de e-mail inválido!',
                             },
-                            password: {
-                                error: false,
-                                message: '',
-                            },
                         },
                     });
                 }
-                if (err.code === 'auth/user-not-found') {
+                if (error.code === 'auth/user-not-found') {
                     this.setState({
-                        isLoading: false,
                         errors: {
                             email: {
                                 error: true,
                                 message: 'Endereço de e-mail não encontrado!',
                             },
-                            password: {
-                                error: false,
-                                message: '',
-                            },
-                        },
-                    });
-                }
-                if (err.code === 'auth/wrong-password') {
-                    this.setState({
-                        isLoading: false,
-                        errors: {
-                            email: {
-                                error: false,
-                                message: '',
-                            },
-                            password: {
-                                error: true,
-                                message: 'Senha incorreta!',
-                            },
                         },
                     });
                 }
             })
-    }
+    };
 
     render() {
-        const { isAuthenticated, isLoading, email, password, errors } = this.state;
+        const { isAuthenticated, isLoading, openSnackbar, email, errors } = this.state;
         const { classes } = this.props;
 
         return (
             <div>
-                <div className={classes.containerImage}>
-                    <img
-                        src={logo}
-                        alt="Logotipo do Batalharte"
-                        className={classes.image}
-                    />
-                </div>
                 <div className={classes.container}>
                     <Paper className={classes.container} elevation={1}>
                         <div>
-                            <h3 className={classes.title}>AUTENTICAÇÃO</h3>
+                            <h3 className={classes.title}>RECUPERAR ACESSO</h3>
                         </div>
-                        <form onSubmit={this.handleAuthentication}>
+                        <form onSubmit={this.handleRetrieveAccess}>
                             <FormControl error={errors.email.error} fullWidth required aria-describedby="email">
                                 <InputLabel htmlFor="email">E-mail</InputLabel>
                                 <Input id="email" type="e-mail" value={email} onChange={this.handleChange('email')} />
                                 <FormHelperText id="email">{errors.email.message}</FormHelperText>
-                            </FormControl>
-                            <FormControl error={errors.password.error} fullWidth required aria-describedby="password">
-                                <InputLabel htmlFor="password">Senha</InputLabel>
-                                <Input id="password" type="password" value={password} onChange={this.handleChange('password')} />
-                                <FormHelperText id="password">{errors.password.message}</FormHelperText>
                             </FormControl>
                             <If test={!isLoading}>
                                 <Button
@@ -195,7 +143,7 @@ class SignIn extends Component {
                                     type="submit"
                                     fullWidth
                                 >
-                                    Autenticar-se
+                                    Recuperar acesso
                                 </Button>
                             </If>
                             <If test={isLoading}>
@@ -205,22 +153,27 @@ class SignIn extends Component {
                             </If>
                         </form>
                         <div className={classes.containerLink}>
-                            <Link className={classes.link} to="/retrieveaccess">Esqueceu a senha?</Link>
-                            <br />
-                            <Link className={classes.link} to="/signup">Não possui uma conta?</Link>
+                            <Link className={classes.link} to="/signin">Voltar</Link>
                         </div>
                     </Paper>
                 </div>
+                <Snackbar
+                    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    onClose={this.handleClose}
+                    message={<span>E-mail de redefinição enviado com sucesso!</span>}
+                />
                 <If test={isAuthenticated}>
                     <Redirect to="/dashboard" />
                 </If>
-            </div>
+            </div >
         );
     }
 }
 
-SignIn.propTypes = {
+RetrieveAccess.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(RetrieveAccess);
