@@ -12,6 +12,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // image
 import logo from '../../../assets/icons/logo.svg';
 // operator
@@ -22,14 +23,19 @@ const styles = {
         width: 200,
         height: 200,
     },
+    container: {
+        padding: 15,
+    },
     containerImage: {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
         marginTop: 25,
     },
-    container: {
-        padding: 15,
+    containerLoading: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
     },
     title: {
         textAlign: 'center',
@@ -43,6 +49,7 @@ class SignIn extends Component {
         super(props);
         this.state = {
             isAuthenticated: false,
+            isLoading: false,
             email: '',
             password: '',
             errors: {
@@ -59,7 +66,11 @@ class SignIn extends Component {
     }
 
     componentDidMount = () => {
-        firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+        this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+    }
+
+    componentWillUnmount = () => {
+        this.authRef();
     }
 
     handleChange = name => event => {
@@ -74,6 +85,7 @@ class SignIn extends Component {
 
         // reset errors
         this.setState({
+            isLoading: true,
             errors: {
                 email: {
                     error: false,
@@ -91,8 +103,10 @@ class SignIn extends Component {
                 this.setState({ isAuthenticated: true });
             })
             .catch((err) => {
+                console.log(err);
                 if (err.code === 'auth/invalid-email') {
                     this.setState({
+                        isLoading: false,
                         errors: {
                             email: {
                                 error: true,
@@ -107,6 +121,7 @@ class SignIn extends Component {
                 }
                 if (err.code === 'auth/user-not-found') {
                     this.setState({
+                        isLoading: false,
                         errors: {
                             email: {
                                 error: true,
@@ -121,6 +136,7 @@ class SignIn extends Component {
                 }
                 if (err.code === 'auth/wrong-password') {
                     this.setState({
+                        isLoading: false,
                         errors: {
                             email: {
                                 error: false,
@@ -137,7 +153,7 @@ class SignIn extends Component {
     }
 
     render() {
-        const { isAuthenticated, email, password, errors } = this.state;
+        const { isAuthenticated, isLoading, email, password, errors } = this.state;
         const { classes } = this.props;
 
         return (
@@ -152,7 +168,7 @@ class SignIn extends Component {
                 <div className={classes.container}>
                     <Paper className={classes.container} elevation={1}>
                         <div>
-                            <h3 className={classes.title}>BATALHARTE</h3>
+                            <h3 className={classes.title}>AUTENTICAÇÃO</h3>
                         </div>
                         <form onSubmit={this.handleAuthentication}>
                             <FormControl error={errors.email.error} fullWidth required aria-describedby="email">
@@ -165,14 +181,21 @@ class SignIn extends Component {
                                 <Input id="password" type="password" value={password} onChange={this.handleChange('password')} />
                                 <FormHelperText id="password">{errors.password.message}</FormHelperText>
                             </FormControl>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                fullWidth
-                            >
-                                Autenticar-se
-                        </Button>
+                            <If test={!isLoading}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    fullWidth
+                                >
+                                    Autenticar-se
+                                </Button>
+                            </If>
+                            <If test={isLoading}>
+                                <div className={classes.containerLoading}>
+                                    <CircularProgress />
+                                </div>
+                            </If>
                         </form>
                     </Paper>
                 </div>
