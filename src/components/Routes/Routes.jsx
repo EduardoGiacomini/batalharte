@@ -7,9 +7,9 @@ import Welcome from '../Welcome/Welcome';
 import SignIn from '../Auth/SignIn/SignIn';
 import SignUp from '../Auth/SignUp/SignUp';
 import RetrieveAccess from '../Auth/RetrieveAccess/RetrieveAccess';
+import Dashboard from '../Dashboard/Dashboard';
 
 export default props => {
-
     return (
         <BrowserRouter>
             <div>
@@ -19,7 +19,7 @@ export default props => {
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={SignUp} />
                     <Route exact path="/retrieveaccess" component={RetrieveAccess} />
-                    <Route exact path="/dashboard" component={() => <h1>Você esta autenticado</h1>} />
+                    <Route exact path="/dashboard" component={Dashboard} />
                 </Switch>
             </div>
         </BrowserRouter>
