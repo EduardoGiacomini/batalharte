@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+// redux
+import { Provider } from 'react-redux';
+import store from './redux/store/store';
 // component-router
 import Routes from './components/Routes/Routes';
 // material-ui
@@ -21,10 +24,12 @@ const theme = createMuiTheme({
 class App extends Component {
   render() {
     return (
+      <Provider store={store}>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <Routes />
         </MuiThemeProvider>
+      </Provider>
     );
   }
 }

@@ -5,7 +5,10 @@ import firebase from '../../../firebase/firebase';
 // material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 // image
 import logo from '../../../assets/icons/logo.svg';
@@ -37,6 +40,16 @@ class SignIn extends Component {
         this.state = {
             email: '',
             password: '',
+            errors: {
+                email: {
+                    error: false,
+                    message: '',
+                },
+                password: {
+                    error: false,
+                    message: '',
+                },
+            },
         };
     }
 
@@ -50,16 +63,73 @@ class SignIn extends Component {
         event.preventDefault();
         const { email, password } = this.state;
 
+        // reset errors
+        this.setState({
+            errors: {
+                email: {
+                    error: false,
+                    message: '',
+                },
+                password: {
+                    error: false,
+                    message: '',
+                },
+            },
+        });
+
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((res) => {
                 console.log(res);
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
+                if (err.code === 'auth/invalid-email') {
+                    this.setState({
+                        errors: {
+                            email: {
+                                error: true,
+                                message: 'Endereço de e-mail inválido!',
+                            },
+                            password: {
+                                error: false,
+                                message: '',
+                            },
+                        },
+                    });
+                }
+                if (err.code === 'auth/user-not-found') {
+                    this.setState({
+                        errors: {
+                            email: {
+                                error: true,
+                                message: 'Endereço de e-mail não encontrado!',
+                            },
+                            password: {
+                                error: false,
+                                message: '',
+                            },
+                        },
+                    });
+                }
+                if (err.code === 'auth/wrong-password') {
+                    this.setState({
+                        errors: {
+                            email: {
+                                error: false,
+                                message: '',
+                            },
+                            password: {
+                                error: true,
+                                message: 'Senha incorreta!',
+                            },
+                        },
+                    });
+                }
             })
     }
 
     render() {
+        const { email, password, errors } = this.state;
         const { classes } = this.props;
 
         return (
@@ -77,23 +147,16 @@ class SignIn extends Component {
                             <h3 className={classes.title}>BATALHARTE</h3>
                         </div>
                         <form onSubmit={this.handleAuthentication}>
-                            <TextField
-                                id="email"
-                                label="E-mail"
-                                margin="normal"
-                                fullWidth
-                                value={this.state.email}
-                                onChange={this.handleChange('email')}
-                            />
-                            <TextField
-                                id="password"
-                                label="Senha"
-                                margin="normal"
-                                type="password"
-                                fullWidth={true}
-                                value={this.state.password}
-                                onChange={this.handleChange('password')}
-                            />
+                            <FormControl error={errors.email.error} fullWidth required aria-describedby="email">
+                                <InputLabel htmlFor="email">E-mail</InputLabel>
+                                <Input id="email" type="e-mail" value={email} onChange={this.handleChange('email')} />
+                                <FormHelperText id="email">{errors.email.message}</FormHelperText>
+                            </FormControl>
+                            <FormControl error={errors.password.error} fullWidth required aria-describedby="password">
+                                <InputLabel htmlFor="password">Senha</InputLabel>
+                                <Input id="password" type="password" value={password} onChange={this.handleChange('password')} />
+                                <FormHelperText id="password">{errors.password.message}</FormHelperText>
+                            </FormControl>
                             <Button
                                 variant="contained"
                                 color="primary"
