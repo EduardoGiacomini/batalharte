@@ -83,7 +83,7 @@ class MenuAppBar extends React.Component {
                         </IconButton>
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             Batalharte
-            </Typography>
+                        </Typography>
                         {auth && (
                             <div>
                                 <IconButton

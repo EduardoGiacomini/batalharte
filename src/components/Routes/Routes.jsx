@@ -6,6 +6,7 @@ import AppBar from '../Common/AppBar/AppBar';
 import Welcome from '../Welcome/Welcome';
 import SignIn from '../Auth/SignIn/SignIn';
 import SignUp from '../Auth/SignUp/SignUp';
+import Dashboard from '../Dashboard/Dashboard';
 
 export default props => {
 
@@ -17,7 +18,7 @@ export default props => {
                     <Route exact path="/" component={Welcome} />
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={SignUp} />
-                    <Route exact path="/dashboard" component={() => <h1>Você esta autenticado</h1>} />
+                    <Route exact path="/dashboard" component={Dashboard} />
                 </Switch>
             </div>
         </BrowserRouter>

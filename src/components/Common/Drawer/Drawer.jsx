@@ -1,20 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/Inbox';
+import HomeIcon from '@material-ui/icons/Home';
+import PersonIcon from '@material-ui/icons/Person';
+import PeopleIcon from '@material-ui/icons/People';
 
 const styles = {
-    list: {
-        width: 250,
+    header: {
+        height: '56px', 
+        backgroundColor: '#3E2723',
+        textAlign: 'center',
+        color: '#FFF'
     },
-    fullList: {
-        width: 'auto',
-    },
+    text: {
+        fontSize: '1.3125rem',
+        fontWeight: '500',
+        fontFamily: 'Roboto',
+        lineHeight: '1.16667em'
+    }
 };
 
 class TemporaryDrawer extends React.Component {
@@ -25,29 +33,38 @@ class TemporaryDrawer extends React.Component {
     render() {
         const { classes } = this.props;
 
-        const sideList = (
-            <div className={classes.list}>
-                <List>
-                    <ListItem button>
-                        <ListItemIcon>
-                            <InboxIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Autenticar-se" />
-                    </ListItem>
-                </List>
-            </div>
+        const item1 = (
+            <ListItem button>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Página Inicial" />
+            </ListItem>
+        );
+
+        const item2 = (
+            <ListItem button>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText primary="Autenticar-se" />
+            </ListItem>
+        );
+
+        const item3 = (
+            <ListItem button>
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Cadastrar-se" />
+            </ListItem>
         );
 
         return (
             <div>
                 <Drawer open={this.props.open} onClose={this.props.toggleDrawer(false)}>
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        onClick={this.props.toggleDrawer(false)}
-                        onKeyDown={this.props.toggleDrawer(false)}
-                    >
-                        {sideList}
+                    <div className={classes.header}>
+                        <h2 className={classes.text}>Batalharte</h2>
                     </div>
                     <div
                         tabIndex={0}
@@ -55,7 +72,23 @@ class TemporaryDrawer extends React.Component {
                         onClick={this.props.toggleDrawer(false)}
                         onKeyDown={this.props.toggleDrawer(false)}
                     >
-                        {sideList}
+                        {item1}
+                    </div>
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        onClick={this.props.toggleDrawer(false)}
+                        onKeyDown={this.props.toggleDrawer(false)}
+                    >
+                        {item2}
+                    </div>
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        onClick={this.props.toggleDrawer(false)}
+                        onKeyDown={this.props.toggleDrawer(false)}
+                    >
+                        {item3}
                     </div>
                 </Drawer>
             </div>
