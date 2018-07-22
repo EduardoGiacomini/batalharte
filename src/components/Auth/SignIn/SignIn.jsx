@@ -74,11 +74,11 @@ class SignIn extends Component {
 
     componentDidMount = () => {
         this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
-    }
+    };
 
     componentWillUnmount = () => {
         this.authRef();
-    }
+    };
 
     handleChange = name => event => {
         this.setState({
@@ -157,7 +157,7 @@ class SignIn extends Component {
                     });
                 }
             })
-    }
+    };
 
     render() {
         const { isAuthenticated, isLoading, email, password, errors } = this.state;

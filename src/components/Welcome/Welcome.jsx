@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // react-router-dom
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 // firebase
 import firebase from '../../firebase/firebase';
 // material-ui
@@ -43,8 +43,12 @@ class Welcome extends Component {
     }
 
     componentDidMount = () => {
-        firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
-    }
+        this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+    };
+
+    componentWillUnmount = () => {
+        this.authRef();
+    };
 
     render() {
         const { isAuthenticated } = this.state;

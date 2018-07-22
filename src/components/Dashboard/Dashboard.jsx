@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// react-router-dom
+import { Redirect } from 'react-router-dom';
+// firebase
+import firebase from '../../firebase/firebase';
 // material-ui
 import { withStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -7,28 +11,40 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import BookIcon from '@material-ui/icons/Book';
 import StarIcon from '@material-ui/icons/Star';
+// operator
+import If from '../Operator/If';
 
 const styles = {
-    root: {
-      width: '100%',
-    },
+  root: {
+    width: '100%',
+  },
+};
+
+class Navigation extends React.Component {
+  state = {
+    isAuthenticated: true,
+    value: 0,
   };
-  
-  class Navigation extends React.Component {
-    state = {
-      value: 0,
-    };
-  
-    handleChange = (event, value) => {
-      this.setState({ value });
-    };
-  
-    render() {
-      const { classes } = this.props;
-      const { value } = this.state;
-  
-      return (
-        <div>
+
+  componentDidMount = () => {
+    this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+  }
+
+  componentWillUnmount = () => {
+    this.authRef();
+  };
+
+
+  handleChange = (event, value) => {
+    this.setState({ value });
+  };
+
+  render() {
+    const { classes } = this.props;
+    const { isAuthenticated, value } = this.state;
+
+    return (
+      <div>
         <BottomNavigation
           value={value}
           onChange={this.handleChange}
@@ -39,13 +55,31 @@ const styles = {
           <BottomNavigationAction label="Conteúdos" icon={<BookIcon />} />
           <BottomNavigationAction label="Ranking" icon={<StarIcon />} />
         </BottomNavigation>
-        </div>
-      );
-    }
+        <If test={value === 0}>
+          <div>
+            <h2>Home</h2>
+          </div>
+        </If>
+        <If test={value === 1}>
+          <div>
+            <h2>Conteúdos</h2>
+          </div>
+        </If>
+        <If test={value === 2}>
+          <div>
+            <h2>Ranking</h2>
+          </div>
+        </If>
+        <If test={!isAuthenticated}>
+          <Redirect to="/" />
+        </If>
+      </div>
+    );
   }
-  
+}
+
 Navigation.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
-  
+
 export default withStyles(styles)(Navigation);
