@@ -212,7 +212,7 @@ class SignIn extends Component {
                     </Paper>
                 </div>
                 <If test={isAuthenticated}>
-                    <Redirect to="/dashboard/home" />
+                    <Redirect to="/dashboard" />
                 </If>
             </div>
         );

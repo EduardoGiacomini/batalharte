@@ -19,7 +19,7 @@ export default props => {
                     <Route exact path="/signin" component={SignIn} />
                     <Route exact path="/signup" component={SignUp} />
                     <Route exact path="/retrieveaccess" component={RetrieveAccess} />
-                    <Route path="/dashboard" component={ Dashboard } />
+                    <Route exact path="/dashboard" component={Dashboard} />
                 </Switch>
             </div>
         </BrowserRouter>
