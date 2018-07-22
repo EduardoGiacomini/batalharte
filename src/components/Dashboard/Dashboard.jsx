@@ -11,6 +11,8 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import BookIcon from '@material-ui/icons/Book';
 import StarIcon from '@material-ui/icons/Star';
+// components
+import Ranking from '../Ranking/Ranking';
 // operator
 import If from '../Operator/If';
 
@@ -66,9 +68,7 @@ class Navigation extends React.Component {
           </div>
         </If>
         <If test={value === 2}>
-          <div>
-            <h2>Ranking</h2>
-          </div>
+          <Ranking />
         </If>
         <If test={!isAuthenticated}>
           <Redirect to="/" />
