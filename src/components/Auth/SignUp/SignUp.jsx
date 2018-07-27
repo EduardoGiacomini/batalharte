@@ -124,6 +124,7 @@ class SignIn extends Component {
                     name: name,
                     school: school,
                     email: email,
+                    urlImageProfile: '',
                     highScore: 0,
                     phase: 1,
                 })
