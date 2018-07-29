@@ -153,7 +153,7 @@ class RetrieveAccess extends Component {
                             </If>
                         </form>
                         <div className={classes.containerLink}>
-                            <Link className={classes.link} to="/signin">Voltar</Link>
+                            <Link className={classes.link} to="/">Voltar</Link>
                         </div>
                     </Paper>
                 </div>

@@ -12,6 +12,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import BookIcon from '@material-ui/icons/Book';
 import StarIcon from '@material-ui/icons/Star';
 // components
+import Quiz from '../Quiz/Quiz';
 import Ranking from '../Ranking/Ranking';
 // operator
 import If from '../Operator/If';
@@ -58,9 +59,7 @@ class Navigation extends React.Component {
           <BottomNavigationAction label="Ranking" icon={<StarIcon />} />
         </BottomNavigation>
         <If test={value === 0}>
-          <div>
-            <h2>Home</h2>
-          </div>
+          <Quiz />
         </If>
         <If test={value === 1}>
           <div>

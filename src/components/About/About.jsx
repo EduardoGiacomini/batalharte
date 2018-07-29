@@ -34,7 +34,7 @@ const styles = {
     }
 };
 
-class Welcome extends Component {
+class About extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -82,8 +82,8 @@ class Welcome extends Component {
     }
 }
 
-Welcome.propTypes = {
+About.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Welcome);
+export default withStyles(styles)(About);

@@ -205,9 +205,9 @@ class SignIn extends Component {
                             </If>
                         </form>
                         <div className={classes.containerLink}>
-                            <Link className={classes.link} to="/retrieveaccess">Esqueceu a senha?</Link>
+                            <Link className={classes.link} to="/recuperaracesso">Esqueceu a senha?</Link>
                             <br />
-                            <Link className={classes.link} to="/signup">Não possui uma conta?</Link>
+                            <Link className={classes.link} to="/cadastrar-se">Não possui uma conta?</Link>
                         </div>
                     </Paper>
                 </div>

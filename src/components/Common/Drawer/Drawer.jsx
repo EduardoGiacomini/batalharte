@@ -9,7 +9,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import HomeIcon from '@material-ui/icons/Home';
+import InfoIcon from '@material-ui/icons/Info';
 import PersonIcon from '@material-ui/icons/Person';
 import PeopleIcon from '@material-ui/icons/People';
 
@@ -41,21 +41,21 @@ class TemporaryDrawer extends React.Component {
                 <List>
                     <ListItem component={Link} to="/" button>
                         <ListItemIcon>
-                            <HomeIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Página Inicial" />
-                    </ListItem>
-                    <ListItem component={Link} to="/signin" button>
-                        <ListItemIcon>
                             <PersonIcon />
                         </ListItemIcon>
                         <ListItemText primary="Autenticar-se" />
                     </ListItem>
-                    <ListItem component={Link} to="/signup" button>
+                    <ListItem component={Link} to="/cadastrar-se" button>
                         <ListItemIcon>
                             <PeopleIcon />
                         </ListItemIcon>
                         <ListItemText primary="Cadastrar-se" />
+                    </ListItem>
+                    <ListItem component={Link} to="/sobre" button>
+                        <ListItemIcon>
+                            <InfoIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Sobre" />
                     </ListItem>
                 </List>
             </div>

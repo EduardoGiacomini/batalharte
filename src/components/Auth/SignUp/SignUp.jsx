@@ -236,7 +236,7 @@ class SignIn extends Component {
                             </If>
                         </form>
                         <div className={classes.containerLink}>
-                            <Link className={classes.link} to="/signin">Já possui uma conta?</Link>
+                            <Link className={classes.link} to="/">Já possui uma conta?</Link>
                         </div>
                     </Paper>
                 </div>
