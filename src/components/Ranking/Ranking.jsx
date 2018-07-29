@@ -4,11 +4,6 @@ import compose from 'recompose/compose';
 // material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Avatar from '@material-ui/core/Avatar';
-import PersonIcon from '@material-ui/icons/Person';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // firebase
 import firebase from '../../firebase/firebase';
@@ -19,6 +14,8 @@ import { bindActionCreators } from 'redux';
 import { listUsers } from '../../redux/actions/rankingActions';
 // operator
 import If from '../Operator/If';
+// components
+import List from './List';
 
 const styles = {
     container: {
@@ -36,14 +33,19 @@ const styles = {
     },
 };
 
+// Components responsável por buscar e exibir todos os usuários e seus respectivos pontos
+// em ordem decrescente de pontuações.
 class Ranking extends Component {
 
-    componentDidMount() {
+    // Buscando usuários antes da montagem do componente.
+    componentWillMount() {
         firebase.database().ref('users').on('value', snapshot => {
             const users = [];
             snapshot.forEach(user => {
                 users.push(user.val());
             })
+            // Passando o vetor de usuários para o redux. Transferindo parte da responsabilidade
+            // de ordenação dos usuários.
             this.props.listUsers(users);
         })
     }
@@ -56,22 +58,7 @@ class Ranking extends Component {
                     <If test={users.length !== 0}>
                         <Paper className={classes.container} elevation={1}>
                             <h3 className={classes.title}>RANKING</h3>
-                            <List>
-                                {
-                                    users.users !== undefined &&
-                                    users.users.map(user => {
-                                        const { uid, name, highScore } = user;
-                                        return (
-                                            <ListItem key={uid}>
-                                                <Avatar>
-                                                    <PersonIcon />
-                                                </Avatar>
-                                                <ListItemText primary={name} secondary={`Pontuação: ${highScore}`} />
-                                            </ListItem>
-                                        );
-                                    })
-                                }
-                            </List>
+                            <List users={users.users} />
                         </Paper>
                     </If>
                     <If test={users.length === 0}>
