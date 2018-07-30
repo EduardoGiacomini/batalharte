@@ -1,9 +1,17 @@
-import { LIST_QUIZ } from '../constants/constants';
+import { LIST_QUIZZES, LIST_QUESTIONS } from '../constants/constants';
 
-export function listQuiz(quiz) {
+export function listQuizzes(quizzes) {
     const action = {
-        type: LIST_QUIZ,
-        payload: shuffle(quiz),
+        type: LIST_QUIZZES,
+        payload: quizzes,
+    };
+    return action;
+}
+
+export function listQuestions(questions) {
+    const action = {
+        type: LIST_QUESTIONS,
+        payload: shuffle(questions),
     };
     return action;
 }

@@ -8,6 +8,7 @@ import SignUp from '../Auth/SignUp/SignUp';
 import RetrieveAccess from '../Auth/RetrieveAccess/RetrieveAccess';
 import About from '../About/About';
 import Dashboard from '../Dashboard/Dashboard';
+import Quiz from '../Quiz/Quiz';
 
 export default props => {
     return (
@@ -20,6 +21,7 @@ export default props => {
                     <Route exact path="/recuperaracesso" component={RetrieveAccess} />
                     <Route exact path="/sobre" component={About} />
                     <Route exact path="/dashboard" component={Dashboard} />
+                    <Route path="/praticar/:uid" component={Quiz} />
                 </Switch>
             </div>
         </BrowserRouter>

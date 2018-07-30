@@ -11,11 +11,11 @@ import firebase from '../../firebase/firebase';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // actions
-import { listUsers } from '../../redux/actions/rankingActions';
-// operator
+import { listQuizzes } from '../../redux/actions/quizActions';
+// Operator
 import If from '../Operator/If';
 // components
-import List from './List';
+import Card from './Card';
 
 const styles = {
     container: {
@@ -33,34 +33,34 @@ const styles = {
     },
 };
 
-// Components responsável por buscar e exibir todos os usuários e seus respectivos pontos
-// em ordem decrescente de pontuações.
-class Ranking extends Component {
+// Componente responsável por exibir todos os quizzes dísponíveis.
+class Menu extends Component {
 
-    // Buscando usuários antes da montagem do componente.
-    componentWillMount() {
-        firebase.database().ref('users').on('value', snapshot => {
-            const users = [];
-            snapshot.forEach(user => {
-                users.push(user.val());
+    // Buscando quizzes antes da montagem do componente.
+    componentWillMount = () => {
+        firebase.database().ref('quiz').once('value', snapshot => {
+            const quizzes = [];
+            snapshot.forEach(quiz => {
+                const quizObject = quiz.val();
+                quizObject.uid = quiz.key;
+                quizzes.push(quizObject);
             })
-            // Passando o vetor de usuários para o redux. Transferindo parte da responsabilidade
-            // de ordenação dos usuários.
-            this.props.listUsers(users);
+            // Passando o vetor de quizzes para o Redux.
+            this.props.listQuizzes(quizzes);
         })
     }
 
     render() {
-        const { classes, users } = this.props;
+        const { classes, quizzes } = this.props;
         return (
             <div className={classes.container}>
-                <If test={users.length !== 0}>
+                <If test={quizzes.length !== 0}>
                     <Paper className={classes.container} elevation={1}>
-                        <h3 className={classes.title}>RANKING</h3>
-                        <List users={users.users} />
+                        <h3 className={classes.title}>QUIZZES</h3>
+                        <Card quizzes={quizzes.quizzes} />
                     </Paper>
                 </If>
-                <If test={users.length === 0}>
+                <If test={quizzes.length === 0}>
                     <div className={classes.containerLoading}>
                         <CircularProgress />
                     </div>
@@ -70,12 +70,12 @@ class Ranking extends Component {
     }
 }
 
-Ranking.propTypes = {
+Menu.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({ users: state.users });
-const mapDispatchToProps = dispatch => bindActionCreators({ listUsers }, dispatch);
+const mapStateToProps = state => ({ quizzes: state.quizzes });
+const mapDispatchToProps = dispatch => bindActionCreators({ listQuizzes }, dispatch);
 
 export default compose(withStyles(styles),
-    connect(mapStateToProps, mapDispatchToProps))(Ranking);
+    connect(mapStateToProps, mapDispatchToProps))(Menu);

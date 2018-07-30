@@ -10,10 +10,11 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import HomeIcon from '@material-ui/icons/Home';
 import BookIcon from '@material-ui/icons/Book';
+import Games from '@material-ui/icons/Games'
 import StarIcon from '@material-ui/icons/Star';
 // components
-import Quiz from '../Quiz/Quiz';
 import Ranking from '../Ranking/Ranking';
+import Menu from '../Quiz/Menu';
 // operator
 import If from '../Operator/If';
 
@@ -24,10 +25,13 @@ const styles = {
 };
 
 class Navigation extends React.Component {
-  state = {
-    isAuthenticated: true,
-    value: 0,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAuthenticated: true,
+      value: 0,
+    }
+  }
 
   componentDidMount = () => {
     this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
@@ -56,10 +60,13 @@ class Navigation extends React.Component {
         >
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
           <BottomNavigationAction label="Conteúdos" icon={<BookIcon />} />
+          <BottomNavigationAction label="Quiz" icon={<Games />} />
           <BottomNavigationAction label="Ranking" icon={<StarIcon />} />
         </BottomNavigation>
         <If test={value === 0}>
-          <Quiz />
+          <div>
+            <h2>Home</h2>
+          </div>
         </If>
         <If test={value === 1}>
           <div>
@@ -67,6 +74,9 @@ class Navigation extends React.Component {
           </div>
         </If>
         <If test={value === 2}>
+          <Menu />
+        </If>
+        <If test={value === 3}>
           <Ranking />
         </If>
         <If test={!isAuthenticated}>
