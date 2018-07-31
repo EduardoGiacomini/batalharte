@@ -11,6 +11,10 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // operator
@@ -48,6 +52,7 @@ class SignIn extends Component {
             name: '',
             school: '',
             email: '',
+            typeUser: 'student',
             password: '',
             confirmPassword: '',
             errors: {
@@ -77,6 +82,10 @@ class SignIn extends Component {
         });
     };
 
+    handleChangeTypeUser = event => {
+        this.setState({ typeUser: event.target.value });
+    };
+
     handleValidate = (event) => {
         event.preventDefault();
         const { password, confirmPassword } = this.state;
@@ -100,7 +109,7 @@ class SignIn extends Component {
     }
 
     handleRegistration = (event) => {
-        const { name, school, email, password } = this.state;
+        const { name, email, school, typeUser, password } = this.state;
 
         // reset errors
         this.setState({
@@ -119,14 +128,15 @@ class SignIn extends Component {
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((res) => {
-                firebase.database().ref('users').child(res.user.uid).set({
-                    uid: res.user.uid,
+                const { uid } = res.user;
+                firebase.database().ref('users').child(uid).set({
+                    uid: uid,
                     name: name,
-                    school: school,
                     email: email,
-                    urlImageProfile: '',
-                    highScore: 0,
-                    phase: 1,
+                    school: school,
+                    urlImageProfile: "",
+                    typeUser: typeUser,
+                    // items: [], Não é possível adicionar um array vazio ao firebase.
                 })
                     .then(() => {
                         this.setState({ isAuthenticated: true });
@@ -183,7 +193,7 @@ class SignIn extends Component {
     };
 
     render() {
-        const { isAuthenticated, isLoading, name, school, email, password, confirmPassword, errors } = this.state;
+        const { isAuthenticated, isLoading, name, school, email, typeUser, password, confirmPassword, errors } = this.state;
         const { classes } = this.props;
 
         return (
@@ -219,6 +229,20 @@ class SignIn extends Component {
                                 <Input id="confirmPassword" type="password" value={confirmPassword} onChange={this.handleChange('confirmPassword')} />
                                 <FormHelperText id="confirmPassword">{errors.password.message}</FormHelperText>
                             </FormControl>
+
+                            <FormControl component="fieldset">
+                                <FormLabel component="legend">Tipo de usuário</FormLabel>
+                                <RadioGroup
+                                    aria-label="Tipo de usuário"
+                                    name="typeUser"
+                                    value={typeUser}
+                                    onChange={this.handleChangeTypeUser}
+                                >
+                                    <FormControlLabel value="student" control={<Radio color="primary" />} label="Estudante" />
+                                    <FormControlLabel value="teacher" control={<Radio color="primary" />} label="Professor(a)" />
+                                </RadioGroup>
+                            </FormControl>
+
                             <If test={!isLoading}>
                                 <Button
                                     variant="contained"
