@@ -39,12 +39,12 @@ class MenuAppBar extends React.Component {
         this.state = {
             anchorEl: null,
             openDrawer: false,
-            auth: false,
+            isAuthenticated: false,
         };
     }
 
     componentDidMount = () => {
-        firebase.auth().onAuthStateChanged(user => this.setState({ auth: !!user }));
+        firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
     }
 
     signOut = () => {
@@ -71,7 +71,7 @@ class MenuAppBar extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { anchorEl, auth } = this.state;
+        const { anchorEl, isAuthenticated } = this.state;
         const open = Boolean(anchorEl);
 
         return (
@@ -84,7 +84,7 @@ class MenuAppBar extends React.Component {
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             Batalharte
                         </Typography>
-                        {auth && (
+                        {isAuthenticated && (
                             <div>
                                 <IconButton
                                     aria-owns={open ? 'menu-appbar' : null}

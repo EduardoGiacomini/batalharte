@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 // reducers
 import AuthReducer from './authReducer';
-import RankingReducer from './rankingReducer';
+import ClassroomsReducer from './classroomsReducer';
 import { quizzesReducer, questionsReducer } from './quizReducer';
 // Combinando todos os reducers
 const reducers = combineReducers({
     user: AuthReducer,
-    users: RankingReducer,
+    classrooms: ClassroomsReducer,
     quizzes: quizzesReducer,
     questions: questionsReducer,
 });
