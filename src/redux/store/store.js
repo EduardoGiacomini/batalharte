@@ -1,12 +1,11 @@
 import { createStore } from 'redux';
-// Import dos reducers
-import reducers from '../reducers/reducers';
+import reducers from '../reducers';
 
-// configuração devtools para acompanhamento do estado do redux
+// Configuration devtools
 const devTools = window.__REDUX_DEVTOOLS_EXTENSION__
     && window.__REDUX_DEVTOOLS_EXTENSION__();
 
-// Conectando o store com os reducers
+// Conect store with reducers
 const store = createStore(reducers, devTools);
 
 export default store;

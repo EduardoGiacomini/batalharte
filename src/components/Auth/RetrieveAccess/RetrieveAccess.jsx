@@ -1,68 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// react-router-dom
+// React-router-dom
 import { Link, Redirect } from 'react-router-dom'
-// firebase
-import firebase from '../../../firebase/firebase';
-// material-ui
+// AFirebase
+import { auth } from '../../../firebase';
+import { firebase } from '../../../firebase'
+// Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// operator
+// Styles
+import styles from './styles';
+// Operator
 import If from '../../Operator/If';
 
-const styles = {
-    container: {
-        padding: 15,
-    },
-    containerLoading: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    containerLink: {
-        marginTop: 10,
-    },
-    title: {
-        textAlign: 'center',
-        margin: 0,
-        color: '#3E2723',
-    },
-    link: {
-        textDecoration: 'none',
-        color: '#3E2723',
-    },
+// Estado inicial do componente.
+const INITIAL_STATE = {
+    isAuthenticated: false,
+    isLoading: false,
+    openSnackbar: false,
+    email: '',
+    error: null,
 };
 
 class RetrieveAccess extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isAuthenticated: false,
-            isLoading: false,
-            openSnackbar: false,
-            email: '',
-            errors: {
-                email: {
-                    error: false,
-                    message: '',
-                },
-            },
-        };
+        this.state = { ...INITIAL_STATE };
     }
 
     componentDidMount = () => {
-        this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+        this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
+            this.setState({ isAuthenticated: !!user })
+        });
     };
 
     componentWillUnmount = () => {
-        this.authRef();
+        this.removeAuthListener();
     };
 
     handleChange = name => event => {
@@ -75,88 +52,82 @@ class RetrieveAccess extends Component {
         this.setState({ openSnackbar: false });
     };
 
-    handleRetrieveAccess = (event) => {
-        event.preventDefault();
-        const { email } = this.state;
+    onSubmit = (event) => {
+        const {
+            email,
+        } = this.state;
 
-        // reset errors
-        this.setState({
-            isLoading: true,
-            errors: {
-                email: {
-                    error: false,
-                    message: '',
-                },
-            },
-        });
+        // Is Loading
+        this.setState({ isLoading: true });
 
-        firebase.auth().sendPasswordResetEmail(email)
+        auth.doPasswordReset(email)
             .then(() => {
-                this.setState({ isLoading: false, openSnackbar: true, email: '' });
+                this.setState({ isLoading: false, openSnackbar: true });
             })
-            .catch((error) => {
-                this.setState({ isLoading: false });
-                if (error.code === 'auth/invalid-email') {
-                    this.setState({
-                        errors: {
-                            email: {
-                                error: true,
-                                message: 'Endereço de e-mail inválido!',
-                            },
-                        },
-                    });
-                }
-                if (error.code === 'auth/user-not-found') {
-                    this.setState({
-                        errors: {
-                            email: {
-                                error: true,
-                                message: 'Endereço de e-mail não encontrado!',
-                            },
-                        },
-                    });
-                }
-            })
-    };
+            .catch(error => {
+                // Melhorar mensagem de erro...
+                this.setState({ isLoading: false, error: 'Ocorreu um erro durante o processo!' });
+            });
+
+        event.preventDefault();
+    }
 
     render() {
-        const { isAuthenticated, isLoading, openSnackbar, email, errors } = this.state;
-        const { classes } = this.props;
+        // State
+        const {
+            isAuthenticated,
+            isLoading,
+            openSnackbar,
+            email,
+            error
+        } = this.state;
+
+        // Props
+        const {
+            classes
+        } = this.props;
 
         return (
-            <div>
-                <div className={classes.container}>
-                    <Paper className={classes.container} elevation={1}>
-                        <div>
-                            <h3 className={classes.title}>RECUPERAR ACESSO</h3>
-                        </div>
-                        <form onSubmit={this.handleRetrieveAccess}>
-                            <FormControl error={errors.email.error} fullWidth required aria-describedby="email">
-                                <InputLabel htmlFor="email">E-mail</InputLabel>
-                                <Input id="email" type="e-mail" value={email} onChange={this.handleChange('email')} />
-                                <FormHelperText id="email">{errors.email.message}</FormHelperText>
-                            </FormControl>
-                            <If test={!isLoading}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    type="submit"
-                                    fullWidth
-                                >
-                                    Recuperar acesso
-                                </Button>
-                            </If>
-                            <If test={isLoading}>
-                                <div className={classes.containerLoading}>
-                                    <CircularProgress />
-                                </div>
-                            </If>
-                        </form>
-                        <div className={classes.containerLink}>
-                            <Link className={classes.link} to="/">Voltar</Link>
-                        </div>
-                    </Paper>
-                </div>
+            <div className={classes.container}>
+                <Paper className={classes.container} elevation={1}>
+                    <div>
+                        <h3 className={classes.title}>RECUPERAR ACESSO</h3>
+                    </div>
+                    <form onSubmit={this.onSubmit}>
+                        <TextField
+                            value={email}
+                            onChange={this.handleChange('email')}
+                            id="email"
+                            label="E-mail"
+                            type="email"
+                            fullWidth
+                            required
+                        />
+                        <If test={error}>
+                            <div className={classes.containerError}>
+                                <p>{error}</p>
+                            </div>
+                        </If>
+                        <If test={!isLoading}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                                fullWidth
+                            >
+                                Recuperar acesso
+                            </Button>
+                        </If>
+                        <If test={isLoading}>
+                            <div className={classes.containerLoading}>
+                                <CircularProgress />
+                            </div>
+                        </If>
+                    </form>
+                    <div className={classes.containerLink}>
+                        <Link className={classes.link} to="/">Voltar</Link>
+                    </div>
+                </Paper>
                 <Snackbar
                     anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                     open={openSnackbar}
@@ -167,7 +138,7 @@ class RetrieveAccess extends Component {
                 <If test={isAuthenticated}>
                     <Redirect to="/dashboard" />
                 </If>
-            </div >
+            </div>
         );
     }
 }

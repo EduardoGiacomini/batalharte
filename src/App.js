@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-// firebase
-import firebase from './firebase/firebase';
-// redux
+// Firebase
+import { firebase, database } from './firebase';
+// Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// actions
-import { signIn } from './redux/actions/authActions';
-// component-router
+// Actions
+import { doSignIn } from './redux/actions/authActions';
+// Component-router
 import Routes from './components/Routes/Routes';
-// material-ui
+// Material-ui
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-// styles
+// Default styles
 import './styles/index.css';
 
 const theme = createMuiTheme({
@@ -27,17 +27,27 @@ const theme = createMuiTheme({
 
 class App extends Component {
 
-  componentDidMount = () => {
-    firebase.auth().onAuthStateChanged(user => {
-
+  componentDidMount() {
+    this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
+      
       if (user) {
-        firebase.database().ref('users').child(user.uid).once('value', snapshot => {
-          this.props.signIn(snapshot.val());
-        });
+        const { uid } = user;
+
+        database.doOnceGetUser(uid)
+          .then((user) => {
+            this.props.doSignIn(user);
+          })
+          .catch(() => {
+            console.log('Ocorreu um erro durante a busca do usuário!');
+          })
       }
 
-    })
-  }
+    });
+  };
+
+  componentWillUnmount() {
+    this.removeAuthListener();
+  };
 
   render() {
     return (
@@ -49,7 +59,6 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({ signIn }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ doSignIn }, dispatch);
 
 export default connect(null, mapDispatchToProps)(App);
-

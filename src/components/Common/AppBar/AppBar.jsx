@@ -1,58 +1,37 @@
 import React from 'react';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
+// Recompose
+import compose from 'recompose/compose';
+// Auth actions
+import { auth } from '../../../firebase';
+// Redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// Actions
+import { doSignOut } from '../../../redux/actions/authActions';
+// Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-// firebase
-import firebase from 'firebase';
-// redux
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-// actions
-import { signOut } from '../../../redux/actions/authActions';
-// components
-import Drawer from '../Drawer/Drawer';
-
-const styles = {
-    flex: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
-};
+// Styles
+import styles from './styles';
+// Operator
+import If from '../../Operator/If';
 
 class MenuAppBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             anchorEl: null,
-            openDrawer: false,
-            isAuthenticated: false,
         };
-    }
-
-    componentDidMount = () => {
-        firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
-    }
-
-    signOut = () => {
-        firebase.auth().signOut()
-            .then(() => {
-                this.props.signOut(null);
-                this.handleClose();
-            })
     }
 
     handleMenu = event => {
@@ -63,28 +42,27 @@ class MenuAppBar extends React.Component {
         this.setState({ anchorEl: null });
     };
 
-    toggleDrawer = (open) => () => {
-        this.setState({
-            openDrawer: open,
-        });
+    onSignOut = () => {
+        auth.doSignOut()
+            .then(() => {
+                this.props.doSignOut(null);
+                this.handleClose();
+            })
     };
 
     render() {
-        const { classes } = this.props;
-        const { anchorEl, isAuthenticated } = this.state;
+        const { classes, user } = this.props;
+        const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
         return (
             <div>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={this.toggleDrawer(!this.state.openDrawer)}>
-                            <MenuIcon />
-                        </IconButton>
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             Batalharte
                         </Typography>
-                        {isAuthenticated && (
+                        <If test={user}>
                             <div>
                                 <IconButton
                                     aria-owns={open ? 'menu-appbar' : null}
@@ -108,13 +86,7 @@ class MenuAppBar extends React.Component {
                                     open={open}
                                     onClose={this.handleClose}
                                 >
-                                    <MenuItem onClick={this.handleClose}>
-                                        <ListItemIcon>
-                                            <AccountCircle />
-                                        </ListItemIcon>
-                                        <ListItemText inset primary="Perfil" />
-                                    </MenuItem>
-                                    <MenuItem onClick={this.signOut}>
+                                    <MenuItem onClick={this.onSignOut}>
                                         <ListItemIcon>
                                             <ExitToApp />
                                         </ListItemIcon>
@@ -122,10 +94,9 @@ class MenuAppBar extends React.Component {
                                     </MenuItem>
                                 </Menu>
                             </div>
-                        )}
+                        </If>
                     </Toolbar>
                 </AppBar>
-                <Drawer open={this.state.openDrawer} toggleDrawer={this.toggleDrawer} />
             </div>
         );
     }
@@ -135,7 +106,7 @@ MenuAppBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({ signOut }, dispatch);
+const mapStateToProps = state => ({ user: state.user });
+const mapDispatchToProps = dispatch => bindActionCreators({ doSignOut }, dispatch);
 
-export default compose(withStyles(styles),
-    connect(null, mapDispatchToProps))(MenuAppBar);
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MenuAppBar);

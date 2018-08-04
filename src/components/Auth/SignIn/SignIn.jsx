@@ -1,83 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// react-router-dom
+// React-router-dom
 import { Link, Redirect } from 'react-router-dom'
-// firebase
-import firebase from '../../../firebase/firebase';
-// material-ui
+// Auth actions
+import { firebase, auth } from '../../../firebase';
+// Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-// image
+// styles
+import styles from './styles';
+// Icon
 import logo from '../../../assets/icons/logo.svg';
-// operator
+// Operator
 import If from '../../Operator/If';
 
-const styles = {
-    image: {
-        width: 200,
-        height: 200,
-    },
-    container: {
-        padding: 15,
-    },
-    containerImage: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: 25,
-    },
-    containerLoading: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-    containerLink: {
-        marginTop: 10,
-    },
-    title: {
-        textAlign: 'center',
-        margin: 0,
-        color: '#3E2723',
-    },
-    link: {
-        textDecoration: 'none',
-        color: '#3E2723',
-    },
-};
+// Estado inicial do componente.
+const INITIAL_STATE = {
+    isAuthenticated: false,
+    isLoading: false,
+    email: '',
+    password: '',
+    error: null,
+}
 
 class SignIn extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isAuthenticated: false,
-            isLoading: false,
-            email: '',
-            password: '',
-            errors: {
-                email: {
-                    error: false,
-                    message: '',
-                },
-                password: {
-                    error: false,
-                    message: '',
-                },
-            },
-        };
+        this.state = { ...INITIAL_STATE };
     }
 
     componentDidMount = () => {
-        this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+        this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
+            this.setState({ isAuthenticated: !!user })
+        });
     };
 
     componentWillUnmount = () => {
-        this.authRef();
+        this.removeAuthListener();
     };
 
     handleChange = name => event => {
@@ -86,82 +48,41 @@ class SignIn extends Component {
         });
     };
 
-    handleAuthentication = (event) => {
-        event.preventDefault();
-        const { email, password } = this.state;
+    onSubmit = (event) => {
+        const {
+            email,
+            password,
+        } = this.state;
 
-        // reset errors
-        this.setState({
-            isLoading: true,
-            errors: {
-                email: {
-                    error: false,
-                    message: '',
-                },
-                password: {
-                    error: false,
-                    message: '',
-                },
-            },
-        });
+        // Is Loading
+        this.setState({ isLoading: true });
 
-        firebase.auth().signInWithEmailAndPassword(email, password)
+        auth.doSignInWithEmailAndPassword(email, password)
             .then(() => {
-                this.setState({ isAuthenticated: true });
+                this.setState({ isLoading: false, isAuthenticated: true });
             })
-            .catch((err) => {
-                console.log(err);
-                if (err.code === 'auth/invalid-email') {
-                    this.setState({
-                        isLoading: false,
-                        errors: {
-                            email: {
-                                error: true,
-                                message: 'Endereço de e-mail inválido!',
-                            },
-                            password: {
-                                error: false,
-                                message: '',
-                            },
-                        },
-                    });
-                }
-                if (err.code === 'auth/user-not-found') {
-                    this.setState({
-                        isLoading: false,
-                        errors: {
-                            email: {
-                                error: true,
-                                message: 'Endereço de e-mail não encontrado!',
-                            },
-                            password: {
-                                error: false,
-                                message: '',
-                            },
-                        },
-                    });
-                }
-                if (err.code === 'auth/wrong-password') {
-                    this.setState({
-                        isLoading: false,
-                        errors: {
-                            email: {
-                                error: false,
-                                message: '',
-                            },
-                            password: {
-                                error: true,
-                                message: 'Senha incorreta!',
-                            },
-                        },
-                    });
-                }
-            })
-    };
+            .catch(error => {
+                // Melhorar mensagem de erro...
+                this.setState({ isLoading: false, error: 'Ocorreu um erro durante o processo!' });
+            });
+
+        event.preventDefault();
+    }
 
     render() {
-        const { isAuthenticated, isLoading, email, password, errors } = this.state;
-        const { classes } = this.props;
+        // State
+        const {
+            isAuthenticated,
+            isLoading,
+            email,
+            password,
+            error
+        } = this.state;
+
+        // Props
+        const {
+            classes
+        } = this.props;
 
         return (
             <div>
@@ -177,17 +98,30 @@ class SignIn extends Component {
                         <div>
                             <h3 className={classes.title}>AUTENTICAÇÃO</h3>
                         </div>
-                        <form onSubmit={this.handleAuthentication}>
-                            <FormControl error={errors.email.error} fullWidth required aria-describedby="email">
-                                <InputLabel htmlFor="email">E-mail</InputLabel>
-                                <Input id="email" type="e-mail" value={email} onChange={this.handleChange('email')} />
-                                <FormHelperText id="email">{errors.email.message}</FormHelperText>
-                            </FormControl>
-                            <FormControl error={errors.password.error} fullWidth required aria-describedby="password">
-                                <InputLabel htmlFor="password">Senha</InputLabel>
-                                <Input id="password" type="password" value={password} onChange={this.handleChange('password')} />
-                                <FormHelperText id="password">{errors.password.message}</FormHelperText>
-                            </FormControl>
+                        <form onSubmit={this.onSubmit}>
+                            <TextField
+                                value={email}
+                                onChange={this.handleChange('email')}
+                                id="email"
+                                label="E-mail"
+                                type="email"
+                                fullWidth
+                                required
+                            />
+                            <TextField
+                                value={password}
+                                onChange={this.handleChange('password')}
+                                id="password"
+                                label="Senha"
+                                type="password"
+                                fullWidth
+                                required
+                            />
+                            <If test={error}>
+                                <div className={classes.containerError}>
+                                    <p>{error}</p>
+                                </div>
+                            </If>
                             <If test={!isLoading}>
                                 <Button
                                     variant="contained"

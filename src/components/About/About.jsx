@@ -1,53 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// react-router-dom
+// React-router-dom
 import { Redirect } from 'react-router-dom';
-// firebase
-import firebase from '../../firebase/firebase';
-// material-ui
+// Firebase
+import { firebase } from '../../firebase';
+// Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-// image
+// Styles
+import styles from './styles';
+// icon
 import logo from '../../assets/icons/logo.svg';
-// operator
+// Operator
 import If from '../Operator/If';
 
-const styles = {
-    image: {
-        width: 200,
-        height: 200
-    },
-    containerImage: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: 25
-    },
-    container: {
-        padding: 15,
-        textAlign: 'justify'
-    },
-    title: {
-        textAlign: 'center',
-        margin: 0,
-        color: '#3E2723'
-    }
+const INITIAL_STATE = {
+    isAuthenticated: false,
 };
 
 class About extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            isAuthenticated: false,
-        };
+        this.state = { ...INITIAL_STATE };
     }
 
     componentDidMount = () => {
-        this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
+        this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
+            this.setState({ isAuthenticated: !!user })
+        });
     };
 
     componentWillUnmount = () => {
-        this.authRef();
+        this.removeAuthListener();
     };
 
     render() {
@@ -69,7 +53,7 @@ class About extends Component {
                             <h3 className={classes.title}>BATALHARTE</h3>
                         </div>
                         <p>
-                            Aplicação desenvolvida pela equipe <strong>Hello World</strong> para a Maratona de Tecnologias Móveis nas Escolas, 
+                            Aplicação desenvolvida pela equipe <strong>Hello World</strong> para a Maratona de Tecnologias Móveis nas Escolas,
                             realizada pela UNICEF, SAMSUNG e Brasil Mais TI.
                         </p>
                     </Paper>

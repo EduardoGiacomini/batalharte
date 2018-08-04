@@ -1,45 +1,42 @@
 import React from 'react';
-// react-router-dom
+// React-router-dom
 import { Redirect } from 'react-router-dom';
-// firebase
-import firebase from '../../firebase/firebase';
-//redux
-import { connect } from 'react-redux';
+// Firebase
+import { firebase } from '../../firebase';
 // Operator
 import If from '../Operator/If';
-// Components
-import Classrooms from '../Classrooms/Classrooms';
-import Loading from '../Loading/Loading';
+
+const INITIAL_STATE = {
+  isAuthenticated: true,
+};
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      isAuthenticated: true,
-    };
+    this.state = { ...INITIAL_STATE };
   }
 
   componentDidMount = () => {
-    this.authRef = firebase.auth().onAuthStateChanged(user => this.setState({ isAuthenticated: !!user }));
-  }
+    this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
+      this.setState({ isAuthenticated: !!user })
+    });
+  };
 
   componentWillUnmount = () => {
-    this.authRef();
+    this.removeAuthListener();
   };
 
   render() {
-    const { isAuthenticated } = this.state;
-    const { user } = this.props;
+    // State
+    const {
+      isAuthenticated
+    } = this.state;
 
     return (
       <div>
-        {
-          user ?
-            <Classrooms />
-            :
-            <Loading />
-        }
+        <div>
+          <p>Bem vindo ao batalharte!</p>
+        </div>
         <If test={!isAuthenticated}>
           <Redirect to="/" />
         </If>
@@ -48,6 +45,4 @@ class Dashboard extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({ user: state.user });
-
-export default connect(mapStateToProps, null)(Dashboard);
+export default Dashboard;

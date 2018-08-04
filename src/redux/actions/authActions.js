@@ -1,16 +1,18 @@
-import { USER_LOGGED, USER_LOGOUT } from '../constants/constants';
+import { USER_SIGNED_IN, USER_SIGNED_OUT } from '../constants';
 
-export function signIn(user) {
+// Sign In Redux
+export function doSignIn(user) {
     const action = {
-        type: USER_LOGGED,
+        type: USER_SIGNED_IN,
         payload: user,
     };
     return action;
 }
 
-export function signOut(user) {
+// Sign Out Redux
+export function doSignOut(user) {
     const action = {
-        type: USER_LOGOUT,
+        type: USER_SIGNED_OUT,
         payload: user,
     };
     return action;
