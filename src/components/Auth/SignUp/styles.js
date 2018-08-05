@@ -1,17 +1,22 @@
-const styles = {
+const styles = theme => ({
     container: {
         padding: 15,
     },
+    formControl: {
+      marginTop: theme.spacing.unit * 3,
+    },
+    group: {
+      margin: `${theme.spacing.unit}px 0`,
+    },
     containerError: {
         color: 'red',
+        marginTop: 10
     },
     containerLoading: {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-    },
-    containerLink: {
-        marginTop: 10,
+        marginTop: 10
     },
     title: {
         textAlign: 'center',
@@ -22,6 +27,9 @@ const styles = {
         textDecoration: 'none',
         color: '#3E2723',
     },
-};
+    marginTop: {
+        marginTop: 10
+    }
+});
 
 export default styles;

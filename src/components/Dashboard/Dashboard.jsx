@@ -5,6 +5,9 @@ import { Redirect } from 'react-router-dom';
 import { firebase } from '../../firebase';
 // Operator
 import If from '../Operator/If';
+// Components
+import Teacher from '../Classroom/Teacher';
+import Student from '../Classroom/Student';
 
 const INITIAL_STATE = {
   isAuthenticated: true,
@@ -35,7 +38,7 @@ class Dashboard extends React.Component {
     return (
       <div>
         <div>
-          <p>Bem vindo ao batalharte!</p>
+          <Teacher />
         </div>
         <If test={!isAuthenticated}>
           <Redirect to="/" />

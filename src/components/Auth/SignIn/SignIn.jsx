@@ -100,6 +100,7 @@ class SignIn extends Component {
                         </div>
                         <form onSubmit={this.onSubmit}>
                             <TextField
+                                className={classes.marginTop}
                                 value={email}
                                 onChange={this.handleChange('email')}
                                 id="email"
@@ -109,6 +110,7 @@ class SignIn extends Component {
                                 required
                             />
                             <TextField
+                                className={classes.marginTop}
                                 value={password}
                                 onChange={this.handleChange('password')}
                                 id="password"
@@ -124,6 +126,7 @@ class SignIn extends Component {
                             </If>
                             <If test={!isLoading}>
                                 <Button
+                                    className={classes.marginTop}
                                     variant="contained"
                                     color="primary"
                                     type="submit"
@@ -138,7 +141,7 @@ class SignIn extends Component {
                                 </div>
                             </If>
                         </form>
-                        <div className={classes.containerLink}>
+                        <div className={classes.marginTop}>
                             <Link className={classes.link} to="/recuperaracesso">Esqueceu a senha?</Link>
                             <br />
                             <Link className={classes.link} to="/cadastrar-se">Não possui uma conta?</Link>
