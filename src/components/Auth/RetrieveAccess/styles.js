@@ -10,9 +10,6 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
     },
-    containerLink: {
-        marginTop: 10,
-    },
     title: {
         textAlign: 'center',
         margin: 0,
@@ -22,6 +19,9 @@ const styles = {
         textDecoration: 'none',
         color: '#3E2723',
     },
+    marginTop: {
+        marginTop: 10
+    }
 };
 
 export default styles;

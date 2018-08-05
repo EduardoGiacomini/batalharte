@@ -32,7 +32,7 @@ const INITIAL_STATE = {
     error: null,
 }
 
-class SignIn extends Component {
+class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
@@ -155,6 +155,7 @@ class SignIn extends Component {
                     </div>
                     <form onSubmit={this.onSubmit}>
                         <TextField
+                            className={classes.marginTop}
                             value={name}
                             onChange={this.handleChange('name')}
                             id="name"
@@ -164,6 +165,7 @@ class SignIn extends Component {
                             required
                         />
                         <TextField
+                            className={classes.marginTop}
                             value={school}
                             onChange={this.handleChange('school')}
                             id="school"
@@ -173,6 +175,7 @@ class SignIn extends Component {
                             required
                         />
                         <TextField
+                            className={classes.marginTop}
                             value={email}
                             onChange={this.handleChange('email')}
                             id="email"
@@ -182,6 +185,7 @@ class SignIn extends Component {
                             required
                         />
                         <TextField
+                            className={classes.marginTop}
                             value={password}
                             onChange={this.handleChange('password')}
                             id="password"
@@ -190,9 +194,10 @@ class SignIn extends Component {
                             fullWidth
                             required
                         />
-                        <FormControl component="fieldset">
+                        <FormControl className={classes.formControl} component="fieldset">
                             <FormLabel component="legend">Tipo de usuário</FormLabel>
                             <RadioGroup
+                                className={classes.group}
                                 aria-label="Tipo de usuário"
                                 name="typeUser"
                                 value={typeUser}
@@ -223,8 +228,8 @@ class SignIn extends Component {
                             </div>
                         </If>
                     </form>
-                    <div className={classes.containerLink}>
-                        <Link className={classes.link} to="/">Já possui uma conta?</Link>
+                    <div className={classes.marginTop}>
+                        <Link className={classes.link} to="/">Voltar</Link>
                     </div>
                 </Paper>
                 <If test={isAuthenticated}>
@@ -235,8 +240,8 @@ class SignIn extends Component {
     }
 }
 
-SignIn.propTypes = {
+SignUp.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignIn);
+export default withStyles(styles)(SignUp);
