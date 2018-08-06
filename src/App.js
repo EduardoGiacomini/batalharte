@@ -29,17 +29,13 @@ class App extends Component {
 
   componentDidMount() {
     this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
-      
+
       if (user) {
         const { uid } = user;
 
-        database.doOnceGetUser(uid)
-          .then((user) => {
-            this.props.doSignIn(user);
-          })
-          .catch(() => {
-            console.log('Ocorreu um erro durante a busca do usuário!');
-          })
+        database.doGetUser(uid).on('value', user => {
+          this.props.doSignIn(user.val());
+        })
       }
 
     });

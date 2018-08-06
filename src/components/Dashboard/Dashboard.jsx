@@ -1,13 +1,15 @@
 import React from 'react';
 // React-router-dom
 import { Redirect } from 'react-router-dom';
+// Redux
+import { connect } from 'react-redux';
 // Firebase
 import { firebase } from '../../firebase';
 // Operator
 import If from '../Operator/If';
 // Components
-import Teacher from '../Classroom/Teacher';
-import Student from '../Classroom/Student';
+import Loading from '../Loading/Loading';
+import List from '../Classroom/List';
 
 const INITIAL_STATE = {
   isAuthenticated: true,
@@ -32,14 +34,19 @@ class Dashboard extends React.Component {
   render() {
     // State
     const {
-      isAuthenticated
+      isAuthenticated,
     } = this.state;
+
+    // Props
+    const {
+      user,
+    } = this.props;
 
     return (
       <div>
-        <div>
-          <Teacher />
-        </div>
+        {
+          user ? <List /> : <Loading />
+        }
         <If test={!isAuthenticated}>
           <Redirect to="/" />
         </If>
@@ -48,4 +55,6 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => ({ user: state.user });
+
+export default connect(mapStateToProps, null)(Dashboard);

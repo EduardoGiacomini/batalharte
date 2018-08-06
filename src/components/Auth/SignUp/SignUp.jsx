@@ -105,7 +105,7 @@ class SignUp extends Component {
             });
 
         event.preventDefault();
-    }
+    };
 
     createUserObject = (uid) => {
         const {
@@ -123,12 +123,12 @@ class SignUp extends Component {
             typeUser: typeUser,
             urlPicture: "",
             classrooms: {
-                default: false,
+                default: true,
             },
         };
 
         return user;
-    }
+    };
 
     render() {
         // State
