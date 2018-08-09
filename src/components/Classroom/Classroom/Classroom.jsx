@@ -11,7 +11,7 @@ import { doListClassroom } from '../../../redux/actions/classroomActions';
 // Component
 import Loading from '../../Loading/Loading';
 import ClassroomError from './ClassroomError/ClassroomError';
-import NavigationTeacher from '../NavigationClassroom/NavigationTeacher';
+import NavigationClassroom from '../NavigationClassroom/NavigationClassroom';
 // Operator
 import If from '../../Operator/If';
 
@@ -94,7 +94,7 @@ class Classroom extends React.Component {
                             {
                                 user &&
                                     user.typeUser === "teacher" ?
-                                    <NavigationTeacher /> :
+                                    <NavigationClassroom Test={<p>testando</p>} /> :
                                     <h1>Olá estudante.</h1>
                             }
                         </If>

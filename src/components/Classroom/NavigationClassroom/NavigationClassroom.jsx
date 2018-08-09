@@ -11,7 +11,7 @@ const INITIAL_STATE = {
     value: 0,
 };
 
-class SimpleBottomNavigation extends Component {
+class NavigationClassroom extends Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
@@ -52,4 +52,4 @@ class SimpleBottomNavigation extends Component {
     }
 }
 
-export default SimpleBottomNavigation;
+export default NavigationClassroom;
