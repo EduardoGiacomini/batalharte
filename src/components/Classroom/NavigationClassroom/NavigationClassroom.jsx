@@ -6,6 +6,8 @@ import GamesIcon from '@material-ui/icons/Games';
 import StarsIcon from '@material-ui/icons/Stars';
 // Operator
 import If from '../../Operator/If';
+// Components
+import Content from '../Content/Content';
 
 const INITIAL_STATE = {
     value: 0,
@@ -39,7 +41,7 @@ class NavigationClassroom extends Component {
                     <BottomNavigationAction label="Ranking" icon={<StarsIcon />} />
                 </BottomNavigation>
                 <If test={value === 0}>
-                    <p>Aba de conteúdos</p>
+                    <Content />
                 </If>
                 <If test={value === 1}>
                     <p>Aba de quiz</p>
