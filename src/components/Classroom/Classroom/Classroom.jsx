@@ -11,6 +11,7 @@ import { doListClassroom } from '../../../redux/actions/classroomActions';
 // Component
 import Loading from '../../Loading/Loading';
 import ClassroomError from './ClassroomError/ClassroomError';
+import NavigationTeacher from '../NavigationClassroom/NavigationTeacher';
 // Operator
 import If from '../../Operator/If';
 
@@ -92,9 +93,9 @@ class Classroom extends React.Component {
                         <If test={isExist}>
                             {
                                 user &&
-                                user.typeUser === "teacher" ?
-                                <h1>Olá professor.</h1> :
-                                <h1>Olá estudante.</h1>
+                                    user.typeUser === "teacher" ?
+                                    <NavigationTeacher /> :
+                                    <h1>Olá estudante.</h1>
                             }
                         </If>
                         <If test={!isExist}>
