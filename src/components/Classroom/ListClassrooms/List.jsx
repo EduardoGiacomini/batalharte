@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 // Firebase
-import { database } from '../../firebase';
+import { database } from '../../../firebase';
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // Actions
-import { doListClassrooms } from '../../redux/actions/classroomActions';
+import { doListClassrooms } from '../../../redux/actions/classroomActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -22,11 +22,12 @@ import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
+import Tooltip from '@material-ui/core/Tooltip';
 // Components
 import DialogTeacher from './DialogTeacher';
 import DialogStudent from './DialogStudent';
 // Operator
-import If from '../Operator/If';
+import If from '../../Operator/If';
 // styles
 import styles from './styles';
 
@@ -167,14 +168,23 @@ class ListClassrooms extends React.Component {
             .then((classroomsDB) => {
                 const classes = [];
                 classroomsDB.forEach((classroom) => {
+                    // Percorrendo as classes do usuário.
                     for (let item in classrooms) {
+                        // Verificando se a classe é verdadeira (apto a estar presente na classe).
                         if (classrooms[item]) {
+                            // Verificando se a classe é que o usuário faz parte é a mesma (igual) a classe retornada do banco de dados.
                             if (item === classroom.key) {
-                                classes.push(classroom.val());
+                                // Criando um objeto classe (clsrm) com as informações da classe que pertence ao usuário.
+                                const clsrm = classroom.val();
+                                // Adicionando o ID à classe para diferenciar umas das outras.
+                                clsrm.id = classroom.key;
+                                // Adicionando ao array de classes.
+                                classes.push(clsrm);
                             }
                         }
                     }
                 })
+                // Por fim, adicionando ao State do Redux.
                 this.props.doListClassrooms(classes);
             });
     }
@@ -203,8 +213,10 @@ class ListClassrooms extends React.Component {
                         >
                             <If test={classrooms.length !== 0}>
                                 {
+                                    // Percorrendo as classes do Redux.
                                     classrooms.map((classroom, index) => {
                                         const {
+                                            id,
                                             name,
                                             description,
                                         } = classroom;
@@ -214,9 +226,14 @@ class ListClassrooms extends React.Component {
                                                 <Avatar>{name[0]}</Avatar>
                                                 <ListItemText primary={name} secondary={description} />
                                                 <ListItemSecondaryAction>
-                                                    <IconButton aria-label="Visualizar">
-                                                        <VisibilityIcon />
-                                                    </IconButton>
+                                                    <Tooltip title="Visualizar">
+                                                        <IconButton
+                                                            aria-label={`Visualizar classe ${name}`}
+                                                            toltip="Visualizar"
+                                                            href={`/dashboard/${id}`}>
+                                                            <VisibilityIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
                                                 </ListItemSecondaryAction>
                                             </ListItem>
                                         );

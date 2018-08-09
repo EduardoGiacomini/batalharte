@@ -9,7 +9,7 @@ import { firebase } from '../../firebase';
 import If from '../Operator/If';
 // Components
 import Loading from '../Loading/Loading';
-import List from '../Classroom/List';
+import List from '../Classroom/ListClassrooms/List';
 
 const INITIAL_STATE = {
   isAuthenticated: true,

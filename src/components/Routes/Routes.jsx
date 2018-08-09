@@ -8,6 +8,7 @@ import SignUp from '../Auth/SignUp/SignUp';
 import RetrieveAccess from '../Auth/RetrieveAccess/RetrieveAccess';
 import About from '../About/About';
 import Dashboard from '../Dashboard/Dashboard';
+import Classroom from '../Classroom/Classroom/Classroom'; // Redundância na hora de importar.
 
 export default props => {
     return (
@@ -20,6 +21,7 @@ export default props => {
                     <Route exact path="/recuperaracesso" component={RetrieveAccess} />
                     <Route exact path="/sobre" component={About} />
                     <Route exact path="/dashboard" component={Dashboard} />
+                    <Route exact path="/dashboard/:id" component={Classroom} />
                 </Switch>
             </div>
         </BrowserRouter>

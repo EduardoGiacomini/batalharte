@@ -1,6 +1,6 @@
 import { database } from './firebase';
 
-// API
+// BATALHARTE_API
 
 // Registrar usuário
 export const doCreateUser = (id, user) =>
@@ -27,5 +27,10 @@ export const doRegisterUserInClassroom = (user, classroom) =>
 export const doRegisterClassroomInUser = (user, classroom) =>
     database.ref(`users/${user}/classrooms`).update({ default: false, [classroom]: true });
 
+// Buscar todas as salas de aula.
 export const doGetClassRooms = () =>
     database.ref('classrooms').once('value');
+
+// Buscar sala de aula específica.
+export const doGetClassRoom = (classroomId) =>
+    database.ref(`classrooms/${classroomId}`).once('value');
