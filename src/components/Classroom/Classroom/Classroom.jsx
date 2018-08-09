@@ -44,7 +44,6 @@ class Classroom extends React.Component {
     // Método responsável por buscar as informações da classe.
     getClassRoom = () => {
         const classroomId = this.getPathName();
-        console.log(classroomId);
         database.doGetClassRoom(classroomId)
             .then((classroom) => {
 
@@ -84,7 +83,6 @@ class Classroom extends React.Component {
         // Props
         const {
             user,
-            classroom,
         } = this.props;
 
         return (

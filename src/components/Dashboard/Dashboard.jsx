@@ -10,6 +10,7 @@ import If from '../Operator/If';
 // Components
 import Loading from '../Loading/Loading';
 import List from '../Classroom/ListClassrooms/List';
+import UserInformations from '../User/UserInformations';
 
 const INITIAL_STATE = {
   isAuthenticated: true,
@@ -45,7 +46,11 @@ class Dashboard extends React.Component {
     return (
       <div>
         {
-          user ? <List /> : <Loading />
+          user ?
+            <div>
+              <UserInformations name={user.name} description={user.typeUser} />
+              <List />
+            </div> : <Loading />
         }
         <If test={!isAuthenticated}>
           <Redirect to="/" />
