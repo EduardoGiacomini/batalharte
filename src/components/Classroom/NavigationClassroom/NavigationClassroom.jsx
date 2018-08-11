@@ -8,6 +8,7 @@ import StarsIcon from '@material-ui/icons/Stars';
 import If from '../../Operator/If';
 // Components
 import Content from '../Content/Content';
+import Ranking from '../Ranking/Ranking';
 
 const INITIAL_STATE = {
     value: 0,
@@ -47,7 +48,7 @@ class NavigationClassroom extends Component {
                     <p>Aba de quiz</p>
                 </If>
                 <If test={value === 2}>
-                    <p>Aba de ranking</p>
+                    <Ranking />
                 </If>
             </div>
         );
