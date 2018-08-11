@@ -23,7 +23,12 @@ const INITIAL_STATE = {
     isLoading: false,
     email: '',
     password: '',
-    error: null,
+    error: {
+        isError: false,
+        email: false,
+        password: false,
+        message: '',
+    },
 }
 
 class SignIn extends Component {
@@ -54,16 +59,60 @@ class SignIn extends Component {
             password,
         } = this.state;
 
-        // Is Loading
-        this.setState({ isLoading: true });
+        // Is Loading and reset Errors
+        this.setState({
+            isLoading: true,
+            error: {
+                isError: false,
+                email: false,
+                password: false,
+                message: '',
+            },
+        });
 
         auth.doSignInWithEmailAndPassword(email, password)
             .then(() => {
                 this.setState({ isLoading: false, isAuthenticated: true });
             })
-            .catch(error => {
-                // Melhorar mensagem de erro...
-                this.setState({ isLoading: false, error: 'Ocorreu um erro durante o processo!' });
+            .catch(err => {
+                const { code } = err;
+
+                // Stop Loading
+                this.setState({ isLoading: false });
+
+                console.log(code);
+
+                switch (code) {
+                    case 'auth/user-not-found':
+                        this.setState({
+                            error: {
+                                isError: true,
+                                email: true,
+                                password: false,
+                                message: 'O endereço de e-mail fornecido não está registrado!',
+                            },
+                        });
+                        break;
+                    case 'auth/wrong-password':
+                        this.setState({
+                            error: {
+                                isError: true,
+                                email: false,
+                                password: true,
+                                message: 'A senha inserida está incorreta! Por favor, tente novamente ou altere sua senha na opção "Esqueceu a senha?".'
+                            }
+                        });
+                        break;
+                    default:
+                        this.setState({
+                            error: {
+                                isError: true,
+                                email: false,
+                                password: false,
+                                message: 'Ocorreu um erro inesperado. Por favor, tente novamente!',
+                            },
+                        })
+                }
             });
 
         event.preventDefault();
@@ -101,6 +150,7 @@ class SignIn extends Component {
                         <form onSubmit={this.onSubmit}>
                             <TextField
                                 className={classes.marginTop}
+                                error={error.email}
                                 value={email}
                                 onChange={this.handleChange('email')}
                                 id="email"
@@ -111,6 +161,7 @@ class SignIn extends Component {
                             />
                             <TextField
                                 className={classes.marginTop}
+                                error={error.password}
                                 value={password}
                                 onChange={this.handleChange('password')}
                                 id="password"
@@ -119,9 +170,9 @@ class SignIn extends Component {
                                 fullWidth
                                 required
                             />
-                            <If test={error}>
+                            <If test={error.isError}>
                                 <div className={classes.containerError}>
-                                    <p>{error}</p>
+                                    <p>{error.message}</p>
                                 </div>
                             </If>
                             <If test={!isLoading}>
