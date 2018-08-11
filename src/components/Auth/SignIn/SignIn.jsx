@@ -80,8 +80,6 @@ class SignIn extends Component {
                 // Stop Loading
                 this.setState({ isLoading: false });
 
-                console.log(code);
-
                 switch (code) {
                     case 'auth/user-not-found':
                         this.setState({
