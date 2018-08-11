@@ -23,7 +23,11 @@ const INITIAL_STATE = {
     isLoading: false,
     openSnackbar: false,
     email: '',
-    error: null,
+    error: {
+        isError: false,
+        email: false,
+        message: '',
+    },
 };
 
 class RetrieveAccess extends Component {
@@ -57,16 +61,45 @@ class RetrieveAccess extends Component {
             email,
         } = this.state;
 
-        // Is Loading
-        this.setState({ isLoading: true });
+        // Is Loading and Reset Errors
+        this.setState({
+            isLoading: true,
+            error: {
+                isError: false,
+                email: false,
+                message: '',
+            },
+        });
 
         auth.doPasswordReset(email)
             .then(() => {
                 this.setState({ isLoading: false, openSnackbar: true });
             })
-            .catch(error => {
-                // Melhorar mensagem de erro...
-                this.setState({ isLoading: false, error: 'Ocorreu um erro durante o processo!' });
+            .catch(err => {
+                const { code } = err;
+
+                // Stop Loading
+                this.setState({ isLoading: false });
+
+                switch (code) {
+                    case 'auth/user-not-found':
+                        this.setState({
+                            error: {
+                                isError: true,
+                                email: true,
+                                message: 'O endereço de e-mail fornecido não está registrado!',
+                            },
+                        });
+                        break;
+                    default:
+                        this.setState({
+                            error: {
+                                isError: true,
+                                email: false,
+                                message: 'Ocorreu um erro inesperado. Por favor, tente novamente!',
+                            },
+                        })
+                }
             });
 
         event.preventDefault();
@@ -96,6 +129,7 @@ class RetrieveAccess extends Component {
                     <form onSubmit={this.onSubmit}>
                         <TextField
                             className={classes.marginTop}
+                            error={error.email}
                             value={email}
                             onChange={this.handleChange('email')}
                             id="email"
@@ -104,9 +138,9 @@ class RetrieveAccess extends Component {
                             fullWidth
                             required
                         />
-                        <If test={error}>
+                        <If test={error.isError}>
                             <div className={classes.containerError}>
-                                <p>{error}</p>
+                                <p>{error.message}</p>
                             </div>
                         </If>
                         <If test={!isLoading}>
