@@ -16,7 +16,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import Tooltip from '@material-ui/core/Tooltip';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -51,7 +53,7 @@ class MenuAppBar extends React.Component {
     };
 
     render() {
-        const { classes, user } = this.props;
+        const { classes, user, classroom } = this.props;
         const { anchorEl } = this.state;
         const open = Boolean(anchorEl);
 
@@ -59,6 +61,18 @@ class MenuAppBar extends React.Component {
             <div>
                 <AppBar position="static">
                     <Toolbar>
+                        {
+                            classroom &&
+                            <Tooltip title="Voltar à lista de turmas">
+                                <IconButton
+                                    onClick={this.handleReturn}
+                                    color="inherit"
+                                    href="/dashboard"
+                                >
+                                    <ArrowBack />
+                                </IconButton>
+                            </Tooltip>
+                        }
                         <Typography variant="title" color="inherit" className={classes.flex}>
                             Batalharte
                         </Typography>
@@ -106,7 +120,7 @@ MenuAppBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({ user: state.user });
+const mapStateToProps = state => ({ user: state.user, classroom: state.classroom });
 const mapDispatchToProps = dispatch => bindActionCreators({ doSignOut }, dispatch);
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MenuAppBar);
