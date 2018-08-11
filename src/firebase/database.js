@@ -2,35 +2,30 @@ import { database } from './firebase';
 
 // BATALHARTE_API
 
-// Registrar usuário
-export const doCreateUser = (id, user) =>
-    database.ref(`users/${id}`).set({ ...user });
+// Create user
+export const doCreateUser = (uid, user) =>
+    database.ref(`users/${uid}`).set({ ...user });
 
-// Buscar usuário (É necessário deixar a lógica em outra parte pois
-// trata-se de atualizações em tempo real)
+// Get user
 export const doGetUser = (id) =>
     database.ref(`users/${id}`);
 
-// Registrar turma
+// Register Classroom
 export const doCreateClassroom = (classroom) =>
     database.ref('classrooms').push({ ...classroom });
 
-// Verificar se a turma é válida
-export const doVerifyClassroom = (classroom) =>
-    database.ref(`classrooms/${classroom}`).once('value');
-
-// Registrar usuário na turma
+// Register user in classroom
 export const doRegisterUserInClassroom = (user, classroom) =>
     database.ref(`classrooms/${classroom}/students`).update({ default: false, [user]: true });
 
-// Registrar turma nas informações do usuário
+// Register classroom in user
 export const doRegisterClassroomInUser = (user, classroom) =>
     database.ref(`users/${user}/classrooms`).update({ default: false, [classroom]: true });
 
-// Buscar todas as salas de aula.
-export const doGetClassRooms = () =>
-    database.ref('classrooms').once('value');
+// Verify classroom code
+export const doVerifyClassroom = (classroom) =>
+    database.ref(`classrooms/${classroom}`).once('value');
 
-// Buscar sala de aula específica.
-export const doGetClassRoom = (classroomId) =>
-    database.ref(`classrooms/${classroomId}`).once('value');
+// Get Classroom
+export const doGetClassRoom = (classroom) =>
+    database.ref('classrooms').child(classroom).once('value', classroomData => classroomData);

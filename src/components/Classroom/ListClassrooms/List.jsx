@@ -49,6 +49,47 @@ class ListClassrooms extends React.Component {
         this.getClassrooms();
     }
 
+    getClassrooms = () => {
+        const classroomsUids = this.getClassroomsUids();
+
+        const classroomsPromises = classroomsUids.map(uid => {
+            return database.doGetClassRoom(uid);
+        });
+
+        Promise.all(classroomsPromises)
+            .then(classroomData => {
+                this.listClassrooms(classroomData);
+            })
+            .catch(err => {
+                console.log("Ocorreu um erro durante a busca.", err);
+            })
+    };
+
+    getClassroomsUids = () => {
+        // Props
+        const { classrooms } = this.props.user;
+
+        let classroomsUids = [];
+
+        for (let item in classrooms) {
+            classroomsUids.push(item);
+        }
+
+        return classroomsUids;
+    };
+
+    listClassrooms = (classrooms) => {
+        const classroomsArray = [];
+
+        classrooms.forEach(classroom => {
+            if (classroom.val()) {
+                classroomsArray.push(classroom.val());
+            }
+        })
+
+        this.props.doListClassrooms(classroomsArray);
+    };
+
     handleOpen = () => {
         const { typeUser } = this.props.user;
 
@@ -161,34 +202,6 @@ class ListClassrooms extends React.Component {
         return classroom;
     };
 
-    getClassrooms = () => {
-        const { classrooms } = this.props.user;
-
-        database.doGetClassRooms()
-            .then((classroomsDB) => {
-                const classes = [];
-                classroomsDB.forEach((classroom) => {
-                    // Percorrendo as classes do usuário.
-                    for (let item in classrooms) {
-                        // Verificando se a classe é verdadeira (apto a estar presente na classe).
-                        if (classrooms[item]) {
-                            // Verificando se a classe é que o usuário faz parte é a mesma (igual) a classe retornada do banco de dados.
-                            if (item === classroom.key) {
-                                // Criando um objeto classe (clsrm) com as informações da classe que pertence ao usuário.
-                                const clsrm = classroom.val();
-                                // Adicionando o ID à classe para diferenciar umas das outras.
-                                clsrm.id = classroom.key;
-                                // Adicionando ao array de classes.
-                                classes.push(clsrm);
-                            }
-                        }
-                    }
-                })
-                // Por fim, adicionando ao State do Redux.
-                this.props.doListClassrooms(classes);
-            });
-    }
-
     render() {
         // State
         const {
@@ -213,7 +226,7 @@ class ListClassrooms extends React.Component {
                         >
                             <If test={classrooms.length !== 0}>
                                 {
-                                    // Percorrendo as classes do Redux.
+                                    // Percorrendo as classes de aula do Redux.
                                     classrooms.map((classroom, index) => {
                                         const {
                                             id,
