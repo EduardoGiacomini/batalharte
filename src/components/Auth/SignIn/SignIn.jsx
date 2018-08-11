@@ -7,6 +7,7 @@ import { firebase, auth } from '../../../firebase';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -134,11 +135,13 @@ class SignIn extends Component {
         return (
             <div>
                 <div className={classes.containerImage}>
-                    <img
-                        src={logo}
-                        alt="Logotipo do Batalharte"
-                        className={classes.image}
-                    />
+                    <Tooltip title="Logotipo do Batalharte">
+                        <img
+                            src={logo}
+                            alt="Logotipo do Batalharte"
+                            className={classes.image}
+                        />
+                    </Tooltip>
                 </div>
                 <div className={classes.container}>
                     <Paper className={classes.container} elevation={1}>
@@ -191,9 +194,13 @@ class SignIn extends Component {
                             </If>
                         </form>
                         <div className={classes.marginTop}>
-                            <Link className={classes.link} to="/recuperaracesso">Esqueceu a senha?</Link>
+                            <Tooltip title="Selecione para recuperar sua senha">
+                                <Link className={classes.link} to="/recuperaracesso">Esqueceu a senha?</Link>
+                            </Tooltip>
                             <br />
-                            <Link className={classes.link} to="/cadastrar-se">Não possui uma conta?</Link>
+                            <Tooltip title="Selecione para efetuar um cadastro">
+                                <Link className={classes.link} to="/cadastrar-se">Não possui uma conta?</Link>
+                            </Tooltip>
                         </div>
                     </Paper>
                 </div>

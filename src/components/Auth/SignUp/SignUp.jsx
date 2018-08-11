@@ -7,6 +7,7 @@ import { firebase, auth, database } from '../../../firebase';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -267,7 +268,9 @@ class SignUp extends Component {
                         </If>
                     </form>
                     <div className={classes.marginTop}>
-                        <Link className={classes.link} to="/">Voltar</Link>
+                        <Tooltip title="Selecione para voltar à página de autenticação">
+                            <Link className={classes.link} to="/">Voltar</Link>
+                        </Tooltip>
                     </div>
                 </Paper>
                 <If test={isAuthenticated}>

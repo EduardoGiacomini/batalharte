@@ -8,6 +8,7 @@ import { firebase } from '../../../firebase'
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -161,7 +162,9 @@ class RetrieveAccess extends Component {
                         </If>
                     </form>
                     <div className={classes.marginTop}>
-                        <Link className={classes.link} to="/">Voltar</Link>
+                        <Tooltip title="Selecione para voltar à página de autenticação">
+                            <Link className={classes.link} to="/">Voltar</Link>
+                        </Tooltip>
                     </div>
                 </Paper>
                 <Snackbar
