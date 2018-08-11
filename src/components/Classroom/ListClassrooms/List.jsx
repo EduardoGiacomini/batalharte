@@ -83,7 +83,9 @@ class ListClassrooms extends React.Component {
 
         classrooms.forEach(classroom => {
             if (classroom.val()) {
-                classroomsArray.push(classroom.val());
+                const classroomObject = classroom.val();
+                classroomObject.uid = classroom.key;
+                classroomsArray.push(classroomObject);
             }
         })
 
@@ -229,7 +231,7 @@ class ListClassrooms extends React.Component {
                                     // Percorrendo as classes de aula do Redux.
                                     classrooms.map((classroom, index) => {
                                         const {
-                                            id,
+                                            uid,
                                             name,
                                             description,
                                         } = classroom;
@@ -243,7 +245,7 @@ class ListClassrooms extends React.Component {
                                                         <IconButton
                                                             aria-label={`Visualizar classe ${name}`}
                                                             toltip="Visualizar"
-                                                            href={`/dashboard/${id}`}>
+                                                            href={`/dashboard/${uid}`}>
                                                             <VisibilityIcon />
                                                         </IconButton>
                                                     </Tooltip>
