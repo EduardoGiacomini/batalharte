@@ -29,6 +29,10 @@ class NavigationClassroom extends Component {
         this.state = { ...INITIAL_STATE };
     };
 
+    componentWillMount = () => {
+        this.getPathRoute();
+    }
+
     componentDidMount = () => {
         this.removeAuthListener = firebase.auth.onAuthStateChanged(user => {
             if (user) {
@@ -44,9 +48,30 @@ class NavigationClassroom extends Component {
         this.removeAuthListener();
     };
 
+    // Método responsável por verificar a rota que o usuário está.
+    getPathRoute = () => {
+        const { pathname } = this.props.location;
+        const route = pathname.split('/');
+
+        switch (route[3]) {
+            case "content":
+                this.setState({ value: 0 });
+                break;
+            case "quiz":
+                this.setState({ value: 1 });
+                break;
+            case "ranking":
+                this.setState({ value: 2 });
+                break;
+            default:
+                this.setState({ value: 0 });
+        }
+
+    };
+
     // Método responsável por buscar as informações da classe.
     getClassRoom = () => {
-        const classroomId = this.getPathName();
+        const classroomId = this.getPathClassroom();
         database.doGetClassRoom(classroomId)
             .then((classroom) => {
                 if (classroom.val()) {
@@ -68,7 +93,7 @@ class NavigationClassroom extends Component {
     };
 
     // Função responsável por retornar o ID da classe representado pela URL da que o usuário está.
-    getPathName = () => {
+    getPathClassroom = () => {
         const { pathname } = this.props.location;
         const classroom = pathname.split('/');
         return classroom[2];
@@ -82,7 +107,7 @@ class NavigationClassroom extends Component {
             value,
         } = this.state;
 
-        const classroomUrl = this.getPathName();
+        const classroomUrl = this.getPathClassroom();
 
         return (
             <div>
