@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// Router
+import { Link } from 'react-router-dom';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -29,8 +31,9 @@ const ClassroomError = props => {
                 <p className={classes.text}>Escolha a opção abaixo para voltar à lista de turmas.</p>
                 <Tooltip title="Pressione para voltar à lista de turmas">
                     <Button
+                        component={Link}
+                        to="/dashboard"
                         variant="outlined"
-                        href="/dashboard"
                         fullWidth>
                         Voltar
                     </Button>

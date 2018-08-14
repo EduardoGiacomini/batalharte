@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+// Router
+import { Link } from 'react-router-dom';
 // Firebase
 import { database } from '../../../firebase';
 // Redux
@@ -243,9 +245,10 @@ class ListClassrooms extends React.Component {
                                                 <ListItemSecondaryAction>
                                                     <Tooltip title="Visualizar">
                                                         <IconButton
+                                                            component={Link}
+                                                            to={`/dashboard/${uid}/content`}
                                                             aria-label={`Visualizar classe ${name}`}
-                                                            toltip="Visualizar"
-                                                            href={`/dashboard/${uid}`}>
+                                                            toltip="Visualizar">
                                                             <VisibilityIcon />
                                                         </IconButton>
                                                     </Tooltip>

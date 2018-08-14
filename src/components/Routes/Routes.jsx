@@ -8,7 +8,10 @@ import SignUp from '../Auth/SignUp/SignUp';
 import RetrieveAccess from '../Auth/RetrieveAccess/RetrieveAccess';
 import About from '../About/About';
 import Dashboard from '../Dashboard/Dashboard';
-import Classroom from '../Classroom/Classroom/Classroom'; // Redundância na hora de importar.
+import Content from '../Classroom/Content/Content';
+import Ranking from '../Classroom/Ranking/Ranking';
+import ClassroomError from '../Classroom/Classroom/ClassroomError/ClassroomError';
+import NavigationClassroom from '../Classroom/NavigationClassroom/NavigationClassroom';
 
 export default props => {
     return (
@@ -21,8 +24,12 @@ export default props => {
                     <Route exact path="/recuperaracesso" component={RetrieveAccess} />
                     <Route exact path="/sobre" component={About} />
                     <Route exact path="/dashboard" component={Dashboard} />
-                    <Route exact path="/dashboard/:id" component={Classroom} />
+                    <Route exact path="/not-found" component={ClassroomError} />
                 </Switch>
+                <Route path="/dashboard/:id" component={NavigationClassroom} />
+                <Route exact path="/dashboard/:id/content" component={Content} />
+                <Route exact path="/dashboard/:id/quiz" component={() => <h1>Página de quizzes</h1>} />
+                <Route exact path="/dashboard/:id/ranking" component={Ranking} />
             </div>
         </BrowserRouter>
     );

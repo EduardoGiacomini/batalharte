@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // Recompose
 import compose from 'recompose/compose';
+// Router
+import { Link } from 'react-router-dom';
 // Auth actions
 import { auth } from '../../../firebase';
 // Redux
@@ -65,9 +67,10 @@ class MenuAppBar extends React.Component {
                             classroom &&
                             <Tooltip title="Voltar à lista de turmas">
                                 <IconButton
+                                    component={Link}
+                                    to="/dashboard"
                                     onClick={this.handleReturn}
                                     color="inherit"
-                                    href="/dashboard"
                                 >
                                     <ArrowBack />
                                 </IconButton>
