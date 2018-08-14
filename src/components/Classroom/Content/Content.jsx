@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+// Redux
+import { connect } from 'react-redux';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -13,48 +16,63 @@ import Typography from '@material-ui/core/Typography';
 import styles from './styles';
 // Image
 import history from '../../../assets/image/history.png';
-import art from '../../../assets/image/art.jpg'
+import art from '../../../assets/image/art.jpg';
+// Operator
+import If from '../../Operator/If';
+// Components
+import Loading from '../../Loading/Loading';
 
 function Content(props) {
-    const { classes } = props;
+
+    // Props
+    const {
+        classes,
+        classroom,
+    } = props;
+
     return (
         <div className={classes.containerCard}>
-            <Card className={classes.card}>
-                <CardMedia
-                    className={classes.media}
-                    image={history}
-                    title="History"
-                />
-                <CardContent className={classes.title}>
-                    <Typography gutterBottom variant="headline" component="h2">
-                        HISTÓRIA
+            <If test={!!classroom}>
+                <Card className={classes.card}>
+                    <CardMedia
+                        className={classes.media}
+                        image={history}
+                        title="History"
+                    />
+                    <CardContent className={classes.title}>
+                        <Typography gutterBottom variant="headline" component="h2">
+                            HISTÓRIA
                     </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
-                        Vizualizar
+                    </CardContent>
+                    <CardActions>
+                        <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
+                            Vizualizar
                     <VisibilityIcon className={classes.rightIcon} />
-                    </Button>
-                </CardActions>
-            </Card>
-            <Card className={classes.card}>
-                <CardMedia
-                    className={classes.media}
-                    image={art}
-                    title="Art"
-                />
-                <CardContent className={classes.title}>
-                    <Typography gutterBottom variant="headline" component="h2">
-                        ARTE
+                        </Button>
+                    </CardActions>
+                </Card>
+                <Card className={classes.card}>
+                    <CardMedia
+                        className={classes.media}
+                        image={art}
+                        title="Art"
+                    />
+                    <CardContent className={classes.title}>
+                        <Typography gutterBottom variant="headline" component="h2">
+                            ARTE
                     </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
-                        Vizualizar
+                    </CardContent>
+                    <CardActions>
+                        <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
+                            Vizualizar
                     <VisibilityIcon className={classes.rightIcon} />
-                    </Button>
-                </CardActions>
-            </Card>
+                        </Button>
+                    </CardActions>
+                </Card>
+            </If>
+            <If test={!classroom}>
+                <Loading />
+            </If>
         </div>
     );
 }
@@ -63,4 +81,8 @@ Content.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Content);
+const mapStateToProps = state => ({ classroom: state.classroom });
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, null))(Content);
