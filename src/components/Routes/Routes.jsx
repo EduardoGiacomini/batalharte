@@ -30,8 +30,8 @@ export default props => {
                 </Switch>
                 <Route path="/dashboard/:id" component={NavigationClassroom} />
                 <Route exact path="/dashboard/:id/content" component={Content} />
-                <Route path="/dashboard/:id/content/form" component={Form} />
-                <Route path="/dashboard/:id/content/share" component={Share} />
+                <Route exact path="/dashboard/:id/content/form" component={Form} />
+                <Route exact path="/dashboard/:id/content/share" component={Share} />
                 <Route exact path="/dashboard/:id/quiz" component={() => <h1>Página de quizzes</h1>} />
                 <Route exact path="/dashboard/:id/ranking" component={Ranking} />
             </div>
