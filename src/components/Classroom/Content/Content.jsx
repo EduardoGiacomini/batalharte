@@ -78,7 +78,7 @@ class Content extends React.Component {
                             image={history}
                             title="History"
                         />
-                        <CardContent className={classes.title}>
+                        <CardContent>
                             <Typography gutterBottom variant="headline" component="h2">
                                 HISTÓRIA
                     </Typography>
@@ -96,7 +96,7 @@ class Content extends React.Component {
                             image={art}
                             title="Art"
                         />
-                        <CardContent className={classes.title}>
+                        <CardContent>
                             <Typography gutterBottom variant="headline" component="h2">
                                 ARTE
                     </Typography>

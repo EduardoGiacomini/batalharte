@@ -1,4 +1,7 @@
 const styles = theme => ({
+    container: {
+        margin: 20,
+    },
     containerCard: {
         width: '100%',
         display: 'flex',
@@ -14,7 +17,10 @@ const styles = theme => ({
         paddingTop: '56.25%',
     },
     title: {
-        paddingBottom: 0
+        textAlign: 'center',
+        margin: 0,
+        paddingTop: 20,
+        color: '#3E2723',
     },
     button: {
         margin: theme.spacing.unit,
