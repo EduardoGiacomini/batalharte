@@ -1,4 +1,5 @@
 const styles = theme => ({
+    // Content
     containerCard: {
         width: '100%',
         display: 'flex',
@@ -32,6 +33,23 @@ const styles = theme => ({
         position: 'absolute',
         bottom: theme.spacing.unit * 2,
         right: theme.spacing.unit * 2,
+    },
+    // Form
+    root: {
+        ...theme.mixins.gutters(),
+        paddingTop: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing.unit * 2,
+        margin: 20
+    },
+    titleForm: {
+        textAlign: 'center'
+    },
+    formControl: {
+        //margin: theme.spacing.unit,
+        minWidth: '100%',
+    },
+    margin: {
+        marginTop: 20
     }
 });
 
