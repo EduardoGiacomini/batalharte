@@ -16,8 +16,11 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
+import Slide from '@material-ui/core/Slide';
 // styles
 import styles from './styles';
 // Image
@@ -28,6 +31,10 @@ import If from '../../Operator/If';
 // Components
 import Loading from '../../Loading/Loading';
 
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+};
+
 const INITIAL_STATE = {
     open: false
 };
@@ -36,7 +43,7 @@ class Content extends React.Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
-    }
+    };
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -112,17 +119,25 @@ class Content extends React.Component {
                     </Button>
                     <Dialog
                         open={this.state.open}
+                        TransitionComponent={Transition}
+                        keepMounted
                         onClose={this.handleClose}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <DialogTitle id="alert-dialog-title">{"Deseja cadastrar um novo conteúdo ou compartilhar um existente?"}</DialogTitle>
-
+                        <DialogTitle
+                            id="alert-dialog-title">
+                            {"Adicionar conteúdo"}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Você deseja cadastrar um novo conteúdo ou compartilhar um existente?                            </DialogContentText>
+                        </DialogContent>
                         <DialogActions>
                             <Button
                                 component={Link}
                                 to={`/dashboard/${classroomUrl}/content/form`}
-                                //onClick={this.handleClose}
+                                onClick={this.handleClose}
                                 color="primary"
                                 fullWidth={true}
                             >
@@ -131,7 +146,7 @@ class Content extends React.Component {
                             <Button
                                 component={Link}
                                 to={`/dashboard/${classroomUrl}/content/share`}
-                                //onClick={this.handleClose}
+                                onClick={this.handleClose}
                                 color="primary"
                                 fullWidth={true}
                             >
