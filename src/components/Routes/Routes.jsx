@@ -9,6 +9,8 @@ import RetrieveAccess from '../Auth/RetrieveAccess/RetrieveAccess';
 import About from '../About/About';
 import Dashboard from '../Dashboard/Dashboard';
 import Content from '../Classroom/Content/Content';
+import Form from '../Classroom/Content/Form';
+import Share from '../Classroom/Content/Share';
 import Ranking from '../Classroom/Ranking/Ranking';
 import ClassroomError from '../Classroom/Classroom/ClassroomError/ClassroomError';
 import NavigationClassroom from '../Classroom/NavigationClassroom/NavigationClassroom';
@@ -28,6 +30,8 @@ export default props => {
                 </Switch>
                 <Route path="/dashboard/:id" component={NavigationClassroom} />
                 <Route exact path="/dashboard/:id/content" component={Content} />
+                <Route path="/dashboard/:id/content/form" component={Form} />
+                <Route path="/dashboard/:id/content/share" component={Share} />
                 <Route exact path="/dashboard/:id/quiz" component={() => <h1>Página de quizzes</h1>} />
                 <Route exact path="/dashboard/:id/ranking" component={Ranking} />
             </div>

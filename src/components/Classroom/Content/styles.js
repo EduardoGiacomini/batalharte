@@ -28,6 +28,11 @@ const styles = theme => ({
     iconSmall: {
         fontSize: 20,
     },
+    buttonAdd: {
+        position: 'absolute',
+        bottom: theme.spacing.unit * 2,
+        right: theme.spacing.unit * 2,
+    }
 });
 
 export default styles;
