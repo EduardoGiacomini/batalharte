@@ -10,7 +10,7 @@ const styles = theme => ({
         justifyContent: 'space-around',
     },
     card: {
-        width: 350,
+        width: 300,
         margin: 20
     },
     media: {

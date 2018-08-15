@@ -12,6 +12,7 @@ import Content from '../Classroom/Content/Content';
 import Form from '../Classroom/Content/Form';
 import Share from '../Classroom/Content/Share';
 import Ranking from '../Classroom/Ranking/Ranking';
+import Quiz from '../Classroom/Quiz/Quiz';
 import ClassroomError from '../Classroom/Classroom/ClassroomError/ClassroomError';
 import NavigationClassroom from '../Classroom/NavigationClassroom/NavigationClassroom';
 
@@ -32,7 +33,9 @@ export default props => {
                 <Route exact path="/dashboard/:id/content" component={Content} />
                 <Route exact path="/dashboard/:id/content/form" component={Form} />
                 <Route exact path="/dashboard/:id/content/share" component={Share} />
-                <Route exact path="/dashboard/:id/quiz" component={() => <h1>Página de quizzes</h1>} />
+                <Route exact path="/dashboard/:id/quiz" component={Quiz} />
+                <Route exact path="/dashboard/:id/quiz/form" component={() => <h1>Form Quiz</h1>} />
+                <Route exact path="/dashboard/:id/quiz/share" component={() => <h1>Share Quiz</h1>} />
                 <Route exact path="/dashboard/:id/ranking" component={Ranking} />
             </div>
         </BrowserRouter>
