@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // Actions
 import { doSignOut } from '../../../redux/actions/authActions';
+import { doResetClassroom } from '../../../redux/actions/classroomActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -45,6 +46,10 @@ class MenuAppBar extends React.Component {
     handleClose = () => {
         this.setState({ anchorEl: null });
     };
+
+    handleReturn = () => {
+        this.props.doResetClassroom(null);
+    }
 
     onSignOut = () => {
         auth.doSignOut()
@@ -124,6 +129,6 @@ MenuAppBar.propTypes = {
 };
 
 const mapStateToProps = state => ({ user: state.user, classroom: state.classroom });
-const mapDispatchToProps = dispatch => bindActionCreators({ doSignOut }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ doSignOut, doResetClassroom }, dispatch);
 
 export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(MenuAppBar);

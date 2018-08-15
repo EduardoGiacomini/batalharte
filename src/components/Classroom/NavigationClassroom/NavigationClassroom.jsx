@@ -75,7 +75,8 @@ class NavigationClassroom extends Component {
         database.doGetClassRoom(classroomId)
             .then((classroom) => {
                 if (classroom.val()) {
-                    this.props.doListClassroom(classroom.val())
+                    const classroomObject = this.getClassRoomObject(classroom.val(), classroom.key);
+                    this.props.doListClassroom(classroomObject);
                 } else {
                     this.setState({ isExist: false });
                 }
@@ -87,6 +88,12 @@ class NavigationClassroom extends Component {
 
         // Verificar se o usuário pertence à classe.
     };
+
+    getClassRoomObject = (classroom, key) => {
+        const classroomObject = classroom;
+        classroomObject.uid = key;
+        return classroomObject;
+    }
 
     handleChange = (event, value) => {
         this.setState({ value });

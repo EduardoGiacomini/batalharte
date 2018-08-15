@@ -29,3 +29,11 @@ export const doVerifyClassroom = (classroom) =>
 // Get Classroom
 export const doGetClassRoom = (classroom) =>
     database.ref('classrooms').child(classroom).once('value', classroomData => classroomData);
+
+// Register content
+export const doRegisterContent = (content) =>
+    database.ref('contents').push({ ...content });
+
+// Register content in classroom
+export const doRegisterContentInClassroom = (content, classroom) =>
+    database.ref(`classrooms/${classroom}/contents`).update({ default: false, [content]: true });

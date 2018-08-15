@@ -195,10 +195,10 @@ class ListClassrooms extends React.Component {
             students: {
                 default: true,
             },
-            content: {
+            contents: {
                 default: true,
             },
-            quiz: {
+            quizzes: {
                 default: true,
             },
         };
