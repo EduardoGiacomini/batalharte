@@ -1,5 +1,6 @@
 const styles = theme => ({
     container: {
+        width: '100%',
         margin: 20,
     },
     // Content
@@ -16,12 +17,6 @@ const styles = theme => ({
     media: {
         height: 0,
         paddingTop: '56.25%',
-    },
-    title: {
-        textAlign: 'center',
-        margin: 0,
-        paddingTop: 20,
-        color: '#3E2723',
     },
     button: {
         margin: theme.spacing.unit,

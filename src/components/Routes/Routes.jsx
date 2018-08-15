@@ -10,7 +10,6 @@ import About from '../About/About';
 import Dashboard from '../Dashboard/Dashboard';
 import Content from '../Classroom/Content/Content';
 import Form from '../Classroom/Content/Form';
-import Share from '../Classroom/Content/Share';
 import Ranking from '../Classroom/Ranking/Ranking';
 import Quiz from '../Classroom/Quiz/Quiz';
 import ClassroomError from '../Classroom/Classroom/ClassroomError/ClassroomError';
