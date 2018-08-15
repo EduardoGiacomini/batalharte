@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 // Router
 import { Link } from 'react-router-dom';
-import compose from 'recompose/compose';
+// Firebase
+import { database } from '../../../firebase';
 // Redux
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// Actions
+import { doListContents } from '../../../redux/actions/contentActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -23,12 +22,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Slide from '@material-ui/core/Slide';
 // styles
 import styles from './styles';
-// Image
-import history from '../../../assets/image/history.png';
-import art from '../../../assets/image/art.jpg';
 // Operator
 import If from '../../Operator/If';
 // Components
+import List from './List';
 import Loading from '../../Loading/Loading';
 
 function Transition(props) {
@@ -36,7 +33,7 @@ function Transition(props) {
 };
 
 const INITIAL_STATE = {
-    open: false
+    open: false,
 };
 
 class Content extends React.Component {
@@ -44,6 +41,15 @@ class Content extends React.Component {
         super(props);
         this.state = { ...INITIAL_STATE };
     };
+
+    componentWillReceiveProps = (nextProps) => {
+        // Props
+        const { classroom } = this.props;
+
+        if (nextProps.classroom !== classroom) {
+            this.getContent(nextProps.classroom.contents);
+        }
+    }
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -55,9 +61,50 @@ class Content extends React.Component {
 
     // Função responsável por retornar o ID da classe representado pela URL da que o usuário está.
     getPathClassroom = () => {
+        // Props PathName
         const { pathname } = this.props.location;
         const classroom = pathname.split('/');
         return classroom[2];
+    };
+
+    getContent = (contents) => {
+        const contentsUids = this.getContentsUids(contents);
+
+        const contentsPromises = contentsUids.map(uid => {
+            return database.doGetContent(uid);
+        });
+
+        Promise.all(contentsPromises)
+            .then(contentsData => {
+                this.listContents(contentsData);
+            })
+            .catch(err => {
+                console.log("Ocorreu um erro durante a busca.", err);
+            })
+    };
+
+    getContentsUids = (contents) => {
+        let contentsUids = [];
+
+        for (let item in contents) {
+            contentsUids.push(item);
+        }
+
+        return contentsUids;
+    };
+
+    listContents = (contents) => {
+        const contentsArray = [];
+
+        contents.forEach(content => {
+            if (content.val()) {
+                const contentObject = content.val();
+                contentObject.uid = content.key;
+                contentsArray.push(contentObject);
+            }
+        });
+
+        this.props.doListContents(contentsArray);
     };
 
     render() {
@@ -65,6 +112,7 @@ class Content extends React.Component {
         const {
             classes,
             classroom,
+            contents,
         } = this.props;
 
         const classroomUrl = this.getPathClassroom();
@@ -72,42 +120,7 @@ class Content extends React.Component {
         return (
             <div className={classes.containerCard}>
                 <If test={!!classroom}>
-                    <Card className={classes.card}>
-                        <CardMedia
-                            className={classes.media}
-                            image={history}
-                            title="History"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="headline" component="h2">
-                                HISTÓRIA
-                    </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
-                                Vizualizar
-                    <VisibilityIcon className={classes.rightIcon} />
-                            </Button>
-                        </CardActions>
-                    </Card>
-                    <Card className={classes.card}>
-                        <CardMedia
-                            className={classes.media}
-                            image={art}
-                            title="Art"
-                        />
-                        <CardContent>
-                            <Typography gutterBottom variant="headline" component="h2">
-                                ARTE
-                    </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
-                                Vizualizar
-                    <VisibilityIcon className={classes.rightIcon} />
-                            </Button>
-                        </CardActions>
-                    </Card>
+                    <List title="Lista de conteúdos" array={contents} />
                     <Button
                         variant="fab"
                         color="primary"
@@ -167,8 +180,9 @@ Content.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({ classroom: state.classroom });
+const mapStateToProps = state => ({ classroom: state.classroom, contents: state.contents });
+const mapDispatchToProps = dispatch => bindActionCreators({ doListContents }, dispatch);
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, null))(Content);
+    connect(mapStateToProps, mapDispatchToProps))(Content);

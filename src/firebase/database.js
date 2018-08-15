@@ -37,3 +37,7 @@ export const doRegisterContent = (content) =>
 // Register content in classroom
 export const doRegisterContentInClassroom = (content, classroom) =>
     database.ref(`classrooms/${classroom}/contents`).update({ default: false, [content]: true });
+
+// Get Content
+export const doGetContent = (content) =>
+    database.ref('contents').child(content).once('value', contentsData => contentsData);
