@@ -41,6 +41,11 @@ const styles = theme => ({
         right: theme.spacing.unit * 2,
     },
     // Form
+    flex: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+    },
     root: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,
@@ -52,11 +57,14 @@ const styles = theme => ({
     },
     formControl: {
         //margin: theme.spacing.unit,
-        minWidth: '100%',
+        width: '100%',
     },
-    margin: {
-        marginTop: 20
-    }
+    marginLeft: {
+        margin: '20px 5px 20px 0px',
+    },
+    marginRight: {
+        margin: '20px 0px 20px 5px',
+    },
 });
 
 export default styles;
