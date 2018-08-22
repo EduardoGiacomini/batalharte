@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// Router
+import { Link } from 'react-router-dom';
 // material-icons
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -22,6 +24,7 @@ const ListComponent = props => {
         classes,
         title,
         array,
+        id, // ID da classe
     } = props;
 
     return (
@@ -32,7 +35,7 @@ const ListComponent = props => {
             <List>
                 {
                     array.map((item, index) => {
-                        const { title, description } = item;
+                        const { title, description, uid } = item;
                         return (
                             <ListItem key={index}>
                                 <Avatar>
@@ -44,6 +47,8 @@ const ListComponent = props => {
                                 <ListItemSecondaryAction>
                                     <Tooltip title={`Visualizar ${title}`}>
                                         <IconButton
+                                            component={Link}
+                                            to={`/dashboard/${id}/content/${uid}`}
                                             aria-label={`Visualizar ${title}`}
                                             toltip={`Visualizar ${title}`}>
                                             <VisibilityIcon />

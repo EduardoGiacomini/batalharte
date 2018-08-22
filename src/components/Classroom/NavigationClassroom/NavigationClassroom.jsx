@@ -16,6 +16,8 @@ import GamesIcon from '@material-ui/icons/Games';
 import StarsIcon from '@material-ui/icons/Stars';
 // Operator
 import If from '../../Operator/If';
+// Component
+import Error from '../../Common/Error/Error';
 
 const INITIAL_STATE = {
     isAuthenticated: true,
@@ -118,29 +120,35 @@ class NavigationClassroom extends Component {
 
         return (
             <div>
-                <BottomNavigation
-                    value={value}
-                    onChange={this.handleChange}
-                    showLabels
-                >
-                    <BottomNavigationAction
-                        component={Link}
-                        to={`/dashboard/${classroomUrl}/content`}
-                        label="Conteúdos"
-                        icon={<BookIcon />} />
-                    <BottomNavigationAction
-                        component={Link}
-                        to={`/dashboard/${classroomUrl}/quiz`}
-                        label="Quiz"
-                        icon={<GamesIcon />} />
-                    <BottomNavigationAction
-                        component={Link}
-                        to={`/dashboard/${classroomUrl}/ranking`}
-                        label="Ranking"
-                        icon={<StarsIcon />} />
-                </BottomNavigation>
+                <If test={isExist}>
+                    <BottomNavigation
+                        value={value}
+                        onChange={this.handleChange}
+                        showLabels
+                    >
+                        <BottomNavigationAction
+                            component={Link}
+                            to={`/dashboard/${classroomUrl}/content`}
+                            label="Conteúdos"
+                            icon={<BookIcon />} />
+                        <BottomNavigationAction
+                            component={Link}
+                            to={`/dashboard/${classroomUrl}/quiz`}
+                            label="Quiz"
+                            icon={<GamesIcon />} />
+                        <BottomNavigationAction
+                            component={Link}
+                            to={`/dashboard/${classroomUrl}/ranking`}
+                            label="Ranking"
+                            icon={<StarsIcon />} />
+                    </BottomNavigation>
+                </If>
                 <If test={!isExist}>
-                    <Redirect to="/not-found" />
+                    <Error
+                        title="Opa! A turma que você tentou acessar está indisponível ou não existe"
+                        description="Escolha a opção abaixo para voltar à lista de turmas"
+                        path="/dashboard"
+                    />
                 </If>
                 <If test={!isAuthenticated}>
                     <Redirect exact to="/" />
