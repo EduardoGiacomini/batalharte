@@ -7,9 +7,6 @@ import { Link } from 'react-router-dom';
 import { database } from '../../../firebase';
 // Redux
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-// Actions
-import { doListContents } from '../../../redux/actions/contentActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -34,6 +31,7 @@ function Transition(props) {
 
 const INITIAL_STATE = {
     open: false,
+    contents: [],
 };
 
 class Contents extends React.Component {
@@ -44,9 +42,9 @@ class Contents extends React.Component {
 
     componentDidMount = () => {
         // Props
-        const { classroom, contents } = this.props;
+        const { classroom } = this.props;
 
-        if (classroom !== null && contents.length === 0) {
+        if (classroom) {
             this.getContent(classroom.contents);
         }
     };
@@ -55,8 +53,10 @@ class Contents extends React.Component {
         // Props
         const { classroom } = this.props;
 
-        if (nextProps.classroom !== classroom) {
-            this.getContent(nextProps.classroom.contents);
+        if (nextProps.classroom) {
+            if (nextProps.classroom !== classroom) {
+                this.getContent(nextProps.classroom.contents);
+            }
         }
     };
 
@@ -113,15 +113,21 @@ class Contents extends React.Component {
             }
         });
 
-        this.props.doListContents(contentsArray);
+        this.setState({ contents: contentsArray });
     };
 
     render() {
+        // State
+        const {
+            open,
+            contents,
+        } = this.state;
+
         // Props
         const {
             classes,
+            user,
             classroom,
-            contents,
         } = this.props;
 
         const classroomUrl = this.getPathClassroom();
@@ -129,18 +135,22 @@ class Contents extends React.Component {
         return (
             <div className={classes.containerCard}>
                 <If test={!!classroom}>
-                    <List title="Lista de conteúdos" array={contents} id={classroomUrl} />
-                    <Button
-                        variant="fab"
-                        color="primary"
-                        aria-label="Add"
-                        className={classes.buttonAdd}
-                        onClick={this.handleClickOpen}
-                    >
-                        <AddIcon />
-                    </Button>
+                    {
+                        user &&
+                        user.typeUser === "teacher" &&
+                        <Button
+                            variant="fab"
+                            color="primary"
+                            aria-label="Add"
+                            className={classes.buttonAdd}
+                            onClick={this.handleClickOpen}
+                        >
+                            <AddIcon />
+                        </Button>
+                    }
+                    <List title="Lista de conteúdos" array={contents} path={`/dashboard/${classroomUrl}/content/view`} shareOption={false} />
                     <Dialog
-                        open={this.state.open}
+                        open={open}
                         TransitionComponent={Transition}
                         keepMounted
                         onClose={this.handleClose}
@@ -189,9 +199,8 @@ Contents.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({ classroom: state.classroom, contents: state.contents });
-const mapDispatchToProps = dispatch => bindActionCreators({ doListContents }, dispatch);
+const mapStateToProps = state => ({ user: state.user, classroom: state.classroom });
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, mapDispatchToProps))(Contents);
+    connect(mapStateToProps, null))(Contents);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 // Router
 import { Link } from 'react-router-dom';
 // Firebase
@@ -21,7 +21,7 @@ const INITIAL_STATE = {
     source: '',
 };
 
-class Content extends React.Component {
+class Content extends Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
@@ -79,7 +79,6 @@ class Content extends React.Component {
                     source: source,
                 });
             });
-
     };
 
     getIdContent = () => {
@@ -87,7 +86,26 @@ class Content extends React.Component {
         const { pathname } = this.props.location;
         const url = pathname.split('/');
 
-        return url[4];
+        return url[5];
+    };
+
+    getIdClassroom = () => {
+        // Props
+        const { pathname } = this.props.location;
+        const url = pathname.split('/');
+
+        return url[2];
+    };
+
+    registerContentInClassroom = () => {
+        // Get IDs
+        const idClassroom = this.getIdClassroom();
+        const idContent = this.getIdContent();
+
+        database.doRegisterContentInClassroom(idContent, idClassroom)
+            .then(() => {
+                console.log('Conteúdo anexado na classe!');
+            });
     };
 
     render() {
@@ -105,6 +123,7 @@ class Content extends React.Component {
         } = this.state;
 
         // Props
+        const { shareOption } = this.props.location;
         const { pathname } = this.props.location;
         const url = pathname.split('/');
         const classroomId = url[2];
@@ -125,6 +144,9 @@ class Content extends React.Component {
                         <span>{description}</span>
                         <span>{content}</span>
                         <span>{source}</span>
+                        <If test={shareOption}>
+                            <button onClick={() => this.registerContentInClassroom()}>Anexar Conteúdo</button>
+                        </If>
                     </If>
                     <If test={isError}>
                         <Error

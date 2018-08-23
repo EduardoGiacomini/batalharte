@@ -24,7 +24,8 @@ const ListComponent = props => {
         classes,
         title,
         array,
-        id, // ID da classe
+        path, // ID da classe
+        shareOption,
     } = props;
 
     return (
@@ -35,7 +36,15 @@ const ListComponent = props => {
             <List>
                 {
                     array.map((item, index) => {
+
                         const { title, description, uid } = item;
+
+                        // Passando opção de compartilhar ou não via props.
+                        const newPath = {
+                            pathname: `${path}/${uid}`,
+                            shareOption: shareOption,
+                        };
+
                         return (
                             <ListItem key={index}>
                                 <Avatar>
@@ -48,7 +57,7 @@ const ListComponent = props => {
                                     <Tooltip title={`Visualizar ${title}`}>
                                         <IconButton
                                             component={Link}
-                                            to={`/dashboard/${id}/content/${uid}`}
+                                            to={newPath}
                                             aria-label={`Visualizar ${title}`}
                                             toltip={`Visualizar ${title}`}>
                                             <VisibilityIcon />

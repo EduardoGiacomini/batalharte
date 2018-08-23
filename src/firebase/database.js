@@ -41,3 +41,7 @@ export const doRegisterContentInClassroom = (content, classroom) =>
 // Get Content
 export const doGetContent = (content) =>
     database.ref('contents').child(content).once('value', contentsData => contentsData);
+
+// Get Contents
+export const doGetContentsPublic = () =>
+    database.ref('contents').orderByChild('isPublic').equalTo(true).once('value', contentsData => contentsData);
