@@ -148,7 +148,7 @@ class Contents extends React.Component {
                             <AddIcon />
                         </Button>
                     }
-                    <List title="Lista de conteúdos" array={contents} path={`/dashboard/${classroomUrl}/content/view`} shareOption={false} />
+                    <List title="CONTEÚDOS DESSA TURMA" array={contents} path={`/dashboard/${classroomUrl}/content/view`} shareOption={false} />
                     <Dialog
                         open={open}
                         TransitionComponent={Transition}

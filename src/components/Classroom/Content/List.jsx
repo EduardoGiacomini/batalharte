@@ -30,7 +30,7 @@ const ListComponent = props => {
 
     return (
         <Paper className={classes.container} elevation={1}>
-            <Typography align="center" variant="title">
+            <Typography align="center" variant="title" className={classes.title}>
                 {title}
             </Typography>
             <List>

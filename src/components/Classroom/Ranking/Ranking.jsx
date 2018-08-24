@@ -11,6 +11,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 // Styles
 import styles from './styles';
 // Icons
@@ -34,7 +35,10 @@ const Ranking = props => {
         <div>
             <If test={!!classroom}>
                 <Paper className={classes.container} elevation={1}>
-                    <h3 className={classes.title}>RANKING</h3>
+                    <Typography align="center" variant="title" className={classes.title}>
+                        RANKING
+                    </Typography>
+                    {/*<h3 className={classes.title}>RANKING</h3>*/}
                     <List>
                         <ListItem>
                             <Avatar

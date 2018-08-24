@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 // Router
 import { Link } from 'react-router-dom';
 // Firebase
 import { database } from '../../../firebase';
+// Material-ui
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 // Operator
 import If from '../../Operator/If';
 // Component
 import Loading from '../../Loading/Loading';
 import Error from '../../Common/Error/Error';
+// styles
+import styles from './styles';
 
 const INITIAL_STATE = {
     isLoading: true,
@@ -128,25 +136,67 @@ class Content extends Component {
         const url = pathname.split('/');
         const classroomId = url[2];
 
+        // Props
+        const {
+            classes,
+        } = this.props;
+
         return (
             <div>
                 <If test={!isLoading}>
                     <If test={!isError}>
-                        <Link
-                            to={`/dashboard/${classroomId}/content`}
-                        >
-                            Voltar
-                    </Link>
-                        <span>{author}</span>
-                        <span>{discipline}</span>
-                        <span>{competence}</span>
-                        <span>{title}</span>
-                        <span>{description}</span>
-                        <span>{content}</span>
-                        <span>{source}</span>
-                        <If test={shareOption}>
-                            <button onClick={() => this.registerContentInClassroom()}>Anexar Conteúdo</button>
-                        </If>
+                        <Paper className={classes.root} elevation={1}>
+                            <Typography align="center" variant="headline" className={classes.color}>
+                                {title}
+                            </Typography>
+                            <Typography align="center" variant="subheading">
+                                {description}
+                            </Typography>
+                            <Typography align="justify" variant="body1" className={classes.body}>
+                                {content}
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                                Fonte(s): {source}
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                                Autor: {author}
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                                <If test={discipline === 'history'}>
+                                    Disciplina: História
+                                </If>
+                                <If test={discipline === 'art'}>
+                                    Disciplina: Arte
+                                </If>
+                                <If test={discipline === 'interdisciplinary'}>
+                                    Disciplina: Interdisciplinar
+                                </If>
+                            </Typography>
+                            <Typography align="left" variant="body2">
+                                Competências abordadas: {competence}
+                            </Typography>
+                            <div className={classes.flex}>
+                                <If test={shareOption}>
+                                    <Button
+                                        variant="outlined"
+                                        fullWidth={true}
+                                        className={classes.marginLeft}
+                                        onClick={() => this.registerContentInClassroom()}
+                                    >
+                                        Compartilhar
+                                </Button>
+                                </If>
+                                <Button
+                                    component={Link}
+                                    to={`/dashboard/${classroomId}/content`}
+                                    variant="outlined"
+                                    fullWidth={true}
+                                    className={classes.marginRight}
+                                >
+                                    Voltar
+                        </Button>
+                            </div>
+                        </Paper>
                     </If>
                     <If test={isError}>
                         <Error
@@ -164,4 +214,8 @@ class Content extends Component {
     }
 }
 
-export default Content;
+Content.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Content);

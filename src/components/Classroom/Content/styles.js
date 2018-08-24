@@ -3,7 +3,7 @@ const styles = theme => ({
         width: '100%',
         margin: 20,
     },
-    // Content
+    // Contents
     containerCard: {
         width: '100%',
         display: 'flex',
@@ -35,6 +35,10 @@ const styles = theme => ({
         bottom: theme.spacing.unit * 2,
         right: theme.spacing.unit * 2,
     },
+    // Content
+    body: {
+        margin: '20px 0'
+    },
     // Form
     flex: {
         width: '100%',
@@ -47,19 +51,27 @@ const styles = theme => ({
         paddingBottom: theme.spacing.unit * 2,
         margin: 20
     },
-    titleForm: {
-        textAlign: 'center'
-    },
     formControl: {
         //margin: theme.spacing.unit,
+        marginTop: 16,
+        marginBottom: 8,
         width: '100%',
     },
     marginLeft: {
-        margin: '20px 5px 20px 0px',
+        margin: '16px 10px 8px 0px',
     },
     marginRight: {
-        margin: '20px 0px 20px 5px',
+        margin: '16px 0px 8px 0px',
     },
+    // List
+    title: {
+        margin: 0,
+        paddingTop: 20,
+        color: '#3E2723',
+    },
+    color: {
+        color: '#3E2723'
+    }
 });
 
 export default styles;

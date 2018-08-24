@@ -159,7 +159,7 @@ class Form extends React.Component {
         return (
             <div>
                 <Paper className={classes.root} elevation={1}>
-                    <Typography variant="headline" component="h3" className={classes.titleForm}>
+                    <Typography align="center" variant="title" className={classes.title}>
                         Cadastrar Conteúdo
                     </Typography>
                     <form onSubmit={this.onSubmit}>
@@ -168,6 +168,7 @@ class Form extends React.Component {
                             onChange={this.handleChange('title')}
                             id="title"
                             label="Título"
+                            margin="normal"
                             type="text"
                             fullWidth
                             required
@@ -177,6 +178,7 @@ class Form extends React.Component {
                             onChange={this.handleChange('description')}
                             id="description"
                             label="Descrição"
+                            margin="normal"
                             multiline
                             rowsMax="5"
                             fullWidth
@@ -187,6 +189,7 @@ class Form extends React.Component {
                             onChange={this.handleChange('content')}
                             id="content"
                             label="Conteúdo"
+                            margin="normal"
                             multiline
                             rows="5"
                             fullWidth
@@ -197,6 +200,7 @@ class Form extends React.Component {
                             onChange={this.handleChange('source')}
                             id="source"
                             label="Fonte(s)"
+                            margin="normal"
                             multiline
                             rowsMax="10"
                             fullWidth
@@ -207,6 +211,7 @@ class Form extends React.Component {
                             onChange={this.handleChange('competence')}
                             id="competence"
                             label="Competências abordadas"
+                            margin="normal"
                             multiline
                             rowsMax="10"
                             fullWidth
@@ -226,7 +231,7 @@ class Form extends React.Component {
                                     Selecione uma opção
                                 </MenuItem>
                                 <MenuItem value="history">História</MenuItem>
-                                <MenuItem value="art">Artes</MenuItem>
+                                <MenuItem value="art">Arte</MenuItem>
                                 <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
                             </Select>
                             <FormHelperText>Disciplina abordada</FormHelperText>
@@ -247,7 +252,7 @@ class Form extends React.Component {
                                 <MenuItem value={1}>Sim</MenuItem>
                                 <MenuItem value={0}>Não</MenuItem>
                             </Select>
-                            <FormHelperText>Reutilização do conteúdo por outras pessoas</FormHelperText>
+                            <FormHelperText>Permitir a reutilização desse conteúdo por outras pessoas</FormHelperText>
                         </FormControl>
                         <div className={classes.flex}>
                             <Tooltip title="Cancelar e voltar">

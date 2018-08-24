@@ -69,7 +69,7 @@ class Share extends Component {
         return (
             <div className={classes.containerCard}>
                 <If test={!isLoading}>
-                    <List title="Lista de conteúdos" array={contents} path={`/dashboard/${classroomUrl}/content/view`} shareOption={true} />
+                    <List title="CONTEÚDOS PARA COMPARTILHAR" array={contents} path={`/dashboard/${classroomUrl}/content/view`} shareOption={true} />
                 </If>
                 <If test={isLoading}>
                     <Loading />
