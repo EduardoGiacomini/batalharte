@@ -150,23 +150,23 @@ class SignIn extends Component {
                         </div>
                         <form onSubmit={this.onSubmit}>
                             <TextField
-                                className={classes.marginTop}
                                 error={error.email}
                                 value={email}
                                 onChange={this.handleChange('email')}
                                 id="email"
                                 label="E-mail"
+                                margin="normal"
                                 type="email"
                                 fullWidth
                                 required
                             />
                             <TextField
-                                className={classes.marginTop}
                                 error={error.password}
                                 value={password}
                                 onChange={this.handleChange('password')}
                                 id="password"
                                 label="Senha"
+                                margin="normal"
                                 type="password"
                                 fullWidth
                                 required
@@ -178,7 +178,7 @@ class SignIn extends Component {
                             </If>
                             <If test={!isLoading}>
                                 <Button
-                                    className={classes.marginTop}
+                                    className={classes.margin}
                                     variant="contained"
                                     color="primary"
                                     type="submit"
@@ -193,10 +193,11 @@ class SignIn extends Component {
                                 </div>
                             </If>
                         </form>
-                        <div className={classes.marginTop}>
+                        <div className={classes.margin}>
                             <Tooltip title="Selecione para recuperar sua senha">
                                 <Link className={classes.link} to="/recuperaracesso">Esqueceu a senha?</Link>
                             </Tooltip>
+                            <br />
                             <br />
                             <Tooltip title="Selecione para efetuar um cadastro">
                                 <Link className={classes.link} to="/cadastrar-se">Não possui uma conta?</Link>

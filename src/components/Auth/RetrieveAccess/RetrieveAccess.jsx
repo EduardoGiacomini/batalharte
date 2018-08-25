@@ -129,12 +129,12 @@ class RetrieveAccess extends Component {
                     </div>
                     <form onSubmit={this.onSubmit}>
                         <TextField
-                            className={classes.marginTop}
                             error={error.email}
                             value={email}
                             onChange={this.handleChange('email')}
                             id="email"
                             label="E-mail"
+                            margin="normal"
                             type="email"
                             fullWidth
                             required
@@ -146,7 +146,7 @@ class RetrieveAccess extends Component {
                         </If>
                         <If test={!isLoading}>
                             <Button
-                                className={classes.marginTop}
+                                className={classes.margin}
                                 variant="contained"
                                 color="primary"
                                 type="submit"
@@ -161,7 +161,7 @@ class RetrieveAccess extends Component {
                             </div>
                         </If>
                     </form>
-                    <div className={classes.marginTop}>
+                    <div className={classes.margin}>
                         <Tooltip title="Selecione para voltar à página de autenticação">
                             <Link className={classes.link} to="/">Voltar</Link>
                         </Tooltip>

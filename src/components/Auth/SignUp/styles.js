@@ -27,8 +27,9 @@ const styles = theme => ({
         textDecoration: 'none',
         color: '#3E2723',
     },
-    marginTop: {
-        marginTop: 10
+    margin: {
+        marginTop: 16,
+        marginBottom: 8
     }
 });
 

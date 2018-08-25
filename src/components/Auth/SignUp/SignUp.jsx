@@ -192,43 +192,43 @@ class SignUp extends Component {
                     </div>
                     <form onSubmit={this.onSubmit}>
                         <TextField
-                            className={classes.marginTop}
                             value={name}
                             onChange={this.handleChange('name')}
                             id="name"
                             label="Nome completo"
+                            margin="normal"
                             type="text"
                             fullWidth
                             required
                         />
                         <TextField
-                            className={classes.marginTop}
                             value={school}
                             onChange={this.handleChange('school')}
                             id="school"
                             label="Instituição de ensino"
+                            margin="normal"
                             type="text"
                             fullWidth
                             required
                         />
                         <TextField
-                            className={classes.marginTop}
                             error={error.email}
                             value={email}
                             onChange={this.handleChange('email')}
                             id="email"
                             label="E-mail"
+                            margin="normal"
                             type="email"
                             fullWidth
                             required
                         />
                         <TextField
-                            className={classes.marginTop}
                             error={error.password}
                             value={password}
                             onChange={this.handleChange('password')}
                             id="password"
                             label="Senha"
+                            margin="normal"
                             type="password"
                             fullWidth
                             required
@@ -267,7 +267,7 @@ class SignUp extends Component {
                             </div>
                         </If>
                     </form>
-                    <div className={classes.marginTop}>
+                    <div className={classes.margin}>
                         <Tooltip title="Selecione para voltar à página de autenticação">
                             <Link className={classes.link} to="/">Voltar</Link>
                         </Tooltip>

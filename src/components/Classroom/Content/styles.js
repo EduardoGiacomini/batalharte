@@ -31,7 +31,7 @@ const styles = theme => ({
         fontSize: 20,
     },
     buttonAdd: {
-        position: 'absolute',
+        position: 'fixed',
         bottom: theme.spacing.unit * 2,
         right: theme.spacing.unit * 2,
     },
