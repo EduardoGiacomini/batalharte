@@ -16,8 +16,9 @@ import GamesIcon from '@material-ui/icons/Games';
 import StarsIcon from '@material-ui/icons/Stars';
 // Operator
 import If from '../../Operator/If';
-// Component
+// Components
 import Error from '../../Common/Error/Error';
+import InformationsClassroom from './InformationsClassrrom';
 
 const INITIAL_STATE = {
     isAuthenticated: true,
@@ -116,32 +117,43 @@ class NavigationClassroom extends Component {
             value,
         } = this.state;
 
+        //Props
+        const {
+            classroom,
+            user,
+        } = this.props;
+
         const classroomUrl = this.getPathClassroom();
 
         return (
             <div>
                 <If test={isExist}>
-                    <BottomNavigation
-                        value={value}
-                        onChange={this.handleChange}
-                        showLabels
-                    >
-                        <BottomNavigationAction
-                            component={Link}
-                            to={`/dashboard/${classroomUrl}/content`}
-                            label="Conteúdos"
-                            icon={<BookIcon />} />
-                        <BottomNavigationAction
-                            component={Link}
-                            to={`/dashboard/${classroomUrl}/quiz`}
-                            label="Quiz"
-                            icon={<GamesIcon />} />
-                        <BottomNavigationAction
-                            component={Link}
-                            to={`/dashboard/${classroomUrl}/ranking`}
-                            label="Ranking"
-                            icon={<StarsIcon />} />
-                    </BottomNavigation>
+                    <div>
+                        <BottomNavigation
+                            value={value}
+                            onChange={this.handleChange}
+                            showLabels
+                        >
+                            <BottomNavigationAction
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/content`}
+                                label="Conteúdos"
+                                icon={<BookIcon />} />
+                            <BottomNavigationAction
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/quiz`}
+                                label="Quiz"
+                                icon={<GamesIcon />} />
+                            <BottomNavigationAction
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/ranking`}
+                                label="Ranking"
+                                icon={<StarsIcon />} />
+                        </BottomNavigation>
+                        <If test={classroom}>
+                            <InformationsClassroom classroom={classroom} user={user} />
+                        </If>
+                    </div>
                 </If>
                 <If test={!isExist}>
                     <Error
@@ -158,7 +170,7 @@ class NavigationClassroom extends Component {
     }
 }
 
-const mapStateToProps = state => ({ classroom: state.classroom });
+const mapStateToProps = state => ({ classroom: state.classroom, user: state.user, });
 const mapDispatchToProps = dispatch => bindActionCreators({ doListClassroom }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavigationClassroom);
