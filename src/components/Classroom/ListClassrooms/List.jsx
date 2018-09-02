@@ -243,12 +243,12 @@ class ListClassrooms extends React.Component {
                                                 <Avatar>{name[0]}</Avatar>
                                                 <ListItemText primary={name} secondary={description} />
                                                 <ListItemSecondaryAction>
-                                                    <Tooltip title="Visualizar">
+                                                    <Tooltip title={`Visualizar ${name}`}>
                                                         <IconButton
                                                             component={Link}
                                                             to={`/dashboard/${uid}/content`}
                                                             aria-label={`Visualizar classe ${name}`}
-                                                            toltip="Visualizar">
+                                                            toltip={`Visualizar ${name}`}>
                                                             <VisibilityIcon />
                                                         </IconButton>
                                                     </Tooltip>
