@@ -49,7 +49,7 @@ const styles = theme => ({
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
-        margin: 20
+        margin: 20,
     },
     formControl: {
         //margin: theme.spacing.unit,

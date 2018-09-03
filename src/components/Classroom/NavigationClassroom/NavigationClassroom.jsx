@@ -60,7 +60,7 @@ class NavigationClassroom extends Component {
             case "content":
                 this.setState({ value: 0 });
                 break;
-            case "quiz":
+            case "quizzes":
                 this.setState({ value: 1 });
                 break;
             case "ranking":
@@ -141,7 +141,7 @@ class NavigationClassroom extends Component {
                                 icon={<BookIcon />} />
                             <BottomNavigationAction
                                 component={Link}
-                                to={`/dashboard/${classroomUrl}/quiz`}
+                                to={`/dashboard/${classroomUrl}/quizzes`}
                                 label="Quiz"
                                 icon={<GamesIcon />} />
                             <BottomNavigationAction

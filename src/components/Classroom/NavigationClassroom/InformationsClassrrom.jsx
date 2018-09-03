@@ -77,11 +77,6 @@ class InformationsClassroom extends Component {
             uid,
         } = classroom;
 
-        // UserInformations
-        const {
-            typeUser,
-        } = user;
-
         return (
             <Card className={classes.card}>
                 <CardHeader
@@ -110,11 +105,14 @@ class InformationsClassroom extends Component {
                         <Typography>
                             Professor(a): {teacherName}
                         </Typography>
-                        <If test={typeUser === 'teacher'}>
-                            <Typography color="textSecondary">
-                                Código: {uid}
-                            </Typography>
-                        </If>
+                        {
+                            user &&
+                            <If test={user.typeUser === 'teacher'}>
+                                <Typography color="textSecondary">
+                                    Código: {uid}
+                                </Typography>
+                            </If>
+                        }
                     </CardContent>
                 </Collapse>
             </Card>

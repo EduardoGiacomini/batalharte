@@ -10,10 +10,11 @@ import About from '../About/About';
 import Dashboard from '../Dashboard/Dashboard';
 import Contents from '../Classroom/Content/Contents';
 import Content from '../Classroom/Content/Content';
-import Form from '../Classroom/Content/Form';
-import Share from '../Classroom/Content/Share';
+import FormContent from '../Classroom/Content/Form';
+import ShareContent from '../Classroom/Content/Share';
 import Ranking from '../Classroom/Ranking/Ranking';
-import Quiz from '../Classroom/Quiz/Quiz';
+import Quizzes from '../Classroom/Quiz/Quizzes';
+import FormQuiz from '../Classroom/Quiz/Form';
 import NavigationClassroom from '../Classroom/NavigationClassroom/NavigationClassroom';
 
 export default props => {
@@ -31,11 +32,11 @@ export default props => {
                 <Route path="/dashboard/:id" component={NavigationClassroom} />
                 <Route exact path="/dashboard/:id/content" component={Contents} />
                 <Route exact path="/dashboard/:id/content/view/:id" component={(props) => <Content {...props} />} />
-                <Route exact path="/dashboard/:id/content/form" component={Form} />
-                <Route exact path="/dashboard/:id/content/share" component={Share} />
-                <Route exact path="/dashboard/:id/quiz" component={Quiz} />
-                <Route exact path="/dashboard/:id/quiz/form" component={() => <h1>Form Quiz</h1>} />
-                <Route exact path="/dashboard/:id/quiz/share" component={() => <h1>Share Quiz</h1>} />
+                <Route exact path="/dashboard/:id/content/form" component={FormContent} />
+                <Route exact path="/dashboard/:id/content/share" component={ShareContent} />
+                <Route exact path="/dashboard/:id/quizzes" component={Quizzes} />
+                <Route exact path="/dashboard/:id/quizzes/form" component={FormQuiz} />
+                <Route exact path="/dashboard/:id/quizzes/share" component={() => <h1>Share Quiz</h1>} />
                 <Route exact path="/dashboard/:id/ranking" component={Ranking} />
             </div>
         </BrowserRouter>

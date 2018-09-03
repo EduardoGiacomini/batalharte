@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 // Router
 import { Link } from 'react-router-dom';
-// Firebase
-import { database } from '../../../firebase';
 // Redux
 import { connect } from 'react-redux';
 // Material-ui
@@ -22,8 +20,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import styles from './styles';
 // Operator
 import If from '../../Operator/If';
-// Components
-import List from './List';
+// Loading
 import Loading from '../../Loading/Loading';
 
 function Transition(props) {
@@ -32,21 +29,20 @@ function Transition(props) {
 
 const INITIAL_STATE = {
     open: false,
-    contents: [],
 };
 
-class Contents extends React.Component {
+class Quizzes extends React.Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
     };
 
-    componentDidMount = () => {
+    /*componentDidMount = () => {
         // Props
         const { classroom } = this.props;
 
         if (classroom) {
-            this.getContent(classroom.contents);
+            this.getQuizzes(classroom.quizzes);
         }
     };
 
@@ -56,28 +52,12 @@ class Contents extends React.Component {
 
         if (nextProps.classroom) {
             if (nextProps.classroom !== classroom) {
-                this.getContent(nextProps.classroom.contents);
+                this.getQuizzes(nextProps.classroom.quizzes);
             }
         }
     };
 
-    handleClickOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
-    // Função responsável por retornar o ID da classe representado pela URL da que o usuário está.
-    getPathClassroom = () => {
-        // Props PathName
-        const { pathname } = this.props.location;
-        const classroom = pathname.split('/');
-        return classroom[2];
-    };
-
-    getContent = (contents) => {
+    getQuizzes = (quizzes) => {
         const contentsUids = this.getContentsUids(contents);
 
         const contentsPromises = contentsUids.map(uid => {
@@ -91,52 +71,36 @@ class Contents extends React.Component {
             .catch(err => {
                 console.log("Ocorreu um erro durante a busca.", err);
             })
+    };*/
+
+    handleClickOpen = () => {
+        this.setState({ open: true });
     };
 
-    getContentsUids = (contents) => {
-        let contentsUids = [];
-
-        for (let item in contents) {
-            contentsUids.push(item);
-        }
-
-        return contentsUids;
+    handleClose = () => {
+        this.setState({ open: false });
     };
 
-    listContents = (contents) => {
-        const contentsArray = [];
-
-        contents.forEach(content => {
-            if (content.val()) {
-                const contentObject = content.val();
-                contentObject.uid = content.key;
-                contentsArray.push(contentObject);
-            }
-        });
-
-        this.setState({ contents: contentsArray });
+    // Função responsável por retornar o ID da classe representado pela URL da que o usuário está.
+    getPathClassroom = () => {
+        const { pathname } = this.props.location;
+        const classroom = pathname.split('/');
+        return classroom[2];
     };
 
     render() {
-        // State
-        const {
-            open,
-            contents,
-        } = this.state;
-
         // Props
         const {
             classes,
-            user,
             classroom,
+            user,
         } = this.props;
 
         const classroomUrl = this.getPathClassroom();
 
         return (
-            <div className={classes.containerCard}>
+            <div>
                 <If test={!!classroom}>
-                    <List title="CONTEÚDOS DESSA TURMA" array={contents} path={`/dashboard/${classroomUrl}/content/view`} shareOption={false} />
                     {
                         user &&
                         user.typeUser === "teacher" &&
@@ -153,7 +117,7 @@ class Contents extends React.Component {
                         </Tooltip>
                     }
                     <Dialog
-                        open={open}
+                        open={this.state.open}
                         TransitionComponent={Transition}
                         keepMounted
                         onClose={this.handleClose}
@@ -162,25 +126,25 @@ class Contents extends React.Component {
                     >
                         <DialogTitle
                             id="alert-dialog-title">
-                            {"Adicionar conteúdo"}
+                            {"Adicionar quiz"}
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                Você deseja cadastrar um novo conteúdo ou compartilhar um existente?                            </DialogContentText>
+                                Você deseja cadastrar um novo quiz ou compartilhar um existente?                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                             <Button
                                 component={Link}
-                                to={`/dashboard/${classroomUrl}/content/form`}
+                                to={`/dashboard/${classroomUrl}/quizzes/form`}
                                 onClick={this.handleClose}
                                 color="primary"
                                 fullWidth={true}
                             >
                                 Cadastrar
-                            </Button>
+                        </Button>
                             <Button
                                 component={Link}
-                                to={`/dashboard/${classroomUrl}/content/share`}
+                                to={`/dashboard/${classroomUrl}/quizzes/share`}
                                 onClick={this.handleClose}
                                 color="primary"
                                 fullWidth={true}
@@ -198,7 +162,7 @@ class Contents extends React.Component {
     }
 }
 
-Contents.propTypes = {
+Quizzes.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
@@ -206,4 +170,4 @@ const mapStateToProps = state => ({ user: state.user, classroom: state.classroom
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, null))(Contents);
+    connect(mapStateToProps, null))(Quizzes);

@@ -261,15 +261,17 @@ class ListClassrooms extends React.Component {
                         </List>
                     </CardContent>
                 </Card>
-                <Button
-                    variant="fab"
-                    color="primary"
-                    aria-label="Add"
-                    className={classes.button}
-                    onClick={this.handleOpen}
-                >
-                    <AddIcon />
-                </Button>
+                <Tooltip title="Exibir opções">
+                    <Button
+                        variant="fab"
+                        color="primary"
+                        aria-label="Exibir opções"
+                        className={classes.button}
+                        onClick={this.handleOpen}
+                    >
+                        <AddIcon />
+                    </Button>
+                </Tooltip>
                 <DialogTeacher
                     open={openDialogTeacher}
                     name={name}

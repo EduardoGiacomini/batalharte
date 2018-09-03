@@ -45,3 +45,7 @@ export const doGetContent = (content) =>
 // Get Contents
 export const doGetContentsPublic = () =>
     database.ref('contents').orderByChild('isPublic').equalTo(true).once('value', contentsData => contentsData);
+
+// Register question
+export const doRegisterQuestion = (question) =>
+    database.ref('questions').push({ ...question });
