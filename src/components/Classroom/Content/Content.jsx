@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 // Operator
 import If from '../../Operator/If';
 // Component
@@ -16,10 +17,12 @@ import Loading from '../../Loading/Loading';
 import Error from '../../Common/Error/Error';
 // styles
 import styles from './styles';
+import { Tooltip } from '@material-ui/core';
 
 const INITIAL_STATE = {
     isLoading: true,
     isError: false,
+    openSnackbarSuccess: false,
     author: '',
     discipline: '',
     competence: '',
@@ -33,6 +36,10 @@ class Content extends Component {
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
+    };
+
+    handleClose = (snackbar) => {
+        this.setState({ [snackbar]: false });
     };
 
     componentDidMount = () => {
@@ -71,7 +78,7 @@ class Content extends Component {
             title,
             description,
             content,
-            source
+            source,
         } = contentObject;
 
         database.doGetUser(author)
@@ -112,6 +119,7 @@ class Content extends Component {
 
         database.doRegisterContentInClassroom(idContent, idClassroom)
             .then(() => {
+                this.setState({ openSnackbarSuccess: true });
                 console.log('Conteúdo anexado na classe!');
             });
     };
@@ -121,6 +129,7 @@ class Content extends Component {
         const {
             isLoading,
             isError,
+            openSnackbarSuccess,
             author,
             discipline,
             competence,
@@ -177,25 +186,39 @@ class Content extends Component {
                             </Typography>
                             <div className={classes.flex}>
                                 <If test={shareOption}>
+                                    <Tooltip title="Compartilhar conteúdo">
+                                        <Button
+                                            variant="outlined"
+                                            fullWidth={true}
+                                            className={classes.marginLeft}
+                                            onClick={() => this.registerContentInClassroom()}
+                                        >
+                                            Compartilhar
+                                        </Button>
+                                    </Tooltip>
+                                </If>
+                                <Tooltip title="Voltar à lista de conteúdos">
                                     <Button
+                                        component={Link}
+                                        to={`/dashboard/${classroomId}/content`}
                                         variant="outlined"
                                         fullWidth={true}
-                                        className={classes.marginLeft}
-                                        onClick={() => this.registerContentInClassroom()}
+                                        className={classes.marginRight}
                                     >
-                                        Compartilhar
-                                </Button>
-                                </If>
-                                <Button
-                                    component={Link}
-                                    to={`/dashboard/${classroomId}/content`}
-                                    variant="outlined"
-                                    fullWidth={true}
-                                    className={classes.marginRight}
-                                >
-                                    Voltar
-                        </Button>
+                                        Voltar
+                                    </Button>
+                                </Tooltip>
                             </div>
+                            <Snackbar
+                                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                                open={openSnackbarSuccess}
+                                onClose={() => this.handleClose('openSnackbarSuccess')}
+                                autoHideDuration={6000}
+                                ContentProps={{
+                                    'mensagem-sucesso': 'message-success',
+                                }}
+                                message={<span id="message-success">Conteúdo compartilhado com sucesso!</span>}
+                            />
                         </Paper>
                     </If>
                     <If test={isError}>

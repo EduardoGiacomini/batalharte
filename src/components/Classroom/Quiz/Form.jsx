@@ -183,7 +183,7 @@ class Form extends Component {
         return (
             <Paper className={classes.root} elevation={1}>
                 <Typography align="center" variant="title" className={classes.title}>
-                    Cadastrar Pergunta
+                    CADASTRAR PERGUNTA
                     </Typography>
                 <form onSubmit={this.onSubmit}>
                     <TextField
@@ -249,64 +249,70 @@ class Form extends Component {
                         fullWidth
                         required
                     />
-                    <FormControl required className={classes.formControl}>
-                        <InputLabel htmlFor="correctOption-input">Opção correta</InputLabel>
-                        <Select
-                            value={correctOption}
-                            onChange={this.handleChangeSelect}
-                            name="correctOption"
-                            inputProps={{
-                                id: 'correctOption-input',
-                            }}
-                        >
-                            <MenuItem value="" disabled>
-                                Selecione uma opção
+                    <Tooltip title="Selecione uma opção">
+                        <FormControl required className={classes.formControl}>
+                            <InputLabel htmlFor="correctOption-input">Opção correta</InputLabel>
+                            <Select
+                                value={correctOption}
+                                onChange={this.handleChangeSelect}
+                                name="correctOption"
+                                inputProps={{
+                                    id: 'correctOption-input',
+                                }}
+                            >
+                                <MenuItem value="" disabled>
+                                    Selecione uma opção
                                 </MenuItem>
-                            <MenuItem value={1}>Primeira opção</MenuItem>
-                            <MenuItem value={2}>Segunda opção</MenuItem>
-                            <MenuItem value={3}>Terceira opção</MenuItem>
-                            <MenuItem value={4}>Quarta opção</MenuItem>
-                        </Select>
-                        <FormHelperText>Disciplina abordada</FormHelperText>
-                    </FormControl>
-                    <FormControl required className={classes.formControl}>
-                        <InputLabel htmlFor="discipline-input">Disciplina</InputLabel>
-                        <Select
-                            value={discipline}
-                            onChange={this.handleChangeSelect}
-                            name="discipline"
-                            inputProps={{
-                                id: 'discipline-input',
-                            }}
-                        >
-                            <MenuItem value="" disabled>
-                                Selecione uma opção
+                                <MenuItem value={1}>Primeira opção</MenuItem>
+                                <MenuItem value={2}>Segunda opção</MenuItem>
+                                <MenuItem value={3}>Terceira opção</MenuItem>
+                                <MenuItem value={4}>Quarta opção</MenuItem>
+                            </Select>
+                            <FormHelperText>Disciplina abordada</FormHelperText>
+                        </FormControl>
+                    </Tooltip>
+                    <Tooltip title="Selecione uma opção">
+                        <FormControl required className={classes.formControl}>
+                            <InputLabel htmlFor="discipline-input">Disciplina</InputLabel>
+                            <Select
+                                value={discipline}
+                                onChange={this.handleChangeSelect}
+                                name="discipline"
+                                inputProps={{
+                                    id: 'discipline-input',
+                                }}
+                            >
+                                <MenuItem value="" disabled>
+                                    Selecione uma opção
                                 </MenuItem>
-                            <MenuItem value="history">História</MenuItem>
-                            <MenuItem value="art">Artes</MenuItem>
-                            <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
-                        </Select>
-                        <FormHelperText>Disciplina abordada</FormHelperText>
-                    </FormControl>
-                    <FormControl required className={classes.formControl}>
-                        <InputLabel htmlFor="difficult-input">Nível de dificuldade</InputLabel>
-                        <Select
-                            value={difficult}
-                            onChange={this.handleChangeSelect}
-                            name="difficult"
-                            inputProps={{
-                                id: 'difficult-input',
-                            }}
-                        >
-                            <MenuItem value="" disabled>
-                                Selecione uma opção
+                                <MenuItem value="history">História</MenuItem>
+                                <MenuItem value="art">Artes</MenuItem>
+                                <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
+                            </Select>
+                            <FormHelperText>Disciplina abordada</FormHelperText>
+                        </FormControl>
+                    </Tooltip>
+                    <Tooltip title="Selecione uma opção">
+                        <FormControl required className={classes.formControl}>
+                            <InputLabel htmlFor="difficult-input">Nível de dificuldade</InputLabel>
+                            <Select
+                                value={difficult}
+                                onChange={this.handleChangeSelect}
+                                name="difficult"
+                                inputProps={{
+                                    id: 'difficult-input',
+                                }}
+                            >
+                                <MenuItem value="" disabled>
+                                    Selecione uma opção
                                 </MenuItem>
-                            <MenuItem value="easy">Fácil</MenuItem>
-                            <MenuItem value="medium">Médio</MenuItem>
-                            <MenuItem value="hard">Difícil</MenuItem>
-                        </Select>
-                        <FormHelperText>Nível de dificuldade da pergunta</FormHelperText>
-                    </FormControl>
+                                <MenuItem value="easy">Fácil</MenuItem>
+                                <MenuItem value="medium">Médio</MenuItem>
+                                <MenuItem value="hard">Difícil</MenuItem>
+                            </Select>
+                            <FormHelperText>Nível de dificuldade da pergunta</FormHelperText>
+                        </FormControl>
+                    </Tooltip>
                     <TextField
                         value={content}
                         onChange={this.handleChange('content')}
@@ -364,7 +370,7 @@ class Form extends Component {
                     ContentProps={{
                         'mensagem-sucesso': 'message-success',
                     }}
-                    message={<span id="message-success">Questão salva com sucesso!</span>}
+                    message={<span id="message-success">Pergunta salva com sucesso!</span>}
                 />
             </Paper>
         );

@@ -126,31 +126,35 @@ class Quizzes extends React.Component {
                     >
                         <DialogTitle
                             id="alert-dialog-title">
-                            {"Adicionar quiz"}
+                            {"Novo quiz"}
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                Você deseja cadastrar um novo quiz ou compartilhar um existente?                            </DialogContentText>
+                                Você deseja cadastrar novas perguntas ou criar um quiz com perguntas existentes?                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button
-                                component={Link}
-                                to={`/dashboard/${classroomUrl}/quizzes/form`}
-                                onClick={this.handleClose}
-                                color="primary"
-                                fullWidth={true}
-                            >
-                                Cadastrar Questões
-                        </Button>
-                            <Button
-                                component={Link}
-                                to={`/dashboard/${classroomUrl}/quizzes/create`}
-                                onClick={this.handleClose}
-                                color="primary"
-                                fullWidth={true}
-                            >
-                                Criar Quiz
-                        </Button>
+                            <Tooltip title="Cadastrar perguntas">
+                                <Button
+                                    component={Link}
+                                    to={`/dashboard/${classroomUrl}/quizzes/form`}
+                                    onClick={this.handleClose}
+                                    color="primary"
+                                    fullWidth={true}
+                                >
+                                    Cadastrar
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="Criar quiz">
+                                <Button
+                                    component={Link}
+                                    to={`/dashboard/${classroomUrl}/quizzes/create`}
+                                    onClick={this.handleClose}
+                                    color="primary"
+                                    fullWidth={true}
+                                >
+                                    Criar
+                            </Button>
+                            </Tooltip>
                         </DialogActions>
                     </Dialog>
                 </If>

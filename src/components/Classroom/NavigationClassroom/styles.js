@@ -19,6 +19,9 @@ const styles = theme => ({
     expandOpen: {
         transform: 'rotate(180deg)',
     },
+    marginButton: {
+        margin: 16
+    },
     bullet: {
         display: 'inline-block',
         margin: '0 2px',

@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 // Styles
 import styles from './styles';
 
@@ -41,6 +42,7 @@ const DialogTeacher = (props) => {
                     margin="normal"
                     autoFocus
                     fullWidth
+                    required
                 />
                 <TextField
                     value={description}
@@ -54,12 +56,16 @@ const DialogTeacher = (props) => {
             </DialogContent>
             <DialogActions>
                 <div className={classes.containerButtons}>
-                    <Button onClick={handleClose} color="primary">
-                        Cancelar
+                    <Tooltip title="Cancelar cadastro">
+                        <Button onClick={handleClose} color="primary">
+                            Cancelar
                     </Button>
-                    <Button onClick={onSubmit} color="primary">
-                        Cadastrar
+                    </Tooltip>
+                    <Tooltip title="Cadastrar turma">
+                        <Button onClick={onSubmit} color="primary">
+                            Cadastrar
                     </Button>
+                    </Tooltip>
                 </div>
             </DialogActions>
         </Dialog>
