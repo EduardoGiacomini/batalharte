@@ -49,3 +49,11 @@ export const doGetContentsPublic = () =>
 // Register question
 export const doRegisterQuestion = (question) =>
     database.ref('questions').push({ ...question });
+
+// Get questions (Full)
+export const doGetQuestions = () =>
+    database.ref('questions').once('value');
+
+// Get questions (Filter on)
+export const doGetQuestionsWithFilter = (filter) =>
+    database.ref('questions').orderByChild('discipline').equalTo(filter).once('value');

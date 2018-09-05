@@ -140,16 +140,16 @@ class Quizzes extends React.Component {
                                 color="primary"
                                 fullWidth={true}
                             >
-                                Cadastrar
+                                Cadastrar Questões
                         </Button>
                             <Button
                                 component={Link}
-                                to={`/dashboard/${classroomUrl}/quizzes/share`}
+                                to={`/dashboard/${classroomUrl}/quizzes/create`}
                                 onClick={this.handleClose}
                                 color="primary"
                                 fullWidth={true}
                             >
-                                Compartilhar
+                                Criar Quiz
                         </Button>
                         </DialogActions>
                     </Dialog>

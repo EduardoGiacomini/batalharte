@@ -68,8 +68,25 @@ const styles = theme => ({
     optionError: {
         color: 'red',
     },
-    optionSucces: {
+    optionSuccess: {
         color: 'green',
+    },
+    // Create
+    titleCreate: {
+        textAlign: 'center',
+    },
+    descriptionCreate: {
+        textAlign: 'justify',
+    },
+    optionErrorCreate: {
+        color: 'red',
+        margin: '5px 0 5px 0',
+        textAlign: 'justify',
+    },
+    optionSuccessCreate: {
+        color: 'green',
+        margin: '5px 0 5px 0',
+        textAlign: 'justify',
     },
 });
 

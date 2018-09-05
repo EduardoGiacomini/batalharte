@@ -205,7 +205,7 @@ class Form extends Component {
                         margin="normal"
                         type="text"
                         InputProps={{
-                            className: correctOption !== 0 ? correctOption === 1 ? classes.optionSucces : classes.optionError : null
+                            className: correctOption !== 0 ? correctOption === 1 ? classes.optionSuccess : classes.optionError : null
                         }}
                         fullWidth
                         required
@@ -218,7 +218,7 @@ class Form extends Component {
                         margin="normal"
                         type="text"
                         InputProps={{
-                            className: correctOption !== 0 ? correctOption === 2 ? classes.optionSucces : classes.optionError : null
+                            className: correctOption !== 0 ? correctOption === 2 ? classes.optionSuccess : classes.optionError : null
                         }}
                         fullWidth
                         required
@@ -231,7 +231,7 @@ class Form extends Component {
                         margin="normal"
                         type="text"
                         InputProps={{
-                            className: correctOption !== 0 ? correctOption === 3 ? classes.optionSucces : classes.optionError : null
+                            className: correctOption !== 0 ? correctOption === 3 ? classes.optionSuccess : classes.optionError : null
                         }}
                         fullWidth
                         required
@@ -244,7 +244,7 @@ class Form extends Component {
                         margin="normal"
                         type="text"
                         InputProps={{
-                            className: correctOption !== 0 ? correctOption === 4 ? classes.optionSucces : classes.optionError : null
+                            className: correctOption !== 0 ? correctOption === 4 ? classes.optionSuccess : classes.optionError : null
                         }}
                         fullWidth
                         required
@@ -283,7 +283,7 @@ class Form extends Component {
                                 Selecione uma opção
                                 </MenuItem>
                             <MenuItem value="history">História</MenuItem>
-                            <MenuItem value="art">Arte</MenuItem>
+                            <MenuItem value="art">Artes</MenuItem>
                             <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
                         </Select>
                         <FormHelperText>Disciplina abordada</FormHelperText>
