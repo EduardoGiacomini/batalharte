@@ -86,6 +86,10 @@ class Create extends Component {
         this.getQuestions(event.target.value);
     };
 
+    registerQuiz = (questions) => {
+        console.log('questions');
+    };
+
     render() {
         // State
         const {
@@ -125,7 +129,7 @@ class Create extends Component {
                             </Select>
                             <FormHelperText>Filtrar questões por disciplina</FormHelperText>
                         </FormControl>
-                        <CardQuestion questions={questionsDataBase} />
+                        <CardQuestion questions={questionsDataBase} registerQuiz={this.registerQuiz} />
                     </Paper>
                 </If>
                 <If test={isLoading}>
