@@ -13,6 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 // Styles
 import styles from './styles';
 // Operator
@@ -88,8 +89,9 @@ class InformationsClassroom extends Component {
                     title={name}
                     subheader={description}
                     action={
+                        <Tooltip title="Exibir informações">
                         <IconButton
-                            className={classnames(classes.expand, {
+                            className={classnames(classes.marginButton, classes.expand, {
                                 [classes.expandOpen]: expanded,
                             })}
                             onClick={this.handleExpandClick}
@@ -98,6 +100,7 @@ class InformationsClassroom extends Component {
                         >
                             <ExpandMoreIcon />
                         </IconButton>
+                        </Tooltip>
                     }
                 />
                 <Collapse in={expanded} timeout="auto" unmountOnExit>

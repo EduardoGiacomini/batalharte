@@ -110,7 +110,7 @@ class Create extends Component {
                 <If test={!isLoading}>
                     <Paper className={classes.root} elevation={1}>
                         <Typography align="center" variant="title" className={classes.title}>
-                            Criar Quiz
+                            CRIAR QUIZ
                         </Typography>
                         <FormControl className={classes.formControl}>
                             <InputLabel htmlFor="filter-input">Filtrar questões por:</InputLabel>

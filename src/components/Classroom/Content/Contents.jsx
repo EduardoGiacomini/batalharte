@@ -162,31 +162,35 @@ class Contents extends React.Component {
                     >
                         <DialogTitle
                             id="alert-dialog-title">
-                            {"Adicionar conteúdo"}
+                            {"Novo conteúdo"}
                         </DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
                                 Você deseja cadastrar um novo conteúdo ou compartilhar um existente?                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button
-                                component={Link}
-                                to={`/dashboard/${classroomUrl}/content/form`}
-                                onClick={this.handleClose}
-                                color="primary"
-                                fullWidth={true}
-                            >
-                                Cadastrar
+                            <Tooltip title="Cadastrar conteúdo">
+                                <Button
+                                    component={Link}
+                                    to={`/dashboard/${classroomUrl}/content/form`}
+                                    onClick={this.handleClose}
+                                    color="primary"
+                                    fullWidth={true}
+                                >
+                                    Cadastrar
                             </Button>
-                            <Button
-                                component={Link}
-                                to={`/dashboard/${classroomUrl}/content/share`}
-                                onClick={this.handleClose}
-                                color="primary"
-                                fullWidth={true}
-                            >
-                                Compartilhar
+                            </Tooltip>
+                            <Tooltip title="Compartilhar conteúdo">
+                                <Button
+                                    component={Link}
+                                    to={`/dashboard/${classroomUrl}/content/share`}
+                                    onClick={this.handleClose}
+                                    color="primary"
+                                    fullWidth={true}
+                                >
+                                    Compartilhar
                         </Button>
+                            </Tooltip>
                         </DialogActions>
                     </Dialog>
                 </If>

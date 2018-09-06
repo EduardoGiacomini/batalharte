@@ -160,7 +160,7 @@ class Form extends React.Component {
             <div>
                 <Paper className={classes.root} elevation={1}>
                     <Typography align="center" variant="title" className={classes.title}>
-                        Cadastrar Conteúdo
+                        CADASTRAR CONTEÚDO
                     </Typography>
                     <form onSubmit={this.onSubmit}>
                         <TextField
@@ -217,43 +217,47 @@ class Form extends React.Component {
                             fullWidth
                             required
                         />
-                        <FormControl required className={classes.formControl}>
-                            <InputLabel htmlFor="discipline-input">Disciplina</InputLabel>
-                            <Select
-                                value={discipline}
-                                onChange={this.handleChangeSelect}
-                                name="discipline"
-                                inputProps={{
-                                    id: 'discipline-input',
-                                }}
-                            >
-                                <MenuItem value="" disabled>
-                                    Selecione uma opção
+                        <Tooltip title="Selecione uma opção.">
+                            <FormControl required className={classes.formControl}>
+                                <InputLabel htmlFor="discipline-input">Disciplina</InputLabel>
+                                <Select
+                                    value={discipline}
+                                    onChange={this.handleChangeSelect}
+                                    name="discipline"
+                                    inputProps={{
+                                        id: 'discipline-input',
+                                    }}
+                                >
+                                    <MenuItem value="" disabled>
+                                        Selecione uma opção
                                 </MenuItem>
-                                <MenuItem value="history">História</MenuItem>
-                                <MenuItem value="art">Arte</MenuItem>
-                                <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
-                            </Select>
-                            <FormHelperText>Disciplina abordada</FormHelperText>
-                        </FormControl>
-                        <FormControl required className={classes.formControl}>
-                            <InputLabel htmlFor="isPublic-input">Conteúdo público</InputLabel>
-                            <Select
-                                value={isPublic}
-                                onChange={this.handleChangeSelect}
-                                name="isPublic"
-                                inputProps={{
-                                    id: 'isPublic-input',
-                                }}
-                            >
-                                <MenuItem value="" disabled>
-                                    Selecione uma opção
+                                    <MenuItem value="history">História</MenuItem>
+                                    <MenuItem value="art">Arte</MenuItem>
+                                    <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
+                                </Select>
+                                <FormHelperText>Disciplina abordada</FormHelperText>
+                            </FormControl>
+                        </Tooltip>
+                        <Tooltip title="Selecione uma opção.">
+                            <FormControl required className={classes.formControl}>
+                                <InputLabel htmlFor="isPublic-input">Conteúdo público</InputLabel>
+                                <Select
+                                    value={isPublic}
+                                    onChange={this.handleChangeSelect}
+                                    name="isPublic"
+                                    inputProps={{
+                                        id: 'isPublic-input',
+                                    }}
+                                >
+                                    <MenuItem value="" disabled>
+                                        Selecione uma opção
                                 </MenuItem>
-                                <MenuItem value={1}>Sim</MenuItem>
-                                <MenuItem value={0}>Não</MenuItem>
-                            </Select>
-                            <FormHelperText>Permitir a reutilização desse conteúdo por outras pessoas</FormHelperText>
-                        </FormControl>
+                                    <MenuItem value={1}>Sim</MenuItem>
+                                    <MenuItem value={0}>Não</MenuItem>
+                                </Select>
+                                <FormHelperText>Permitir a reutilização desse conteúdo por outras pessoas</FormHelperText>
+                            </FormControl>
+                        </Tooltip>
                         <div className={classes.flex}>
                             <Tooltip title="Cancelar e voltar">
                                 <Button

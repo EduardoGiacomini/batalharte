@@ -86,14 +86,16 @@ class MenuAppBar extends React.Component {
                         </Typography>
                         <If test={user}>
                             <div>
-                                <IconButton
-                                    aria-owns={open ? 'menu-appbar' : null}
-                                    aria-haspopup="true"
-                                    onClick={this.handleMenu}
-                                    color="inherit"
-                                >
-                                    <AccountCircle />
-                                </IconButton>
+                                <Tooltip title="Sair">
+                                    <IconButton
+                                        aria-owns={open ? 'menu-appbar' : null}
+                                        aria-haspopup="true"
+                                        onClick={this.handleMenu}
+                                        color="inherit"
+                                    >
+                                        <AccountCircle />
+                                    </IconButton>
+                                </Tooltip>
                                 <Menu
                                     id="menu-appbar"
                                     anchorEl={anchorEl}

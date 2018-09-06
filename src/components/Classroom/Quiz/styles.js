@@ -71,12 +71,12 @@ const styles = theme => ({
     optionSuccess: {
         color: 'green',
     },
-    // Create
-    titleCreate: {
-        textAlign: 'center',
+    //Create
+    textSecondaryCreat: {
+        margin: '16px 0',
     },
     descriptionCreate: {
-        textAlign: 'justify',
+        margin: '16px 0',
     },
     optionErrorCreate: {
         color: 'red',
