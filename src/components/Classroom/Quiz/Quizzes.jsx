@@ -133,7 +133,6 @@ class Quizzes extends React.Component {
                                 Você deseja cadastrar novas perguntas ou criar um quiz com perguntas existentes?                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Tooltip title="Cadastrar perguntas">
                                 <Button
                                     component={Link}
                                     to={`/dashboard/${classroomUrl}/quizzes/form`}
@@ -141,10 +140,8 @@ class Quizzes extends React.Component {
                                     color="primary"
                                     fullWidth={true}
                                 >
-                                    Cadastrar
+                                    Cadastrar Questões
                                 </Button>
-                            </Tooltip>
-                            <Tooltip title="Criar quiz">
                                 <Button
                                     component={Link}
                                     to={`/dashboard/${classroomUrl}/quizzes/create`}
@@ -152,9 +149,8 @@ class Quizzes extends React.Component {
                                     color="primary"
                                     fullWidth={true}
                                 >
-                                    Criar
+                                    Criar Quiz
                             </Button>
-                            </Tooltip>
                         </DialogActions>
                     </Dialog>
                 </If>

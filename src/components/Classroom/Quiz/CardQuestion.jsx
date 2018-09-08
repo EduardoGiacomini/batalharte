@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+// Router
+import { Link } from 'react-router-dom';
+// Redux
+import { connect } from 'react-redux';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -10,8 +15,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 // Styles
 import styles from './styles';
+// Operator
+import If from '../../Operator/If';
 
 const INITIAL_STATE = {
     questionsChosen: {},
@@ -38,6 +46,10 @@ class CardQuestion extends Component {
         }
     };
 
+    submitQuestions = (questionsChosenArray) => {
+        this.props.registerQuiz(questionsChosenArray);
+    };
+
     render() {
         // State
         const {
@@ -46,22 +58,29 @@ class CardQuestion extends Component {
 
         const questionsChosenArray = Object.keys(questionsChosen);
 
-        console.log(questionsChosen);
-
         // Props
         const {
             classes,
+            classroom,
             questions,
+            isLoadingForm,
         } = this.props;
+
+        // Get path Classroom
+        const {
+            uid,
+        } = classroom;
+
+        console.log(questionsChosen);
 
         return (
             <div>
                 <Tooltip title={`${questionsChosenArray.length} questões ativadas`}>
                     <Button
                         variant="fab"
-                        color="primary"
                         aria-label="questions-chosen"
                         className={classes.buttonAdd}
+                        color="secondary"
                     >
                         {
                             questionsChosenArray.length
@@ -176,6 +195,34 @@ class CardQuestion extends Component {
                             );
                         })
                 }
+                <div className={classes.flex}>
+                    <Tooltip title="Cancelar e voltar">
+                        <Button
+                            component={Link}
+                            to={`/dashboard/${uid}/quizzes`}
+                            variant="outlined"
+                            className={classes.marginLeft}
+                            disabled={isLoadingForm}
+                            fullWidth>
+                            Cancelar
+                                </Button>
+                    </Tooltip>
+                    <Tooltip title="Criar quiz">
+                        <Button
+                            variant="outlined"
+                            onClick={() => this.submitQuestions(questionsChosenArray)}
+                            className={classes.marginRight}
+                            disabled={isLoadingForm}
+                            fullWidth>
+                            <If test={!isLoadingForm}>
+                                Criar Quiz
+                                    </If>
+                            <If test={isLoadingForm}>
+                                <CircularProgress size={20} thickness={7} />
+                            </If>
+                        </Button>
+                    </Tooltip>
+                </div>
             </div>
         );
     };
@@ -185,4 +232,8 @@ CardQuestion.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CardQuestion);
+const mapStateToProps = state => ({ classroom: state.classroom });
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, null))(CardQuestion);

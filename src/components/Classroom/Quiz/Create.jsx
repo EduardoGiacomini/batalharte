@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
+// Router
+import { Redirect } from 'react-router-dom';
 // Firebase
 import { database } from '../../../firebase';
 // Redux
@@ -9,11 +11,14 @@ import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Tooltip from '@material-ui/core/Tooltip';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Snackbar from '@material-ui/core/Snackbar';
 // Styles
 import styles from './styles';
 // Operator
@@ -24,9 +29,17 @@ import CardQuestion from './CardQuestion';
 
 const INITIAL_STATE = {
     isLoading: true,
+    isLoadingForm: false,
+    openSnackbar: false,
+    redirect: false,
     filter: 'all',
     questionsDataBase: [], // Questões adquiridas do banco de dados.
     questions: [], // Questões que o usuário irá escolher para criar o quiz.
+    title: '',
+    description: '',
+    discipline: '',
+    content: '',
+    competence: '',
 };
 
 class Create extends Component {
@@ -52,6 +65,15 @@ class Create extends Component {
             if (nextProps.classroom !== classroom) {
                 this.getQuestions();
             }
+        }
+    };
+
+    checkClassroom = () => {
+        // Props
+        const { classroom } = this.props;
+
+        if (classroom) {
+            this.getQuestions();
         }
     };
 
@@ -86,24 +108,95 @@ class Create extends Component {
         this.getQuestions(event.target.value);
     };
 
+    handleChangeTextField = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
+    handleChangeSelect = event => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    handleClose = (snackbar) => {
+        this.setState({ [snackbar]: false });
+    };
+
     registerQuiz = (questions) => {
-        console.log('questions');
+
+        // Set Loading
+        this.setState({ isLoadingForm: true });
+
+        // Props
+        const {
+            classroom,
+        } = this.props;
+
+        // Get uid Classroom
+        const {
+            uid,
+        } = classroom;
+
+        // Get Quiz Object
+        const quiz = this.createQuizObject(questions);
+
+        database.doRegisterQuiz(uid, quiz)
+            .then(() => {
+                database.doAlterDefaultState(uid)
+                    .then(() => {
+                        this.setState({ ...INITIAL_STATE, openSnackbar: true, redirect: true });
+                        this.getQuestions();
+                    })
+            })
+    };
+
+    createQuizObject = (questions) => {
+        // State 
+        const {
+            title,
+            description,
+            discipline,
+            content,
+            competence,
+        } = this.state;
+
+        return {
+            title,
+            description,
+            discipline,
+            content,
+            competence,
+            questions,
+            score: { default: true }
+        };
     };
 
     render() {
         // State
         const {
             isLoading,
+            isLoadingForm,
+            openSnackbar,
+            redirect,
             filter,
             questionsDataBase,
+            title,
+            description,
+            content,
+            discipline,
+            competence,
         } = this.state;
 
         // Props
         const {
             classes,
+            classroom,
         } = this.props;
 
-        console.log('questionsDB', questionsDataBase, filter);
+        // Get uid Classroom
+        const {
+            uid,
+        } = classroom;
 
         return (
             <div>
@@ -129,12 +222,89 @@ class Create extends Component {
                             </Select>
                             <FormHelperText>Filtrar questões por disciplina</FormHelperText>
                         </FormControl>
-                        <CardQuestion questions={questionsDataBase} registerQuiz={this.registerQuiz} />
+                        <TextField
+                            value={title}
+                            onChange={this.handleChangeTextField('title')}
+                            id="title"
+                            label="Título do Quiz"
+                            margin="normal"
+                            type="text"
+                            fullWidth
+                            required
+                        />
+                        <TextField
+                            value={description}
+                            onChange={this.handleChangeTextField('description')}
+                            id="description"
+                            label="Descrição"
+                            margin="normal"
+                            multiline
+                            rowsMax="5"
+                            fullWidth
+                            required
+                        />
+                        <Tooltip title="Selecione uma opção">
+                            <FormControl required className={classes.formControl}>
+                                <InputLabel htmlFor="discipline-input">Disciplina</InputLabel>
+                                <Select
+                                    value={discipline}
+                                    onChange={this.handleChangeSelect}
+                                    name="discipline"
+                                    inputProps={{
+                                        id: 'discipline-input',
+                                    }}
+                                >
+                                    <MenuItem value="" disabled>
+                                        Selecione uma opção
+                                </MenuItem>
+                                    <MenuItem value="history">História</MenuItem>
+                                    <MenuItem value="art">Arte</MenuItem>
+                                    <MenuItem value="interdisciplinary">Interdisciplinar</MenuItem>
+                                </Select>
+                                <FormHelperText>Disciplina abordada</FormHelperText>
+                            </FormControl>
+                        </Tooltip>
+                        <TextField
+                            value={content}
+                            onChange={this.handleChangeTextField('content')}
+                            id="content"
+                            label="Conteúdo"
+                            margin="normal"
+                            multiline
+                            rows="5"
+                            fullWidth
+                            required
+                        />
+                        <TextField
+                            value={competence}
+                            onChange={this.handleChangeTextField('competence')}
+                            id="competence"
+                            label="Competências abordadas"
+                            margin="normal"
+                            multiline
+                            rowsMax="10"
+                            fullWidth
+                            required
+                        />
+                        <CardQuestion questions={questionsDataBase} isLoadingForm={isLoadingForm} registerQuiz={this.registerQuiz} />
                     </Paper>
                 </If>
                 <If test={isLoading}>
                     <Loading />
                 </If>
+                <If test={redirect}>
+                    <Redirect to={`/dashboard/${uid}/quizzes`} />
+                </If>
+                <Snackbar
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    open={openSnackbar}
+                    onClose={() => this.handleClose('openSnackbar')}
+                    autoHideDuration={6000}
+                    ContentProps={{
+                        'mensagem-success': 'message-success',
+                    }}
+                    message={<span id="message-success">Quiz registrado com sucesso!</span>}
+                />
             </div>
         );
     };

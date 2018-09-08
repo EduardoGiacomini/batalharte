@@ -217,7 +217,7 @@ class Form extends React.Component {
                             fullWidth
                             required
                         />
-                        <Tooltip title="Selecione uma opção.">
+                        <Tooltip title="Selecione uma opção">
                             <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="discipline-input">Disciplina</InputLabel>
                                 <Select
@@ -238,7 +238,7 @@ class Form extends React.Component {
                                 <FormHelperText>Disciplina abordada</FormHelperText>
                             </FormControl>
                         </Tooltip>
-                        <Tooltip title="Selecione uma opção.">
+                        <Tooltip title="Selecione uma opção">
                             <FormControl required className={classes.formControl}>
                                 <InputLabel htmlFor="isPublic-input">Conteúdo público</InputLabel>
                                 <Select

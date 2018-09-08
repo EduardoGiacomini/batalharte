@@ -57,3 +57,11 @@ export const doGetQuestions = () =>
 // Get questions (Filter on)
 export const doGetQuestionsWithFilter = (filter) =>
     database.ref('questions').orderByChild('discipline').equalTo(filter).once('value');
+
+// Register quiz
+export const doRegisterQuiz = (classroom, quiz) =>
+    database.ref(`classrooms/${classroom}/quizzes`).push({ ...quiz });
+
+// Alter default state of quiz
+export const doAlterDefaultState = (classroom) =>
+    database.ref(`classrooms/${classroom}/quizzes`).update({ default: false });

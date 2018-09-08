@@ -169,28 +169,24 @@ class Contents extends React.Component {
                                 Você deseja cadastrar um novo conteúdo ou compartilhar um existente?                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Tooltip title="Cadastrar conteúdo">
-                                <Button
-                                    component={Link}
-                                    to={`/dashboard/${classroomUrl}/content/form`}
-                                    onClick={this.handleClose}
-                                    color="primary"
-                                    fullWidth={true}
-                                >
-                                    Cadastrar
+                            <Button
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/content/form`}
+                                onClick={this.handleClose}
+                                color="primary"
+                                fullWidth={true}
+                            >
+                                Cadastrar
                             </Button>
-                            </Tooltip>
-                            <Tooltip title="Compartilhar conteúdo">
-                                <Button
-                                    component={Link}
-                                    to={`/dashboard/${classroomUrl}/content/share`}
-                                    onClick={this.handleClose}
-                                    color="primary"
-                                    fullWidth={true}
-                                >
-                                    Compartilhar
-                        </Button>
-                            </Tooltip>
+                            <Button
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/content/share`}
+                                onClick={this.handleClose}
+                                color="primary"
+                                fullWidth={true}
+                            >
+                                Compartilhar
+                            </Button>
                         </DialogActions>
                     </Dialog>
                 </If>

@@ -139,7 +139,6 @@ class ListClassrooms extends React.Component {
                     })
                     .catch((error) => console.log("Ocorreu um erro durante o registro da classe no usuário!", error))
             })
-            .catch((error) => console.log("Ocorreu um erro durante o cadastro!", error))
     };
 
     onSubmitStudent = () => {
