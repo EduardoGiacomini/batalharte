@@ -22,6 +22,8 @@ import styles from './styles';
 import If from '../../Operator/If';
 // Loading
 import Loading from '../../Loading/Loading';
+// Component
+import Card from './Card';
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -29,6 +31,7 @@ function Transition(props) {
 
 const INITIAL_STATE = {
     open: false,
+    isLoading: true,
 };
 
 class Quizzes extends React.Component {
@@ -37,12 +40,12 @@ class Quizzes extends React.Component {
         this.state = { ...INITIAL_STATE };
     };
 
-    /*componentDidMount = () => {
+    componentDidMount = () => {
         // Props
         const { classroom } = this.props;
 
         if (classroom) {
-            this.getQuizzes(classroom.quizzes);
+            this.setState({ isLoading: false });
         }
     };
 
@@ -52,26 +55,10 @@ class Quizzes extends React.Component {
 
         if (nextProps.classroom) {
             if (nextProps.classroom !== classroom) {
-                this.getQuizzes(nextProps.classroom.quizzes);
+                this.setState({ isLoading: false });
             }
         }
     };
-
-    getQuizzes = (quizzes) => {
-        const contentsUids = this.getContentsUids(contents);
-
-        const contentsPromises = contentsUids.map(uid => {
-            return database.doGetContent(uid);
-        });
-
-        Promise.all(contentsPromises)
-            .then(contentsData => {
-                this.listContents(contentsData);
-            })
-            .catch(err => {
-                console.log("Ocorreu um erro durante a busca.", err);
-            })
-    };*/
 
     handleClickOpen = () => {
         this.setState({ open: true });
@@ -88,6 +75,18 @@ class Quizzes extends React.Component {
         return classroom[2];
     };
 
+    transformObjectInArray = (object) => {
+        const array = [];
+
+        for (var key in object) {
+            if (typeof object[key] === "object") {
+                array.push(object[key]);
+            }
+        }
+
+        return array;
+    }
+
     render() {
         // Props
         const {
@@ -101,6 +100,10 @@ class Quizzes extends React.Component {
         return (
             <div>
                 <If test={!!classroom}>
+                    {
+                        classroom &&
+                        <Card quizzes={this.transformObjectInArray(classroom.quizzes)} />
+                    }
                     {
                         user &&
                         user.typeUser === "teacher" &&
@@ -133,23 +136,23 @@ class Quizzes extends React.Component {
                                 Você deseja cadastrar novas perguntas ou criar um quiz com perguntas existentes?                            </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                                <Button
-                                    component={Link}
-                                    to={`/dashboard/${classroomUrl}/quizzes/form`}
-                                    onClick={this.handleClose}
-                                    color="primary"
-                                    fullWidth={true}
-                                >
-                                    Cadastrar Questões
+                            <Button
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/quizzes/form`}
+                                onClick={this.handleClose}
+                                color="primary"
+                                fullWidth={true}
+                            >
+                                Cadastrar Questões
                                 </Button>
-                                <Button
-                                    component={Link}
-                                    to={`/dashboard/${classroomUrl}/quizzes/create`}
-                                    onClick={this.handleClose}
-                                    color="primary"
-                                    fullWidth={true}
-                                >
-                                    Criar Quiz
+                            <Button
+                                component={Link}
+                                to={`/dashboard/${classroomUrl}/quizzes/create`}
+                                onClick={this.handleClose}
+                                color="primary"
+                                fullWidth={true}
+                            >
+                                Criar Quiz
                             </Button>
                         </DialogActions>
                     </Dialog>

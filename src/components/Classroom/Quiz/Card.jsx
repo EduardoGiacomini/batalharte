@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -9,46 +10,67 @@ import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Send';
+import Send from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
-
 //Styles
 import styles from './styles';
+// Images
+import history from '../../../assets/image/history.png';
+import art from '../../../assets/image/art.jpg';
 
 const CardQuiz = props => {
 
     // Props
     const {
         classes,
+        quizzes,
     } = props;
 
     return (
         <div className={classes.containerCard}>
-            <Card className={classes.card}>
-                <CardHeader
-                    avatar={
-                        <Avatar aria-label="Recipe" className={classes.avatarOrange}></Avatar>
-                    }
-                    title="Era Vargas"
-                    subheader="Atividade Pendente"
-                />
-                <CardMedia
-                    className={classes.media}
-                    image={history}
-                    title="History"
-                />
-                <CardContent className={classes.text}>
-                    <Typography component="p">
-                        Prazo: 15/08/2018, 23:59
-                        </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
-                        Responder
-                        <DeleteIcon className={classes.rightIcon} />
-                    </Button>
-                </CardActions>
-            </Card>
+            {
+                quizzes.length === 0 ?
+                    <h1>Não há quizzes</h1> :
+                    quizzes.map((quiz, index) => {
+                        
+                        const {
+                            title,
+                            description,
+                            discipline,
+                            questions,
+                        } = quiz
+
+                        return (
+                            <Tooltip title={title} key={index}>
+                                <Card className={classes.card}>
+                                    <CardHeader
+                                        avatar={
+                                            <Avatar aria-label={title} className={classes.avatarOrange}>{title[0]}</Avatar>
+                                        }
+                                        title={title}
+                                        subheader={description}
+                                    />
+                                    <CardMedia
+                                        className={classes.media}
+                                        image={discipline === "history" ? history : discipline === "art" ? art : history}
+                                        title={discipline === "history" ? "História" : discipline === "art" ? "Artes" : "Interdisciplinar"}
+                                    />
+                                    <CardContent className={classes.text}>
+                                        <Typography component="p">
+                                            Número de questões: {questions.length}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
+                                            Responder
+                                    <Send className={classes.rightIcon} />
+                                        </Button>
+                                    </CardActions>
+                                </Card>
+                            </Tooltip>
+                        )
+                    })
+            }
         </div>
     );
 }
