@@ -7,6 +7,9 @@ import { Redirect } from 'react-router-dom';
 import { database } from '../../../firebase';
 // Redux
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// Actions
+import { doListClassroom } from '../../../redux/actions/classroomActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -144,8 +147,8 @@ class Create extends Component {
             .then(() => {
                 database.doAlterDefaultState(uid)
                     .then(() => {
-                        this.setState({ ...INITIAL_STATE, openSnackbar: true, redirect: true });
-                        this.getQuestions();
+                        this.setState({ ...INITIAL_STATE, openSnackbar: true });
+                        this.updateClassroom();
                     })
             })
     };
@@ -171,6 +174,27 @@ class Create extends Component {
         };
     };
 
+    updateClassroom = () => {
+        // Props
+        const {
+            classroom,
+        } = this.props;
+
+        // Get uid classroom
+        const {
+            uid,
+        } = classroom;
+
+        database.doGetClassRoom(uid)
+            .then(classroomUpdate => {
+                const clssrm = classroomUpdate.val();
+                clssrm.uid = classroomUpdate.key;
+                this.props.doListClassroom(clssrm);
+
+                this.setState({ redirect: true });
+            })
+    }
+
     render() {
         // State
         const {
@@ -192,11 +216,6 @@ class Create extends Component {
             classes,
             classroom,
         } = this.props;
-
-        // Get uid Classroom
-        const {
-            uid,
-        } = classroom;
 
         return (
             <div>
@@ -293,7 +312,7 @@ class Create extends Component {
                     <Loading />
                 </If>
                 <If test={redirect}>
-                    <Redirect to={`/dashboard/${uid}/quizzes`} />
+                    <Redirect to={classroom ? `/dashboard/${classroom.uid}/quizzes` : `/dashboard`} />
                 </If>
                 <Snackbar
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -315,7 +334,8 @@ Create.propTypes = {
 };
 
 const mapStateToProps = state => ({ classroom: state.classroom });
+const mapDispatchToProps = dispatch => bindActionCreators({ doListClassroom }, dispatch);
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, null))(Create);
+    connect(mapStateToProps, mapDispatchToProps))(Create);

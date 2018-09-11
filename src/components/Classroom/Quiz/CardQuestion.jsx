@@ -71,8 +71,6 @@ class CardQuestion extends Component {
             uid,
         } = classroom;
 
-        console.log(questionsChosen);
-
         return (
             <div>
                 <Tooltip title={`${questionsChosenArray.length} questões ativadas`}>

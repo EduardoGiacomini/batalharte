@@ -239,7 +239,7 @@ class CardResponse extends Component {
 
                 this.setState({ redirect: true });
             })
-    }
+    };
 
     render() {
         // State

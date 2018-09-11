@@ -31,7 +31,13 @@ class Play extends Component {
     }
 
     componentDidMount = () => {
-        this.getQuiz();
+        const idQuiz = this.getIdQuiz();
+
+        if (idQuiz !== "form" && idQuiz !== "create") {
+            this.getQuiz();
+        } else {
+            this.setState({ isLoading: false });
+        }
     };
 
     getQuiz = () => {
@@ -97,9 +103,9 @@ class Play extends Component {
             <div>
                 <If test={!isLoading}>
                     <If test={!isError}>
-                        <Paper className={classes.root} elevation={1}>
-                            {
-                                quiz &&
+                        {
+                            quiz &&
+                            <Paper className={classes.root} elevation={1}>
                                 <div>
                                     <Typography align="center" variant="headline" className={classes.titleColor}>
                                         {quiz.title}
@@ -126,8 +132,8 @@ class Play extends Component {
                                     </Typography>
                                     <CardResponse questionsIds={quiz.questions} quizId={this.getIdQuiz()} />
                                 </div>
-                            }
-                        </Paper>
+                            </Paper>
+                        }
                     </If>
                     <If test={isError}>
                         <Error
