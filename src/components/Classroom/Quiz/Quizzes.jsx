@@ -80,7 +80,9 @@ class Quizzes extends React.Component {
 
         for (var key in object) {
             if (typeof object[key] === "object") {
-                array.push(object[key]);
+                const obj = object[key];
+                obj.uid = key;
+                array.push(obj);
             }
         }
 

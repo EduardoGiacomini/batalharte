@@ -58,6 +58,10 @@ export const doGetQuestions = () =>
 export const doGetQuestionsWithFilter = (filter) =>
     database.ref('questions').orderByChild('discipline').equalTo(filter).once('value');
 
+// Get Question
+export const doGetQuestion = (question) =>
+    database.ref('questions').child(question).once('value', question => question);
+
 // Register quiz
 export const doRegisterQuiz = (classroom, quiz) =>
     database.ref(`classrooms/${classroom}/quizzes`).push({ ...quiz });
@@ -65,3 +69,11 @@ export const doRegisterQuiz = (classroom, quiz) =>
 // Alter default state of quiz
 export const doAlterDefaultState = (classroom) =>
     database.ref(`classrooms/${classroom}/quizzes`).update({ default: false });
+
+// Get quiz
+export const doGetQuiz = (classroom, quiz) =>
+    database.ref(`classrooms/${classroom}/quizzes/${quiz}`).once('value');
+
+// Response quiz
+export const doResponseQuiz = (classroom, quiz, review) =>
+    database.ref(`classrooms/${classroom}/quizzes/${quiz}/score`).update({ default: false, [review.user]: { ...review } });

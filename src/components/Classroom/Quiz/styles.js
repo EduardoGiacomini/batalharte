@@ -88,6 +88,10 @@ const styles = theme => ({
         margin: '5px 0 5px 0',
         textAlign: 'justify',
     },
+    // Play
+    titleColor: {
+        color: '#3E2723',
+    },
 });
 
 export default styles;

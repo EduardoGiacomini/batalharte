@@ -1,5 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
+// Router
+import { Link } from 'react-router-dom';
+// Redux
+import { connect } from 'react-redux';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -23,8 +28,13 @@ const CardQuiz = props => {
     // Props
     const {
         classes,
+        classroom,
+        user,
         quizzes,
     } = props;
+
+    //Get uid Classroom
+    const path = classroom.uid;
 
     return (
         <div className={classes.containerCard}>
@@ -32,13 +42,15 @@ const CardQuiz = props => {
                 quizzes.length === 0 ?
                     <h1>Não há quizzes</h1> :
                     quizzes.map((quiz, index) => {
-                        
+
                         const {
+                            uid,
                             title,
                             description,
                             discipline,
                             questions,
-                        } = quiz
+                            score,
+                        } = quiz;
 
                         return (
                             <Tooltip title={title} key={index}>
@@ -57,13 +69,43 @@ const CardQuiz = props => {
                                     />
                                     <CardContent className={classes.text}>
                                         <Typography component="p">
-                                            Número de questões: {questions.length}
+                                            {
+                                                user ?
+                                                    score[user.uid] === undefined ?
+                                                        <span>Número de questões: {questions.length}</span> :
+                                                        <span>Pontuação: {score[user.uid].score}/100</span>
+                                                    :
+                                                    ""
+                                            }
+
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button variant="contained" color="primary" fullWidth={true} className={classes.button}>
-                                            Responder
-                                    <Send className={classes.rightIcon} />
+                                        <Button
+                                            component={Link}
+                                            to={`/dashboard/${path}/quizzes/${uid}`}
+                                            disabled={user ? score[user.uid] === undefined ? false : true : true}
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.button}
+                                            fullWidth>
+                                            {
+                                                user ?
+                                                    user.typeUser === "teacher" ?
+                                                        "Visualizar" :
+                                                        score[user.uid] === undefined ?
+                                                            "Responder" :
+                                                            "Respondido"
+                                                    :
+                                                    "Carregando..."
+                                            }
+                                            {
+                                                user ?
+                                                    user.typeUser === "student" &&
+                                                    <Send className={classes.rightIcon} />
+                                                    :
+                                                    "Carregando..."
+                                            }
                                         </Button>
                                     </CardActions>
                                 </Card>
@@ -79,4 +121,8 @@ CardQuiz.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(CardQuiz);
+const mapStateToProps = state => ({ user: state.user, classroom: state.classroom });
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, null))(CardQuiz);

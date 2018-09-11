@@ -16,6 +16,7 @@ import Ranking from '../Classroom/Ranking/Ranking';
 import Quizzes from '../Classroom/Quiz/Quizzes';
 import FormQuiz from '../Classroom/Quiz/Form';
 import CreateQuiz from '../Classroom/Quiz/Create';
+import PlayQuiz from '../Classroom/Quiz/Play';
 import NavigationClassroom from '../Classroom/NavigationClassroom/NavigationClassroom';
 
 export default props => {
@@ -38,6 +39,7 @@ export default props => {
                 <Route exact path="/dashboard/:id/quizzes" component={Quizzes} />
                 <Route exact path="/dashboard/:id/quizzes/form" component={FormQuiz} />
                 <Route exact path="/dashboard/:id/quizzes/create" component={CreateQuiz} />
+                <Route exact path="/dashboard/:id/quizzes/:id" component={PlayQuiz} />
                 <Route exact path="/dashboard/:id/ranking" component={Ranking} />
             </div>
         </BrowserRouter>
