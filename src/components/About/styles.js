@@ -7,7 +7,7 @@ const styles = {
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-        marginTop: 25
+        margin: '20px 0'
     },
     container: {
         padding: 15,
@@ -17,6 +17,12 @@ const styles = {
         textAlign: 'center',
         margin: 0,
         color: '#3E2723'
+    },
+    color: {
+        color: '#3E2723'
+    },
+    marginBottom: {
+        marginBottom: 20
     }
 };
 

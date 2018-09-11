@@ -31,6 +31,7 @@ export default props => {
                     <Route exact path="/sobre" component={About} />
                     <Route exact path="/dashboard" component={Dashboard} />
                 </Switch>
+                <Route  path="/dashboard/sobre" component={About} />
                 <Route path="/dashboard/:id" component={NavigationClassroom} />
                 <Route exact path="/dashboard/:id/content" component={Contents} />
                 <Route exact path="/dashboard/:id/content/view/:id" component={(props) => <Content {...props} />} />

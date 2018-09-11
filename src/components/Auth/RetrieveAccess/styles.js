@@ -10,9 +10,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
     },
-    title: {
-        textAlign: 'center',
-        margin: 0,
+    color: {
         color: '#3E2723',
     },
     link: {

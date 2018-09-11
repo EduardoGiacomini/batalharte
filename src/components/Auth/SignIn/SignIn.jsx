@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 // styles
 import styles from './styles';
 // Icon
@@ -145,9 +146,9 @@ class SignIn extends Component {
                 </div>
                 <div className={classes.container}>
                     <Paper className={classes.container} elevation={1}>
-                        <div>
-                            <h3 className={classes.title}>AUTENTICAÇÃO</h3>
-                        </div>
+                        <Typography align="center" variant="headline" className={classes.color}>
+                            AUTENTICAÇÃO
+                        </Typography>
                         <form onSubmit={this.onSubmit}>
                             <TextField
                                 error={error.email}

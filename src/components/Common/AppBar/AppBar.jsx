@@ -81,12 +81,18 @@ class MenuAppBar extends React.Component {
                                 </IconButton>
                             </Tooltip>
                         }
-                        <Typography variant="title" color="inherit" className={classes.flex}>
+                        <Typography
+                            variant="title"
+                            color="inherit"
+                            className={classes.flex}
+                            component={Link}
+                            to="/sobre"
+                        >
                             Batalharte
                         </Typography>
                         <If test={user}>
                             <div>
-                                <Tooltip title="Sair">
+                                <Tooltip title="Exibir opções">
                                     <IconButton
                                         aria-owns={open ? 'menu-appbar' : null}
                                         aria-haspopup="true"

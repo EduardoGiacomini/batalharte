@@ -16,6 +16,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 // Styles
 import styles from './styles';
 // Operator
@@ -187,9 +190,18 @@ class SignUp extends Component {
         return (
             <div className={classes.container}>
                 <Paper className={classes.container} elevation={1}>
-                    <div>
-                        <h3 className={classes.title}>CADASTRO</h3>
-                    </div>
+                    <Tooltip title="Voltar à página de autenticação">
+                        <IconButton
+                            component={Link}
+                            to="/"
+                            color="inherit"
+                        >
+                            <ArrowBack />
+                        </IconButton>
+                    </Tooltip>
+                    <Typography align="center" variant="headline" className={classes.color}>
+                        CADASTRO
+                    </Typography>
                     <form onSubmit={this.onSubmit}>
                         <TextField
                             value={name}
@@ -267,11 +279,6 @@ class SignUp extends Component {
                             </div>
                         </If>
                     </form>
-                    <div className={classes.margin}>
-                        <Tooltip title="Selecione para voltar à página de autenticação">
-                            <Link className={classes.link} to="/">Voltar</Link>
-                        </Tooltip>
-                    </div>
                 </Paper>
                 <If test={isAuthenticated}>
                     <Redirect to="/dashboard" />

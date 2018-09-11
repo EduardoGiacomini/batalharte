@@ -38,7 +38,6 @@ const Ranking = props => {
                     <Typography align="center" variant="title" className={classes.title}>
                         RANKING
                     </Typography>
-                    {/*<h3 className={classes.title}>RANKING</h3>*/}
                     <List>
                         <ListItem>
                             <Avatar

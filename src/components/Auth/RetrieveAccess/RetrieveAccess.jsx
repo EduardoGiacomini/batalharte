@@ -13,6 +13,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 // Styles
 import styles from './styles';
 // Operator
@@ -124,9 +127,18 @@ class RetrieveAccess extends Component {
         return (
             <div className={classes.container}>
                 <Paper className={classes.container} elevation={1}>
-                    <div>
-                        <h3 className={classes.title}>RECUPERAR ACESSO</h3>
-                    </div>
+                    <Tooltip title="Voltar à página de autenticação">
+                        <IconButton
+                            component={Link}
+                            to="/"
+                            color="inherit"
+                        >
+                            <ArrowBack />
+                        </IconButton>
+                    </Tooltip>
+                    <Typography align="center" variant="headline" className={classes.color}>
+                        RECUPERAR ACESSO
+                    </Typography>
                     <form onSubmit={this.onSubmit}>
                         <TextField
                             error={error.email}
@@ -161,11 +173,6 @@ class RetrieveAccess extends Component {
                             </div>
                         </If>
                     </form>
-                    <div className={classes.margin}>
-                        <Tooltip title="Selecione para voltar à página de autenticação">
-                            <Link className={classes.link} to="/">Voltar</Link>
-                        </Tooltip>
-                    </div>
                 </Paper>
                 <Snackbar
                     anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

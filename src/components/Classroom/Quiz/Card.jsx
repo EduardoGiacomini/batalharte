@@ -17,8 +17,11 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Send from '@material-ui/icons/Send';
 import Tooltip from '@material-ui/core/Tooltip';
+import Paper from '@material-ui/core/Paper';
 //Styles
 import styles from './styles';
+// icon
+import logo from '../../../assets/icons/logo.svg';
 // Images
 import history from '../../../assets/image/history.png';
 import art from '../../../assets/image/art.jpg';
@@ -40,7 +43,23 @@ const CardQuiz = props => {
         <div className={classes.containerCard}>
             {
                 quizzes.length === 0 ?
-                    <h1>Não há quizzes</h1> :
+                    <div className={classes.container}>
+                        <Paper elevation={1} className={classes.containerPaper}>
+                            <div className={classes.containerImage}>
+                                <img
+                                    src={logo}
+                                    alt="Logotipo do Batalharte"
+                                    className={classes.image}
+                                />
+                            </div>
+                            <Typography align="center" variant="headline" className={classes.color}>
+                                Olá, gladiador(a)
+                            </Typography>
+                            <Typography align="center" variant="subheading" className={classes.color}>
+                                Seu(ua) professor(a) não cadastrou nenhum quiz.
+                            </Typography>
+                        </Paper>
+                    </div> :
                     quizzes.map((quiz, index) => {
 
                         const {

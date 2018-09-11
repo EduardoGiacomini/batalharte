@@ -1,4 +1,17 @@
 const styles = theme => ({
+    container: {
+        width: '100%',
+        margin: 20,
+    },
+    containerPaper: {
+        padding: 20
+    },
+    containerImage: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        margin: '20px 0'
+    },
     containerCard: {
         width: '100%',
         display: 'flex',

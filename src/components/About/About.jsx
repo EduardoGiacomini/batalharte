@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// Router
+import { Link } from 'react-router-dom';
 // React-router-dom
 import { Redirect } from 'react-router-dom';
 // Firebase
@@ -7,6 +9,10 @@ import { firebase } from '../../firebase';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import Tooltip from '@material-ui/core/Tooltip';
 // Styles
 import styles from './styles';
 // icon
@@ -40,22 +46,37 @@ class About extends Component {
 
         return (
             <div className="backgroundMap" style={styles.container}>
-                <div className={classes.containerImage}>
-                    <img
-                        src={logo}
-                        alt="Logotipo do Batalharte"
-                        className={classes.image}
-                    />
-                </div>
                 <div className={classes.container}>
                     <Paper className={classes.container} elevation={1}>
-                        <div>
-                            <h3 className={classes.title}>BATALHARTE</h3>
+                        <Tooltip title="Voltar">
+                            <IconButton
+                                component={Link}
+                                to="/"
+                                color="inherit"
+                            >
+                                <ArrowBack />
+                            </IconButton>
+                        </Tooltip>
+                        <Typography align="center" variant="headline" className={classes.color}>
+                            BATALHARTE
+                        </Typography>
+                        <div className={classes.containerImage}>
+                            <img
+                                src={logo}
+                                alt="Logotipo do Batalharte"
+                                className={classes.image}
+                            />
                         </div>
-                        <p>
+                        <Typography align="justify" variant="subheading" className={classes.marginBottom}>
                             Aplicação desenvolvida pela equipe <strong>Hello World</strong> para a Maratona de Tecnologias Móveis nas Escolas,
                             realizada pela UNICEF, SAMSUNG e Brasil Mais TI.
-                        </p>
+                        </Typography>
+                        <Typography align="justify" variant="body2" className={classes.body}>
+                            <strong>Alunos:</strong> Ana Clara Carvalho, Carlos Eduardo Giacomini e Dhiego Lima
+                        </Typography>
+                        <Typography align="justify" variant="body2" className={classes.body}>
+                            <strong>Professor:</strong> Fábio Duarte
+                        </Typography>
                     </Paper>
                 </div>
                 <If test={isAuthenticated}>

@@ -22,9 +22,7 @@ const styles = {
         justifyContent: 'center',
         marginTop: 10
     },
-    title: {
-        textAlign: 'center',
-        margin: 0,
+    color: {
         color: '#3E2723',
     },
     link: {
