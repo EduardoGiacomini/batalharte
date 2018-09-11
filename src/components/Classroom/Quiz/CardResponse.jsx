@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 // Router
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 // Firebase
 import { database } from '../../../firebase';
 // Redux
@@ -324,6 +324,8 @@ class CardResponse extends Component {
                         <div className={classes.flex}>
                             <Tooltip title="Cancelar e voltar">
                                 <Button
+                                    component={Link}
+                                    to={classroom ? `/dashboard/${classroom.uid}/quizzes` : `/dashboard`}
                                     variant="outlined"
                                     className={classes.marginLeft}
                                     fullWidth>
