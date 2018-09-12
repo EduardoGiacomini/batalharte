@@ -66,11 +66,6 @@ class CardQuestion extends Component {
             isLoadingForm,
         } = this.props;
 
-        // Get path Classroom
-        const {
-            uid,
-        } = classroom;
-
         return (
             <div>
                 <Tooltip title={`${questionsChosenArray.length} questões ativadas`}>
@@ -197,7 +192,7 @@ class CardQuestion extends Component {
                     <Tooltip title="Cancelar e voltar">
                         <Button
                             component={Link}
-                            to={`/dashboard/${uid}/quizzes`}
+                            to={classroom ? `/dashboard/${classroom.uid}/quizzes` : `/dashboard`}
                             variant="outlined"
                             className={classes.marginLeft}
                             disabled={isLoadingForm}

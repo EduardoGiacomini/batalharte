@@ -53,10 +53,21 @@ const CardQuiz = props => {
                                 />
                             </div>
                             <Typography align="center" variant="headline" className={classes.color}>
-                                Olá, gladiador(a)
+                                {
+                                    user &&
+                                        user.typeUser === "student" ?
+                                        <span>Olá, gladiador(a)</span> :
+                                        <span>Olá, professor(a)</span>
+                                }
                             </Typography>
                             <Typography align="center" variant="subheading" className={classes.color}>
-                                Seu(ua) professor(a) não cadastrou nenhum quiz.
+                                {
+                                    user &&
+                                        user.typeUser === "student" ?
+                                        <span>Seu(ua) professor(a) não cadastrou nenhum quiz.</span> :
+                                        <span>Crie um quiz para desafiar seus alunos.</span>
+                                }
+                                
                             </Typography>
                         </Paper>
                     </div> :
