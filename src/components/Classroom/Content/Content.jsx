@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 // Router
 import { Link } from 'react-router-dom';
 // Firebase
 import { database } from '../../../firebase';
+// Redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// Actions
+import { doListClassroom } from '../../../redux/actions/classroomActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -119,9 +125,29 @@ class Content extends Component {
 
         database.doRegisterContentInClassroom(idContent, idClassroom)
             .then(() => {
-                this.setState({ openSnackbarSuccess: true });
-                console.log('Conteúdo anexado na classe!');
+                this.updateClassroom();
             });
+    };
+
+    updateClassroom = () => {
+        // Props
+        const {
+            classroom,
+        } = this.props;
+
+        // Get uid classroom
+        const {
+            uid,
+        } = classroom;
+
+        database.doGetClassRoom(uid)
+            .then(classroomUpdate => {
+                const clssrm = classroomUpdate.val();
+                clssrm.uid = classroomUpdate.key;
+                this.props.doListClassroom(clssrm);
+                // Message
+                this.setState({ openSnackbarSuccess: true });
+            })
     };
 
     render() {
@@ -148,6 +174,7 @@ class Content extends Component {
         // Props
         const {
             classes,
+            user,
         } = this.props;
 
         return (
@@ -197,10 +224,16 @@ class Content extends Component {
                                         </Button>
                                     </Tooltip>
                                 </If>
-                                <Tooltip title="Voltar à lista de conteúdos">
+                                <Tooltip title="Voltar à lista de conteúdos compartilháveis">
                                     <Button
                                         component={Link}
-                                        to={`/dashboard/${classroomId}/content`}
+                                        to={
+                                            user ?
+                                                user.typeUser === "student" ?
+                                                    `/dashboard/${classroomId}/content/` :
+                                                    `/dashboard/${classroomId}/content/share` :
+                                                `/dashboard/${classroomId}/content/`
+                                        }
                                         variant="outlined"
                                         fullWidth={true}
                                         className={classes.marginRight}
@@ -241,4 +274,9 @@ Content.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Content);
+const mapStateToProps = state => ({ classroom: state.classroom, user: state.user });
+const mapDispatchToProps = dispatch => bindActionCreators({ doListClassroom }, dispatch);
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps, mapDispatchToProps))(Content);

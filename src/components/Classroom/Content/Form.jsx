@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import { database } from '../../../firebase';
 // Redux
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// Actions
+import { doListClassroom } from '../../../redux/actions/classroomActions';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -87,8 +90,30 @@ class Form extends React.Component {
             .then((content) => {
                 database.doRegisterContentInClassroom(content.key, classroom.uid)
                     .then(() => {
-                        this.setState({ ...INITIAL_STATE, openSnackbarSuccess: true });
+                        this.setState({ ...INITIAL_STATE });
+                        this.updateClassroom();
                     })
+            })
+    };
+
+    updateClassroom = () => {
+        // Props
+        const {
+            classroom,
+        } = this.props;
+
+        // Get uid classroom
+        const {
+            uid,
+        } = classroom;
+
+        database.doGetClassRoom(uid)
+            .then(classroomUpdate => {
+                const clssrm = classroomUpdate.val();
+                clssrm.uid = classroomUpdate.key;
+                this.props.doListClassroom(clssrm);
+                // Message
+                this.setState({ openSnackbarSuccess: true });
             })
     };
 
@@ -318,7 +343,8 @@ Form.propTypes = {
 };
 
 const mapStateToProps = state => ({ user: state.user, classroom: state.classroom });
+const mapDispatchToProps = dispatch => bindActionCreators({ doListClassroom }, dispatch);
 
 export default compose(
     withStyles(styles),
-    connect(mapStateToProps, null))(Form);
+    connect(mapStateToProps, mapDispatchToProps))(Form);
