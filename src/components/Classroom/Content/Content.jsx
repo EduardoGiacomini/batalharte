@@ -223,24 +223,37 @@ class Content extends Component {
                                             Compartilhar
                                         </Button>
                                     </Tooltip>
-                                </If>
-                                <Tooltip title="Voltar à lista de conteúdos compartilháveis">
-                                    <Button
-                                        component={Link}
-                                        to={
-                                            user ?
-                                                user.typeUser === "student" ?
-                                                    `/dashboard/${classroomId}/content/` :
-                                                    `/dashboard/${classroomId}/content/share` :
-                                                `/dashboard/${classroomId}/content/`
-                                        }
-                                        variant="outlined"
-                                        fullWidth={true}
-                                        className={classes.marginRight}
-                                    >
-                                        Voltar
+                                    <Tooltip title="Voltar à lista de conteúdos compartilháveis">
+                                        <Button
+                                            component={Link}
+                                            to={
+                                                user ?
+                                                    user.typeUser === "student" ?
+                                                        `/dashboard/${classroomId}/content/` :
+                                                        `/dashboard/${classroomId}/content/share` :
+                                                    `/dashboard/${classroomId}/content/`
+                                            }
+                                            variant="outlined"
+                                            fullWidth={true}
+                                            className={classes.marginRight}
+                                        >
+                                            Voltar
                                     </Button>
-                                </Tooltip>
+                                    </Tooltip>
+                                </If>
+                                <If test={!shareOption}>
+                                    <Tooltip title="Voltar à lista de conteúdos">
+                                        <Button
+                                            component={Link}
+                                            to={`/dashboard/${classroomId}/content/`}
+                                            variant="outlined"
+                                            fullWidth={true}
+                                            className={classes.marginRight}
+                                        >
+                                            Voltar
+                                    </Button>
+                                    </Tooltip>
+                                </If>
                             </div>
                             <Snackbar
                                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
