@@ -286,7 +286,7 @@ class Content extends Component {
                                             to={`/dashboard/${classroomId}/content/`}
                                             variant="outlined"
                                             fullWidth={true}
-                                            className={classes.marginRight}
+                                            className={classes.marginLeft}
                                         >
                                             Voltar
                                     </Button>
