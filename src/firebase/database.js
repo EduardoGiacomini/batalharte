@@ -46,6 +46,11 @@ export const doGetContent = (content) =>
 export const doGetContentsPublic = () =>
     database.ref('contents').orderByChild('isPublic').equalTo(true).once('value', contentsData => contentsData);
 
+
+// Delete Content in Classroom
+export const doDeleteContentInClassroom = (classroom, content) =>
+    database.ref(`classrooms/${classroom}/contents`).child(content).remove();
+
 // Register question
 export const doRegisterQuestion = (question) =>
     database.ref('questions').push({ ...question });

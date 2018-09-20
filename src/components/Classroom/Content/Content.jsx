@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 // Router
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 // Firebase
 import { database } from '../../../firebase';
 // Redux
@@ -16,6 +16,11 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 // Operator
 import If from '../../Operator/If';
 // Component
@@ -29,6 +34,8 @@ const INITIAL_STATE = {
     isLoading: true,
     isError: false,
     openSnackbarSuccess: false,
+    openDialogDelete: false,
+    redirect: false,
     author: '',
     discipline: '',
     competence: '',
@@ -150,12 +157,42 @@ class Content extends Component {
             })
     };
 
+    handleCloseDialog = () => {
+        this.setState({ openDialogDelete: false });
+    };
+
+    deleteContent = () => {
+        // Props
+        const { pathname } = this.props.location;
+        const codeContent = pathname.split('/');
+
+        const { classroom } = this.props;
+        const { uid } = classroom;
+
+        database.doDeleteContentInClassroom(uid, codeContent[5])
+            .then(() => {
+                database.doGetClassRoom(uid)
+                    .then(snapshot => {
+                        if (snapshot.val()) {
+                            const clssrm = snapshot.val();
+                            clssrm.uid = snapshot.key;
+                            this.props.doListClassroom(clssrm);
+
+                            this.handleCloseDialog();
+                            this.setState({ redirect: true });
+                        }
+                    })
+            })
+    };
+
     render() {
         // State
         const {
             isLoading,
             isError,
             openSnackbarSuccess,
+            openDialogDelete,
+            redirect,
             author,
             discipline,
             competence,
@@ -174,6 +211,7 @@ class Content extends Component {
         // Props
         const {
             classes,
+            classroom,
             user,
         } = this.props;
 
@@ -253,6 +291,21 @@ class Content extends Component {
                                             Voltar
                                     </Button>
                                     </Tooltip>
+                                    {
+                                        classroom &&
+                                        user &&
+                                        user.typeUser === "teacher" &&
+                                        <Tooltip title="Excluir conteúdo">
+                                            <Button
+                                                variant="outlined"
+                                                fullWidth={true}
+                                                className={classes.marginRight}
+                                                onClick={() => this.setState({ openDialogDelete: true })}
+                                            >
+                                                Excluir
+                                            </Button>
+                                        </Tooltip>
+                                    }
                                 </If>
                             </div>
                             <Snackbar
@@ -265,6 +318,27 @@ class Content extends Component {
                                 }}
                                 message={<span id="message-success">Conteúdo compartilhado com sucesso!</span>}
                             />
+                            <Dialog
+                                open={openDialogDelete}
+                                onClose={this.handleCloseDialog}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{title ? `Deseja excluir o conteúdo ${title}?` : `Deseja excluir o conteúdo?`}</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        Este conteúdo será excluído permanentemente.
+                                </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={this.handleCloseDialog} color="primary">
+                                        Cancelar
+                                    </Button>
+                                    <Button onClick={this.deleteContent} color="primary">
+                                        Excluir
+                                    </Button>
+                                </DialogActions>
+                            </Dialog>
                         </Paper>
                     </If>
                     <If test={isError}>
@@ -277,6 +351,9 @@ class Content extends Component {
                 </If>
                 <If test={isLoading}>
                     <Loading />
+                </If>
+                <If test={redirect}>
+                    <Redirect to={`/dashboard/${classroomId}/content/`} />
                 </If>
             </div>
         );
