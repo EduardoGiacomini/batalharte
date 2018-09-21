@@ -15,10 +15,10 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import Tooltip from '@material-ui/core/Tooltip';
 // Styles
 import styles from './styles';
-// icon
-import logo from '../../assets/icons/logo.svg';
 // Operator
 import If from '../Operator/If';
+// icon
+const logo = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Flogo.svg?alt=media&token=10dd9ce2-4199-4a2d-9c48-a0d21e07c894';
 
 const INITIAL_STATE = {
     isAuthenticated: false,

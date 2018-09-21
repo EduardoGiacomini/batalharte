@@ -14,10 +14,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 // styles
 import styles from './styles';
-// Icon
-import logo from '../../../assets/icons/logo.svg';
 // Operator
 import If from '../../Operator/If';
+// Icon
+const logo = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Flogo.svg?alt=media&token=10dd9ce2-4199-4a2d-9c48-a0d21e07c894';
+
 
 // Estado inicial do componente.
 const INITIAL_STATE = {

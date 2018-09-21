@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 // Styles
 import styles from './styles';
 // Icon
-import error from '../../../assets/icons/error404.svg';
+const error = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Ferror404.svg?alt=media&token=f41bc544-6dbb-481f-8c8d-67acf93ead99';
 
 const ClassroomError = props => {
 

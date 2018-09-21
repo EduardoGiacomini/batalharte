@@ -16,14 +16,14 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 // Styles
 import styles from './styles';
-// Icons
-import first from '../../../assets/icons/first.svg';
-import second from '../../../assets/icons/second.svg';
-import third from '../../../assets/icons/third.svg';
 // Operator
 import If from '../../Operator/If';
 // Components
 import Loading from '../../Loading/Loading';
+// Icons
+const first = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Ffirst.svg?alt=media&token=1663f042-f195-4f36-9773-42743f51b86a';
+const second = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Fsecond.svg?alt=media&token=16657ddb-639d-49f8-ae72-3d6625df2431';
+const third = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Fthird.svg?alt=media&token=2b08fb47-5ebb-4a60-8a9c-7737db7391c9';
 
 const INITIAL_STATE = {
     isLoading: true,
@@ -239,10 +239,10 @@ class Ranking extends Component {
                                                                 <img src={first} alt="Primeiro lugar" className={classes.trophy} /> :
                                                                 ranking[1] !== undefined &&
                                                                     ranking[1].student === student ?
-                                                                    <img src={second} alt="test" className={classes.trophy} /> :
+                                                                    <img src={second} alt="Segundo lugar" className={classes.trophy} /> :
                                                                     ranking[2] !== undefined &&
                                                                     ranking[2].student === student &&
-                                                                    <img src={third} alt="test" className={classes.trophy} />
+                                                                    <img src={third} alt="Terceiro lugar" className={classes.trophy} />
                                                         }
                                                     </ListItemSecondaryAction>
                                                 </ListItem>

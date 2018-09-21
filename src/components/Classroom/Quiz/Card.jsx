@@ -20,11 +20,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Paper from '@material-ui/core/Paper';
 //Styles
 import styles from './styles';
-// icon
-import logo from '../../../assets/icons/logo.svg';
 // Images
-import history from '../../../assets/image/history.png';
-import art from '../../../assets/image/art.jpg';
+const history = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Fimages%2Fhistory.png?alt=media&token=7b4a4b38-ec50-40b2-a1bd-86ffdff82470';
+const art = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Fimages%2Fart.jpg?alt=media&token=0d197cc8-a1c8-4110-a658-e8a5f94dd3a2';
+// icon
+const logo = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Flogo.svg?alt=media&token=10dd9ce2-4199-4a2d-9c48-a0d21e07c894';
 
 const CardQuiz = props => {
 

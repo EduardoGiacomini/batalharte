@@ -7,7 +7,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 // Styles
 import styles from './styles';
 // Icon
-import logo from '../../assets/icons/logo.svg';
+const logo = 'https://firebasestorage.googleapis.com/v0/b/batalharte.appspot.com/o/assets%2Ficons%2Flogo.svg?alt=media&token=10dd9ce2-4199-4a2d-9c48-a0d21e07c894';
 
 const Loading = props => {
 
