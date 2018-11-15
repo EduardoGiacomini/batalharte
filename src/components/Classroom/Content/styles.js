@@ -71,6 +71,10 @@ const styles = theme => ({
     },
     color: {
         color: '#3E2723'
+    },
+    flexRight: {
+        display: 'flex',
+        justifyContent: 'center'
     }
 });
 

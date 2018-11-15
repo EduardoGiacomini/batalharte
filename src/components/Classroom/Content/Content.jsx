@@ -185,6 +185,14 @@ class Content extends Component {
             })
     };
 
+    filterContent = content => {
+        const filterBreakLine = content.replace(/\n/g, '');
+        const filterHtmlCode = filterBreakLine.replace(/<.*?>/g, '');
+        const filterCharacter = filterHtmlCode.replace(/"/g, '');
+        const filterOutherCharacter = filterCharacter.replace(/'/g, '');
+        return filterOutherCharacter;
+    };
+
     render() {
         // State
         const {
@@ -215,11 +223,32 @@ class Content extends Component {
             user,
         } = this.props;
 
+        const speakButton = `<span onclick='responsiveVoice.speak("Oi, eu sou o aplicativo Batalharte. Estou aqui para lhe ajudar a aprender. Hoje vamos aprender: ${title}, ${description}. ${this.filterContent(content)}", "Brazilian Portuguese Male");'>🔊</span>`
+        const pauseButton = `<span onclick='responsiveVoice.pause();'>❙❙</span>`
+        const resumeButton = `<span onclick='responsiveVoice.resume();'>▶</span>`
+
         return (
             <div>
                 <If test={!isLoading}>
                     <If test={!isError}>
                         <Paper className={classes.root} elevation={1}>
+                            <div className={classes.flexRight}>
+                                <Tooltip title="Reproduzir">
+                                    <Button variant="fab" color="primary" aria-label="Ouvir" className={classes.button}>
+                                        <div dangerouslySetInnerHTML={{ __html: speakButton }} />
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title="Pausar">
+                                    <Button variant="fab" color="secondary" aria-label="Pausar" className={classes.button}>
+                                        <div dangerouslySetInnerHTML={{ __html: pauseButton }} />
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title="Continuar">
+                                    <Button variant="fab" color="secondary" aria-label="Pausar" className={classes.button}>
+                                        <div dangerouslySetInnerHTML={{ __html: resumeButton }} />
+                                    </Button>
+                                </Tooltip>
+                            </div>
                             <Typography align="center" variant="headline" className={classes.color}>
                                 {title}
                             </Typography>
