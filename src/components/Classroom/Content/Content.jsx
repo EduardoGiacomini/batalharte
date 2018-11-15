@@ -226,8 +226,8 @@ class Content extends Component {
                             <Typography align="center" variant="subheading">
                                 {description}
                             </Typography>
-                            <Typography align="justify" variant="body1" className={classes.body}>
-                                {content}
+                            <Typography align="justify" className={classes.body}>
+                                <span dangerouslySetInnerHTML={{ __html: content }} />
                             </Typography>
                             <Typography align="left" variant="body2">
                                 Fonte(s): {source}

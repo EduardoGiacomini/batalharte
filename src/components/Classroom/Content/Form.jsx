@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // Actions
 import { doListClassroom } from '../../../redux/actions/classroomActions';
+// RichTextEditor
+import RichTextEditor from 'react-rte';
 // Material-ui
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -35,7 +37,7 @@ const INITIAL_STATE = {
     openSnackbarAlert: false,
     title: '',
     description: '',
-    content: '',
+    content: RichTextEditor.createEmptyValue(),
     source: '',
     competence: '',
     discipline: '',
@@ -54,6 +56,15 @@ class Form extends React.Component {
         });
     };
 
+    onChange = (value) => {
+        this.setState({ content: value });
+        if (this.props.onChange) {
+            this.props.onChange(
+                value.toString('html')
+            );
+        }
+    };
+
     handleChangeSelect = event => {
         this.setState({ [event.target.name]: event.target.value });
     };
@@ -64,6 +75,8 @@ class Form extends React.Component {
 
     // Função executada após a submissão do formulário.
     onSubmit = (event) => {
+        event.preventDefault();
+
         // Props
         const { user, classroom } = this.props;
 
@@ -72,8 +85,6 @@ class Form extends React.Component {
         } else {
             this.setState({ openSnackbarAlert: true });
         }
-
-        event.preventDefault();
     };
 
     // Função responsável por registrar o conteúdo.
@@ -142,7 +153,7 @@ class Form extends React.Component {
             author: uid,
             title,
             description,
-            content,
+            content: content.toString('html'),
             source,
             competence,
             discipline,
@@ -181,6 +192,27 @@ class Form extends React.Component {
             classroom,
         } = this.props;
 
+        // Configuration Form
+        const toolbarConfig = {
+            // Optionally specify the groups to display (displayed in the order listed).
+            display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'LINK_BUTTONS', 'BLOCK_TYPE_DROPDOWN', 'HISTORY_BUTTONS'],
+            INLINE_STYLE_BUTTONS: [
+                { label: 'Negrito', style: 'BOLD', className: 'custom-css-class' },
+                { label: 'Itálico', style: 'ITALIC' },
+                { label: 'Sublinhado', style: 'UNDERLINE' }
+            ],
+            BLOCK_TYPE_DROPDOWN: [
+                { label: 'Texto Normal', style: 'unstyled' },
+                { label: 'Título Grande', style: 'header-one' },
+                { label: 'Título Médio', style: 'header-two' },
+                { label: 'Título Pequeno', style: 'header-three' }
+            ],
+            BLOCK_TYPE_BUTTONS: [
+                { label: 'UL', style: 'unordered-list-item' },
+                { label: 'OL', style: 'ordered-list-item' }
+            ]
+        };
+
         return (
             <div>
                 <Paper className={classes.root} elevation={1}>
@@ -209,16 +241,11 @@ class Form extends React.Component {
                             fullWidth
                             required
                         />
-                        <TextField
+                        <RichTextEditor
+                            toolbarConfig={toolbarConfig}
                             value={content}
-                            onChange={this.handleChange('content')}
-                            id="content"
-                            label="Conteúdo"
-                            margin="normal"
-                            multiline
-                            rows="5"
-                            fullWidth
-                            required
+                            onChange={this.onChange}
+                            placeholder="Digite aqui o conteúdo"
                         />
                         <TextField
                             value={source}
@@ -340,6 +367,7 @@ class Form extends React.Component {
 
 Form.propTypes = {
     classes: PropTypes.object.isRequired,
+    onChange: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ user: state.user, classroom: state.classroom });

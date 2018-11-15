@@ -5,6 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 // redux
 import { Provider } from 'react-redux';
 import store from './redux/store/store';
+import 'typeface-roboto'
 
 ReactDOM.render(
     <Provider store={store}>
