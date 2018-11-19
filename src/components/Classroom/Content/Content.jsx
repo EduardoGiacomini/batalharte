@@ -223,7 +223,7 @@ class Content extends Component {
             user,
         } = this.props;
 
-        const speakButton = `<span onclick='responsiveVoice.speak("Oi, eu sou o aplicativo Batalharte. Estou aqui para lhe ajudar a aprender. Hoje vamos aprender: ${title}, ${description}. ${this.filterContent(content)}", "Brazilian Portuguese Male");'>🔊</span>`
+        const speakButton = `<span onclick='responsiveVoice.speak("Olá, eu sou o assistente virtual do aplicativo Batalharte. Estou aqui para lhe ajudar a aprender. Hoje nós vamos aprender: ${title}, ${description}. ${this.filterContent(content)}", "Brazilian Portuguese Male");'>🔊</span>`
         const pauseButton = `<span onclick='responsiveVoice.pause();'>❙❙</span>`
         const resumeButton = `<span onclick='responsiveVoice.resume();'>▶</span>`
 
